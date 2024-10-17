@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NPC 상점 정보</title>
+    <title>주머니 상점 정보</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
@@ -15,10 +15,11 @@
     </style>
 </head>
 <body>
-    <h1>NPC 상점 정보 
+    <h1>주머니 상점 정보 
         <a class="link" href="https://openapi.nexon.com/ko/my-application/" target="_blank">API 키 생성하러가기</a>
     </h1>
-    <p>API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름 클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다</p>
+    <p>API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름 클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다<br>
+    0시에 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요</p>
 
     <!-- 서버 선택 및 채널 입력 -->
     <label for="serverSelect">서버 선택:</label>
@@ -35,7 +36,7 @@
     <label for="apiKeyInput">API 키:</label>
     <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" />  <!-- 초기값 설정 -->
 
-    <button id="fetchButton">검색</button>
+    <button id="fetchButton">검색</button> <p id="next_time"></p>
 
     <div id="content"></div>
 
@@ -55,6 +56,46 @@
             const apiKey = this.value; // 입력값 가져오기
             localStorage.setItem('apiKey', apiKey); // 로컬 스토리지에 저장
         });
+    </script>
+    <script>
+        function updateNextResetTime() {
+            const currentTime = new Date();
+            const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
+            const intervalMinutes = 36; // 초기화 간격 36분
+
+            // 36분으로 나눈 시간 조각의 수
+            const totalIntervals = totalMinutesInDay / intervalMinutes;
+
+            // 현재 시간을 분으로 변환
+            const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+
+            // 현재 간격
+            const currentInterval = Math.floor(currentMinutes / intervalMinutes);
+            const nextInterval = (currentInterval + 1) % totalIntervals;
+
+            // 다음 초기화 시간 계산
+            const nextResetMinutes = nextInterval * intervalMinutes;
+            const nextResetHours = Math.floor(nextResetMinutes / 60);
+            const nextResetMinutesRemainder = nextResetMinutes % 60;
+
+            const nextResetTime = new Date();
+            nextResetTime.setHours(nextResetHours, nextResetMinutesRemainder, 0, 0);
+
+            // 남은 시간 계산
+            const timeRemaining = nextResetTime - currentTime;
+
+            // 초 단위로 업데이트
+            const secondsRemaining = Math.ceil(timeRemaining / 1000);
+
+            // 결과를 표시
+            document.getElementById("next_time").innerText = `다음 초기화 시간: ${nextResetTime.toLocaleTimeString()} (남은 시간: ${secondsRemaining}초)`;
+        }
+
+        // 매 초마다 업데이트
+        setInterval(updateNextResetTime, 1000);
+
+        // 초기화 시 즉시 업데이트
+        updateNextResetTime();
     </script>
 </body>
 </html>

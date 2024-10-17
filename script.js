@@ -31,7 +31,7 @@ function hexToRgb(hex) {
 
 async function fetchData() {
     const resultList = [];
-    
+    let errortext = "";  // 오류 메시지 초기화
     // 사용자 입력값 가져오기
     const serverName = document.getElementById("serverSelect").value;
     const channelNumber = document.getElementById("channelInput").value;
@@ -51,6 +51,11 @@ async function fetchData() {
 
         try {
             const response = await fetch(`${url}?${params}`, { headers });
+            if (!response.ok) {
+                // response.text()를 await로 처리하여 오류 메시지를 가져옵니다.
+                errortext = await response.text();  // 오류 메시지 가져오기
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
 
             const shops = data.shop.filter(shop => shop.tab_name === '주머니');
@@ -73,12 +78,16 @@ async function fetchData() {
 
             resultList.push({ location, items });
         } catch (error) {
-            console.error(`Error fetching data for ${npc}: ${error}`);
+            // 오류 메시지를 content에 표시
+            const content = document.getElementById("content");
+            content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}, ${errortext}</div>`;
+            return 0; // 데이터 렌더링을 중단
         }
     }
 
     return resultList;
 }
+
 
 function renderData(data) {
     const content = document.getElementById("content");
@@ -123,5 +132,7 @@ function renderData(data) {
 // 버튼 클릭 시 데이터 가져오기 및 렌더링
 document.getElementById("fetchButton").addEventListener("click", async () => {
     const data = await fetchData();
-    renderData(data);
+    if (data) {
+        renderData(data);
+    }
 });
