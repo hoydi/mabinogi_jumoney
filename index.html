@@ -11,12 +11,26 @@
         th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
         .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
         .link { margin-left: 10px; font-size: 14px; }
+        .link {
+            display: inline-block; 
+            padding: 10px 20px; 
+            background-color: #79cfe7; /* 버튼 배경색 */
+            color: white; /* 텍스트 색상 */
+            text-align: center; 
+            text-decoration: none; /* 밑줄 제거 */
+            border-radius: 5px; /* 둥근 모서리 */
+            transition: background-color 0.3s; /* 배경색 변화 효과 */
+        }
+        .link:hover {
+            background-color: #ffffa8; /* 호버 시 배경색 변화 */
+            color: #1a1b23;
+        }
         p { color: gray; }
     </style>
 </head>
 <body>
     <h1>주머니 상점 정보 
-        <a class="link" href="https://openapi.nexon.com/ko/my-application/" target="_blank">API 키 생성하러가기</a>
+        <a class="link" href="https://openapi.nexon.com/ko/my-application/" target="_blank">API 키 생성하러가기 click!</a>
     </h1>
     <p>API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름 클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다<br>
     0시에 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요</p>
@@ -49,12 +63,34 @@
             if (storedApiKey) {
                 document.getElementById('apiKeyInput').value = storedApiKey; // 가져온 키를 입력 필드에 설정
             }
+
+            // 로컬 스토리지에서 서버 및 채널 값 가져오기
+            const storedServer = localStorage.getItem('server');
+            const storedChannel = localStorage.getItem('channel');
+            if (storedServer) {
+                document.getElementById('serverSelect').value = storedServer; // 서버 선택 설정
+            }
+            if (storedChannel) {
+                document.getElementById('channelInput').value = storedChannel; // 채널 입력 설정
+            }
         };
 
         // API 키 입력 필드에 이벤트 리스너 추가
         document.getElementById('apiKeyInput').addEventListener('input', function() {
             const apiKey = this.value; // 입력값 가져오기
             localStorage.setItem('apiKey', apiKey); // 로컬 스토리지에 저장
+        });
+
+        // 서버 선택 필드에 이벤트 리스너 추가
+        document.getElementById('serverSelect').addEventListener('change', function() {
+            const server = this.value; // 선택한 서버 가져오기
+            localStorage.setItem('server', server); // 로컬 스토리지에 저장
+        });
+
+        // 채널 입력 필드에 이벤트 리스너 추가
+        document.getElementById('channelInput').addEventListener('input', function() {
+            const channel = this.value; // 입력값 가져오기
+            localStorage.setItem('channel', channel); // 로컬 스토리지에 저장
         });
     </script>
     <script>
