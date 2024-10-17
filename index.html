@@ -9,6 +9,7 @@
         .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        label {padding-left: 10px;}
         .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
         .link { margin-left: 10px; font-size: 14px; }
         .link {
@@ -45,12 +46,12 @@
     </select>
 
     <label for="channelInput">채널 번호:</label>
-    <input type="text" id="channelInput" placeholder="채널 번호를 입력하세요" value="1" />
+    <input type="text" id="channelInput" placeholder="채널 번호를 입력하세요" value="1" style="width: 30px;" />
 
     <label for="apiKeyInput">API 키:</label>
-    <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" />  <!-- 초기값 설정 -->
+    <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" style="width: 750px;" />  <!-- 초기값 설정 -->
 
-    <button id="fetchButton">검색</button> <p id="next_time"></p>
+    <button id="fetchButton" class="link">검색</button> <p id="next_time"></p>
 
     <div id="content"></div>
 
@@ -120,8 +121,13 @@
             // 남은 시간 계산
             const timeRemaining = nextResetTime - currentTime;
 
+            // 만약 현재 시간이 다음 초기화 시간보다 늦다면 다음 날로 설정
+            if (timeRemaining < 0) {
+                nextResetTime.setDate(nextResetTime.getDate() + 1);
+            }
+
             // 초 단위로 업데이트
-            const secondsRemaining = Math.ceil(timeRemaining / 1000);
+            const secondsRemaining = Math.ceil((nextResetTime - currentTime) / 1000);
 
             // 결과를 표시
             document.getElementById("next_time").innerText = `다음 초기화 시간: ${nextResetTime.toLocaleTimeString()} (남은 시간: ${secondsRemaining}초)`;
