@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPC 상점 정보</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
+    </style>
+</head>
+<body>
+    <h1>NPC 상점 정보</h1>
+
+    <!-- 서버 선택 및 채널 입력 -->
+    <label for="serverSelect">서버 선택:</label>
+    <select id="serverSelect">
+        <option value="류트" selected>류트</option>
+        <option value="만돌린">만돌린</option>
+        <option value="하프">하프</option>
+        <option value="울프">울프</option>
+    </select>
+
+    <label for="channelInput">채널 번호:</label>
+    <input type="text" id="channelInput" placeholder="채널 번호를 입력하세요" value="1" />
+
+    <label for="apiKeyInput">API 키:</label>
+    <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" />  <!-- 초기값 설정 -->
+
+    <button id="fetchButton">검색</button>
+
+    <div id="content"></div>
+
+    <script src="script.js"></script>  <!-- JavaScript 파일 연결 -->
+</body>
+</html>
