@@ -9,21 +9,21 @@
         .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-        label {padding-left: 10px;}
+        label { padding-left: 10px; }
         .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
         .link { margin-left: 10px; font-size: 14px; }
         .link {
-            display: inline-block; 
-            padding: 10px 20px; 
-            background-color: #79cfe7; /* 버튼 배경색 */
-            color: white; /* 텍스트 색상 */
-            text-align: center; 
-            text-decoration: none; /* 밑줄 제거 */
-            border-radius: 5px; /* 둥근 모서리 */
-            transition: background-color 0.3s; /* 배경색 변화 효과 */
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #79cfe7;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
         .link:hover {
-            background-color: #ffffa8; /* 호버 시 배경색 변화 */
+            background-color: #ffffa8;
             color: #1a1b23;
         }
         p { color: gray; }
@@ -51,93 +51,175 @@
     <label for="apiKeyInput">API 키:</label>
     <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" style="width: 750px;" />  <!-- 초기값 설정 -->
 
-    <button id="fetchButton" class="link">검색</button> <p id="next_time"></p>
+    <button id="fetchButton" class="link">검색</button>
+    <p id="next_time"></p>
+
+    <!-- 상점 위치 선택 -->
+    <label for="locationSelect">위치 선택:</label>
+    <select id="locationSelect">
+        <option value="전체" selected>전체</option>
+    </select>
 
     <div id="content"></div>
 
     <script src="script.js"></script>  <!-- JavaScript 파일 연결 -->
     <script>
-        // 페이지가 로드될 때 실행
+        let fetchedData = [];  // 전체 데이터를 저장할 변수
+
         window.onload = function() {
-            // 로컬 스토리지에서 API 키 가져오기
             const storedApiKey = localStorage.getItem('apiKey');
             if (storedApiKey) {
-                document.getElementById('apiKeyInput').value = storedApiKey; // 가져온 키를 입력 필드에 설정
+                document.getElementById('apiKeyInput').value = storedApiKey;
             }
 
-            // 로컬 스토리지에서 서버 및 채널 값 가져오기
             const storedServer = localStorage.getItem('server');
             const storedChannel = localStorage.getItem('channel');
             if (storedServer) {
-                document.getElementById('serverSelect').value = storedServer; // 서버 선택 설정
+                document.getElementById('serverSelect').value = storedServer;
             }
             if (storedChannel) {
-                document.getElementById('channelInput').value = storedChannel; // 채널 입력 설정
+                document.getElementById('channelInput').value = storedChannel;
             }
+
+            // locations 배열을 기반으로 locationSelect에 옵션 추가
+            const locationSelect = document.getElementById("locationSelect");
+            locations.forEach(({ location }) => {
+                const option = document.createElement("option");
+                option.value = location;
+                option.textContent = location;
+                locationSelect.appendChild(option);
+            });
         };
 
-        // API 키 입력 필드에 이벤트 리스너 추가
         document.getElementById('apiKeyInput').addEventListener('input', function() {
-            const apiKey = this.value; // 입력값 가져오기
-            localStorage.setItem('apiKey', apiKey); // 로컬 스토리지에 저장
+            const apiKey = this.value;
+            localStorage.setItem('apiKey', apiKey);
         });
 
-        // 서버 선택 필드에 이벤트 리스너 추가
         document.getElementById('serverSelect').addEventListener('change', function() {
-            const server = this.value; // 선택한 서버 가져오기
-            localStorage.setItem('server', server); // 로컬 스토리지에 저장
+            const server = this.value;
+            localStorage.setItem('server', server);
         });
 
-        // 채널 입력 필드에 이벤트 리스너 추가
         document.getElementById('channelInput').addEventListener('input', function() {
-            const channel = this.value; // 입력값 가져오기
-            localStorage.setItem('channel', channel); // 로컬 스토리지에 저장
+            const channel = this.value;
+            localStorage.setItem('channel', channel);
         });
-    </script>
-    <script>
-        function updateNextResetTime() {
-            const currentTime = new Date();
-            const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
-            const intervalMinutes = 36; // 초기화 간격 36분
 
-            // 36분으로 나눈 시간 조각의 수
-            const totalIntervals = totalMinutesInDay / intervalMinutes;
+        async function fetchData() {
+            const resultList = [];
+            let errortext = "";
+            const serverName = document.getElementById("serverSelect").value;
+            const channelNumber = document.getElementById("channelInput").value;
+            const apiKey = document.getElementById("apiKeyInput").value;
 
-            // 현재 시간을 분으로 변환
-            const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+            const headers = {
+                'accept': 'application/json',
+                'x-nxopen-api-key': apiKey
+            };
 
-            // 현재 간격
-            const currentInterval = Math.floor(currentMinutes / intervalMinutes);
-            const nextInterval = (currentInterval + 1) % totalIntervals;
+            for (const { location, npc } of locations) {
+                const params = new URLSearchParams({
+                    'npc_name': npc,
+                    'server_name': serverName,
+                    'channel': channelNumber
+                });
 
-            // 다음 초기화 시간 계산
-            const nextResetMinutes = nextInterval * intervalMinutes;
-            const nextResetHours = Math.floor(nextResetMinutes / 60);
-            const nextResetMinutesRemainder = nextResetMinutes % 60;
+                try {
+                    const response = await fetch(`${url}?${params}`, { headers });
+                    if (!response.ok) {
+                        errortext = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
 
-            const nextResetTime = new Date();
-            nextResetTime.setHours(nextResetHours, nextResetMinutesRemainder, 0, 0);
+                    const shops = data.shop.filter(shop => shop.tab_name === '주머니');
+                    const items = [];
 
-            // 남은 시간 계산
-            const timeRemaining = nextResetTime - currentTime;
+                    for (const shop of shops) {
+                        for (const item of shop.item) {
+                            const itemDisplayName = item.item_display_name;
+                            const imageUrl = item.image_url;
 
-            // 만약 현재 시간이 다음 초기화 시간보다 늦다면 다음 날로 설정
-            if (timeRemaining < 0) {
-                nextResetTime.setDate(nextResetTime.getDate() + 1);
+                            if (imageUrl.includes('item_color=')) {
+                                const encodedString = imageUrl.split('item_color=')[1];
+                                const decodedString = decodeURIComponent(encodedString);
+                                const colors = JSON.parse(decodedString);
+
+                                items.push({ itemDisplayName, colors });
+                            }
+                        }
+                    }
+
+                    resultList.push({ location, items });
+                } catch (error) {
+                    const content = document.getElementById("content");
+                    content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}, ${errortext}</div>`;
+                    return 0;
+                }
             }
 
-            // 초 단위로 업데이트
-            const secondsRemaining = Math.ceil((nextResetTime - currentTime) / 1000);
-
-            // 결과를 표시
-            document.getElementById("next_time").innerText = `다음 초기화 시간: ${nextResetTime.toLocaleTimeString()} (남은 시간: ${secondsRemaining}초)`;
+            fetchedData = resultList;  // 받아온 데이터를 저장
+            return resultList;
         }
 
-        // 매 초마다 업데이트
-        setInterval(updateNextResetTime, 1000);
+        function renderData(filteredData) {
+            const content = document.getElementById("content");
+            content.innerHTML = "";
 
-        // 초기화 시 즉시 업데이트
-        updateNextResetTime();
+            filteredData.forEach(({ location, items }) => {
+                const locationDiv = document.createElement("div");
+                locationDiv.className = "location";
+                locationDiv.textContent = location;
+                content.appendChild(locationDiv);
+
+                const table = document.createElement("table");
+                let row = document.createElement("tr");
+
+                items.forEach(({ itemDisplayName, colors }) => {
+                    const cell = document.createElement("td");
+                    cell.innerHTML = `<div>${itemDisplayName}</div>`;
+                    cell.style.paddingLeft = "10px";
+                    cell.style.textAlign = "left";
+
+                    for (const [colorName, colorValue] of Object.entries(colors)) {
+                        const colorBox = document.createElement("div");
+                        colorBox.className = "color-box";
+                        colorBox.style.backgroundColor = colorValue;
+
+                        cell.appendChild(colorBox);
+                        cell.innerHTML += `${hexToRgb(colorValue)}<br>`;
+                    }
+
+                    row.appendChild(cell);
+
+                    if (row.children.length % 6 === 0) {
+                        table.appendChild(row);
+                        row = document.createElement("tr");
+                    }
+                });
+
+                table.appendChild(row);
+                content.appendChild(table);
+            });
+        }
+
+        document.getElementById("fetchButton").addEventListener("click", async () => {
+            const data = await fetchData();
+            if (data) {
+                renderData(data);
+            }
+        });
+
+        // locationSelect 변경 시 필터링된 데이터 렌더링
+        document.getElementById("locationSelect").addEventListener("change", () => {
+            const selectedLocation = document.getElementById("locationSelect").value;
+            const filteredData = selectedLocation === "전체"
+                ? fetchedData  // 전체 선택 시 모든 데이터 표시
+                : fetchedData.filter(({ location }) => location === selectedLocation);  // 선택된 위치에 해당하는 데이터만 필터링
+
+            renderData(filteredData);
+        });
     </script>
 </body>
 </html>
