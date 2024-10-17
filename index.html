@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주머니 상점 정보</title>
     <style>
+        #next_time {
+            font-size: 24px;
+            font-weight: bold;
+        }
         body { font-family: Arial, sans-serif; }
         .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -27,14 +31,46 @@
             color: #1a1b23;
         }
         p { color: gray; }
+        .hidden {
+            display: none;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width:200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* 툴팁 위치 조정 */
+            left: 50%;
+            
+            opacity: 0; /* 초기 투명도 설정 */
+            transition: opacity 0.3s; /* 애니메이션 효과 */
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1; /* 호버 시 투명도 변경 */
+        }
     </style>
 </head>
 <body>
-    <h1>주머니 상점 정보 
+    <h1>주머니 상점 정보</h1>
+    <div class="tooltip"> 
         <a class="link" href="https://openapi.nexon.com/ko/my-application/" target="_blank">API 키 생성하러가기 click!</a>
-    </h1>
+        <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
+        </div>
+        <p id="next_time"></p>
     <p>API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름 클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다<br>
-    0시에 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요(Please wait until the data is ready 같은 오류 발생함)</p>
+    0시에 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요. 넥슨이 보통 10분 후에 데이터 준다고 했음. (Please wait until the data is ready 같은 오류 발생함)</p>
 
     <!-- 서버 선택 및 채널 입력 -->
     <label for="serverSelect">서버 선택:</label>
@@ -50,21 +86,102 @@
 
     <label for="apiKeyInput">API 키:</label>
     <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" style="width: 750px;" />  <!-- 초기값 설정 -->
+    <div class="tooltip"> 
+        <button id="fetchButton" class="link">검색</button>
+        <span class="tooltiptext">API 키 입력 안하시면 검색이 안됩니다</span>
+        </div>
+    
+    <hr>
+    <label for="outerColor">겉감 RGB :</label>
+    <input type="text" id="outerColor" placeholder="예: (255, 0, 0)" value="(255, 255, 255)">
 
-    <button id="fetchButton" class="link">검색</button>
-    <p id="next_time"></p>
+    <label for="romanColor">로마자 RGB :</label>
+    <input type="text" id="romanColor" placeholder="예: (0, 255, 0)">
 
-    <!-- 상점 위치 선택 -->
-    <label for="locationSelect">위치 선택:</label>
-    <select id="locationSelect">
-        <option value="전체" selected>전체</option>
-    </select>
+    <label for="innerColor">안감 RGB :</label>
+    <input type="text" id="innerColor" placeholder="예: (0, 0, 255)">
+    
+    <label for="toleranceInput">오차 범위:</label>
+    <input type="text" id="toleranceInput" placeholder="오차 범위" value="10" style="width: 50px;" />
+    
+    <div class="tooltip">
+    <button id="filterButton" class="link">필터링</button>
+    <span class="tooltiptext">검색 후 필터링해주세요. 겉감,로마자,안감의 기준은 색순서 1,2,3 입니다</span>
+    </div>
+    <br>
+    <hr>
+    <div class="tooltip">
+        <label for="locationSelect">교역소 선택:</label>
+        <select id="locationSelect">
+            <option value="전체" selected>전체</option>
+        </select>
+        <span class="tooltiptext">특정 교역소만 선택해서 볼 수 있습니다</span>
+    </div>
 
     <div id="content"></div>
 
     <script src="script.js"></script>  <!-- JavaScript 파일 연결 -->
     <script>
         let fetchedData = [];  // 전체 데이터를 저장할 변수
+
+
+        // RGB 값을 비교하기 위한 헬퍼 함수
+function parseRgb(rgbString) {
+    const rgbValues = rgbString.replace(/[^\d,]/g, '').split(',').map(Number);
+    return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };
+}
+
+// 두 RGB 값이 주어진 오차 범위 내에 있는지 확인
+function isWithinTolerance(color1, color2, tolerance) {
+    return Math.abs(color1.r - color2.r) <= tolerance &&
+           Math.abs(color1.g - color2.g) <= tolerance &&
+           Math.abs(color1.b - color2.b) <= tolerance;
+}
+
+// 필터링 로직
+function filterData() {
+    const outerColorInput = document.getElementById("outerColor").value;
+    const romanColorInput = document.getElementById("romanColor").value;
+    const innerColorInput = document.getElementById("innerColor").value;
+    const tolerance = parseInt(document.getElementById("toleranceInput").value, 10) || 10;
+
+    const outerColor = outerColorInput ? parseRgb(outerColorInput) : null;
+    const romanColor = romanColorInput ? parseRgb(romanColorInput) : null;
+    const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
+
+    document.querySelectorAll("td").forEach(td => {
+        const color1 = td.querySelector('.color-1') ? window.getComputedStyle(td.querySelector('.color-1')).backgroundColor : null;
+        const color2 = td.querySelector('.color-2') ? window.getComputedStyle(td.querySelector('.color-2')).backgroundColor : null;
+        const color3 = td.querySelector('.color-3') ? window.getComputedStyle(td.querySelector('.color-3')).backgroundColor : null;
+
+        let show = true;
+
+        if (outerColor && color1) {
+            const color1Rgb = parseRgb(color1);
+            show = show && isWithinTolerance(outerColor, color1Rgb, tolerance);
+        }
+
+        if (romanColor && color2) {
+            const color2Rgb = parseRgb(color2);
+            show = show && isWithinTolerance(romanColor, color2Rgb, tolerance);
+        }
+
+        if (innerColor && color3) {
+            const color3Rgb = parseRgb(color3);
+            show = show && isWithinTolerance(innerColor, color3Rgb, tolerance);
+        }
+
+        // 조건에 맞는 td만 보여줍니다
+        if (show) {
+            td.classList.remove("hidden");
+        } else {
+            td.classList.add("hidden");
+        }
+    });
+}
+
+// 필터 버튼에 이벤트 리스너 추가
+document.getElementById("filterButton").addEventListener("click", filterData);
 
         window.onload = function() {
             const storedApiKey = localStorage.getItem('apiKey');
@@ -181,14 +298,15 @@
                     cell.innerHTML = `<div>${itemDisplayName}</div>`;
                     cell.style.paddingLeft = "10px";
                     cell.style.textAlign = "left";
-
+                    let index=1;
                     for (const [colorName, colorValue] of Object.entries(colors)) {
                         const colorBox = document.createElement("div");
-                        colorBox.className = "color-box";
+                        colorBox.className = `color-box color-${index}`;
                         colorBox.style.backgroundColor = colorValue;
 
                         cell.appendChild(colorBox);
                         cell.innerHTML += `${hexToRgb(colorValue)}<br>`;
+                        index++;
                     }
 
                     row.appendChild(cell);
@@ -220,6 +338,26 @@
 
             renderData(filteredData);
         });
+
+        function updateNextResetTime() {
+            const now = new Date();
+            const minutesPassed = now.getHours() * 60 + now.getMinutes();
+            const nextResetMinutes = Math.ceil(minutesPassed / 36) * 36;
+            let nextResetHours = Math.floor(nextResetMinutes / 60);
+            const nextResetMinutesRemainder = nextResetMinutes % 60;
+
+            // 현재 시간이 다음 리셋 시간보다 클 경우 다음 날로 설정
+            if (nextResetMinutes <= minutesPassed) {
+                nextResetHours += 24; // 24시간 추가
+            }
+
+            const nextResetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextResetHours, nextResetMinutesRemainder);
+            const timeString = nextResetTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('next_time').innerText = `다음 리셋 시간: ${timeString}`;
+        }
+
+        updateNextResetTime();
+        setInterval(updateNextResetTime, 1000);
     </script>
 </body>
 </html>

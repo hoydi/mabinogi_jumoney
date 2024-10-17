@@ -21,6 +21,11 @@ const locations = [
 // API 요청 URL
 const url = 'https://open.api.nexon.com/mabinogi/v1/npcshop/list';
 
+
+
+
+
+
 // hex 색상을 RGB로 변환하는 함수
 function hexToRgb(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -107,17 +112,26 @@ function renderData(data) {
             cell.innerHTML = `<div>${itemDisplayName}</div>`;
             cell.style.paddingLeft = "10px"; // 왼쪽 패딩 추가
             cell.style.textAlign = "left"; // 텍스트 왼쪽 정렬
+            let index = 1;
+        
             for (const [colorName, colorValue] of Object.entries(colors)) {
                 const colorBox = document.createElement("div");
-                colorBox.className = "color-box";
+                colorBox.className = `color-box color-${index}`;
                 colorBox.style.backgroundColor = colorValue;
-
+        
+                // colorBox 추가
                 cell.appendChild(colorBox);
-                cell.innerHTML += `${hexToRgb(colorValue)}<br>`;
+        
+                // 색상 정보 텍스트 추가
+                const colorText = document.createElement("div");
+                colorText.textContent = hexToRgb(colorValue);
+                cell.appendChild(colorText);
+        
+                index++; // 인덱스 증가
             }
-
+        
             row.appendChild(cell);
-
+        
             if (row.children.length % 6 === 0) {
                 table.appendChild(row);
                 row = document.createElement("tr"); // 새 줄 시작
