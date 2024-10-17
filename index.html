@@ -6,7 +6,7 @@
     <title>주머니 상점 정보</title>
     <style>
         table { 
-            width: 100%; 
+            width:1600px; 
             border-collapse: collapse; 
             margin-top: 10px; 
         }
@@ -87,6 +87,12 @@
         .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1; /* 호버 시 투명도 변경 */
+        }
+        .container {
+            display: flex;
+            flex-direction: column; /* 세로로 나열 */
+            box-sizing: border-box;
+            padding: 10px;
         }
     </style>
 </head>
@@ -329,12 +335,15 @@ document.getElementById("filterButton").addEventListener("click", filterData);
                 
                     // 왼쪽과 오른쪽을 나누기 위한 div 생성
                     const container = document.createElement("div");
-                    container.style.display = "flex";
-                
+                    container.className='container'
+                    const upDiv = document.createElement("div");
+                    const downDiv = document.createElement("div");
+                    
+                    
                     // 왼쪽 부분: 색상 박스
                     const leftDiv = document.createElement("div");
                     leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
-                    leftDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
+                    upDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
                 
                     let index = 1;
                     for (const [colorName, colorValue] of Object.entries(colors)) {
@@ -361,8 +370,10 @@ document.getElementById("filterButton").addEventListener("click", filterData);
                     rightDiv.appendChild(img);
                 
                     // 왼쪽과 오른쪽 div를 container에 추가
-                    container.appendChild(leftDiv);
-                    container.appendChild(rightDiv);
+                    downDiv.appendChild(leftDiv);
+                    downDiv.appendChild(rightDiv);
+                    container.appendChild(upDiv);
+                    container.appendChild(downDiv);
                 
                     cell.appendChild(container);
                     row.appendChild(cell);
