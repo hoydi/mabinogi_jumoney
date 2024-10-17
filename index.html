@@ -10,10 +10,15 @@
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
         .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
+        .link { margin-left: 10px; font-size: 14px; }
+        p { color: gray; }
     </style>
 </head>
 <body>
-    <h1>NPC 상점 정보</h1>
+    <h1>NPC 상점 정보 
+        <a class="link" href="https://openapi.nexon.com/ko/my-application/" target="_blank">API 키 생성하러가기</a>
+    </h1>
+    <p>API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름 클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다</p>
 
     <!-- 서버 선택 및 채널 입력 -->
     <label for="serverSelect">서버 선택:</label>
@@ -35,5 +40,21 @@
     <div id="content"></div>
 
     <script src="script.js"></script>  <!-- JavaScript 파일 연결 -->
+    <script>
+        // 페이지가 로드될 때 실행
+        window.onload = function() {
+            // 로컬 스토리지에서 API 키 가져오기
+            const storedApiKey = localStorage.getItem('apiKey');
+            if (storedApiKey) {
+                document.getElementById('apiKeyInput').value = storedApiKey; // 가져온 키를 입력 필드에 설정
+            }
+        };
+
+        // API 키 입력 필드에 이벤트 리스너 추가
+        document.getElementById('apiKeyInput').addEventListener('input', function() {
+            const apiKey = this.value; // 입력값 가져오기
+            localStorage.setItem('apiKey', apiKey); // 로컬 스토리지에 저장
+        });
+    </script>
 </body>
 </html>
