@@ -76,7 +76,7 @@ async function fetchData() {
                         const decodedString = decodeURIComponent(encodedString);
                         const colors = JSON.parse(decodedString);
 
-                        items.push({ itemDisplayName, colors });
+                        items.push({ itemDisplayName, colors,imageUrl });
                     }
                 }
             }

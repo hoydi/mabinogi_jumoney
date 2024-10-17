@@ -5,14 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주머니 상점 정보</title>
     <style>
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+        }
+        
+        th, td { 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            text-align: center; 
+        }
+        
+        /* 기본적으로 6개씩 표시 */
+        td { 
+            width: calc(100% / 6); 
+        }
+        
+        /* 화면 가로 크기가 720px보다 작을 때 */
+        @media (max-width: 720px) {
+            td {
+                width: calc(100% / 3); /* 3개씩 표시 */
+            }
+        }
+        
+        /* 화면 가로 크기가 480px보다 작을 때 */
+        @media (max-width: 480px) {
+            td {
+                width: calc(100% / 2); /* 2개씩 표시 */
+            }
+        }
         #next_time {
             font-size: 24px;
             font-weight: bold;
         }
         body { font-family: Arial, sans-serif; }
         .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
         label { padding-left: 10px; }
         .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
         .link { margin-left: 10px; font-size: 14px; }
@@ -264,7 +292,7 @@ document.getElementById("filterButton").addEventListener("click", filterData);
                                 const decodedString = decodeURIComponent(encodedString);
                                 const colors = JSON.parse(decodedString);
 
-                                items.push({ itemDisplayName, colors });
+                                items.push({ itemDisplayName, colors,imageUrl });
                             }
                         }
                     }
@@ -294,29 +322,58 @@ document.getElementById("filterButton").addEventListener("click", filterData);
                 const table = document.createElement("table");
                 let row = document.createElement("tr");
 
-                items.forEach(({ itemDisplayName, colors }) => {
+                items.forEach(({ itemDisplayName, colors, imageUrl }) => {
                     const cell = document.createElement("td");
-                    cell.innerHTML = `<div>${itemDisplayName}</div>`;
                     cell.style.paddingLeft = "10px";
                     cell.style.textAlign = "left";
-                    let index=1;
+                
+                    // 왼쪽과 오른쪽을 나누기 위한 div 생성
+                    const container = document.createElement("div");
+                    container.style.display = "flex";
+                
+                    // 왼쪽 부분: 색상 박스
+                    const leftDiv = document.createElement("div");
+                    leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
+                    leftDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
+                
+                    let index = 1;
                     for (const [colorName, colorValue] of Object.entries(colors)) {
                         const colorBox = document.createElement("div");
                         colorBox.className = `color-box color-${index}`;
                         colorBox.style.backgroundColor = colorValue;
-
-                        cell.appendChild(colorBox);
-                        cell.innerHTML += `${hexToRgb(colorValue)}<br>`;
+                        colorBox.style.width = "20px"; // 색상 박스의 너비
+                        colorBox.style.height = "20px"; // 색상 박스의 높이
+                        colorBox.style.display = "inline-block"; // 색상 박스를 가로로 나열
+                        leftDiv.appendChild(colorBox);
+                        leftDiv.innerHTML += `${hexToRgb(colorValue)}<br>`;
                         index++;
                     }
-
+                
+                    // 오른쪽 부분: 이미지
+                    const rightDiv = document.createElement("div");
+                    rightDiv.style.flex = "1"; // 오른쪽 div가 1배 비율
+                    const img = document.createElement("img");
+                    img.src = imageUrl;
+                    img.alt = itemDisplayName; // 이미지 설명
+                    img.style.maxWidth = "100%"; // 이미지의 최대 너비를 100%로 설정
+                    img.style.height = "auto"; // 자동 높이 조절
+                
+                    rightDiv.appendChild(img);
+                
+                    // 왼쪽과 오른쪽 div를 container에 추가
+                    container.appendChild(leftDiv);
+                    container.appendChild(rightDiv);
+                
+                    cell.appendChild(container);
                     row.appendChild(cell);
-
+                
+                    // 행에 6개의 셀이 추가되면 새 행 생성
                     if (row.children.length % 6 === 0) {
                         table.appendChild(row);
                         row = document.createElement("tr");
                     }
                 });
+                
 
                 table.appendChild(row);
                 content.appendChild(table);
