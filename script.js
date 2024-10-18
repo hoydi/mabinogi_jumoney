@@ -155,7 +155,9 @@ function resetFilterData() {
 let filterToggle = 0;
 // 필터 버튼에 이벤트 리스너 추가
 document.getElementById("filterButton").addEventListener("click", function () {
+  console.log(filterToggle)
   if (filterToggle != 1) {
+    console.log('필터링합니다')
     filterData();
   } else {
     resetFilterData();
@@ -164,7 +166,9 @@ document.getElementById("filterButton").addEventListener("click", function () {
 document.getElementById("autoFilter").addEventListener("change", function () {
   if (this.checked) {
     // 체크박스가 체크되었을 때 실행할 함수
+
     filterData();
+
   } else {
     resetFilterData();
   }
@@ -370,7 +374,7 @@ function renderData(filteredData) {
         // colorBox.style.display = "inline-block"; // 색상 박스를 가로로 나열
         leftDiv.appendChild(colorBox);
         leftDiv.innerHTML += `${hexToRgb("#" + colorValue)}<br>`;
-        console.log(`colorvalue:${colorValue} ,${hexToRgb(colorValue)} `);
+        // console.log(`colorvalue:${colorValue} ,${hexToRgb(colorValue)} `);
       }
       const [hex1, hex2, hex3] = Object.values(colors).slice(0, 3);
       mabibase_color = [hex1, hex2, hex3].map((hex) => `0x${hex}`).join("%2C");
