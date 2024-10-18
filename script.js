@@ -528,6 +528,7 @@ document
 
 
 
+  
 
 ////////////////////////////
 const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
