@@ -173,6 +173,10 @@ document.getElementById("autoFilter").addEventListener("change", function () {
     resetFilterData();
   }
 });
+
+
+
+
 window.onload = function () {
   console.log('온로드');
 
@@ -445,6 +449,12 @@ document.getElementById("locationSelect").addEventListener("change", () => {
   renderData(filteredData);
 });
 
+//채널바꾸면 lastNextResetTime null 만들어서 fetch 되게
+document.getElementById("channelInput").addEventListener("change", function() {
+  console.log('채널변경')
+  lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
+});
+
 // 버튼 클릭 시 데이터 가져오기 및 렌더링
 document.getElementById("fetchButton").addEventListener("click", async () => {
   if (
@@ -515,6 +525,9 @@ document
     const tolerance = this.value; // 입력값 가져오기
     localStorage.setItem("tolerance", tolerance); // 로컬 스토리지에 저장
   });
+
+
+
 
 ////////////////////////////
 const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
