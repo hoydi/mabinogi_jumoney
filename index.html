@@ -1,432 +1,248 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>주머니 상점 정보</title>
     <style>
-        table { 
-            width:1600px; 
-            border-collapse: collapse; 
-            margin-top: 10px; 
-        }
+      #content {
+        display: flex;
+        flex-direction: column; /* 세로 방향으로 배치 */
+      }
+
+      .table {
+        display: flex;
+        flex-direction: column; /* 세로 방향으로 배치 */
+        margin-bottom: 10px; /* 각 테이블 간의 간격 */
         
-        th, td { 
-            border: 1px solid #ccc; 
-            padding: 10px; 
-            text-align: center; 
+        align-items: flex-start;
+      }
+
+      .row {
+        display: flex; /* 가로 방향으로 배치 */
+        flex-wrap: wrap; /* 줄 바꿈 활성화 */
+        justify-content: flex-start; /* 왼쪽 정렬 */
+      }
+
+      .cell {
+        /* flex: 1 0 16.66%; 각 셀의 기본 너비를 16.66%로 설정 (6개가 100% 차지) */
+        box-sizing: border-box; /* 패딩과 테두리를 포함한 박스 모델 */
+        padding: 10px; /* 패딩 추가 */
+        max-width: 250px; /* 셀 최대 너비 설정 (반응형에 따라 조정 가능) */
+        border: 1px solid #4ac4e6;
+      }
+
+      /* @media (max-width: 1200px) {
+        .cell {
+          flex: 1 0 33.33%; 
         }
-        
-        /* 기본적으로 6개씩 표시 */
-        td { 
-            width: calc(100% / 6); 
+      }
+
+      @media (max-width: 768px) {
+        .cell {
+          flex: 1 0 50%;
         }
-        
-        /* 화면 가로 크기가 720px보다 작을 때 */
-        @media (max-width: 720px) {
-            td {
-                width: calc(100% / 3); /* 3개씩 표시 */
-            }
+      }
+
+      @media (max-width:480px) {
+        .cell {
+          flex: 1 0 100%; 
         }
-        
-        /* 화면 가로 크기가 480px보다 작을 때 */
-        @media (max-width: 480px) {
-            td {
-                width: calc(100% / 2); /* 2개씩 표시 */
-            }
-        }
-        #next_time {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        body { font-family: Arial, sans-serif; }
-        .location { font-size: 20px; font-weight: bold; margin-top: 20px; }
-        label { padding-left: 10px; }
-        .color-box { width: 30px; height: 30px; display: inline-block; margin-right: 5px; }
-        .link { margin-left: 10px; font-size: 14px; }
-        .link {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #79cfe7;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .link:hover {
-            background-color: #ffffa8;
-            color: #1a1b23;
-        }
-        p { color: gray; }
-        .hidden {
-            display: none;
-        }
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width:200px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%; /* 툴팁 위치 조정 */
-            left: 50%;
-            
-            opacity: 0; /* 초기 투명도 설정 */
-            transition: opacity 0.3s; /* 애니메이션 효과 */
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1; /* 호버 시 투명도 변경 */
-        }
-        .container {
-            display: flex;
-            flex-direction: column; /* 세로로 나열 */
-            box-sizing: border-box;
-            padding: 10px;
-        }
+      } */
+
+      #next_time {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .location {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+      label {
+        padding-left: 10px;
+      }
+      .color-box {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        margin-right: 5px;
+      }
+      .link {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+      .link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4ac4e6;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      .link:hover {
+        background-color: #ffffa8;
+        color: #1a1b23;
+      }
+      p {
+        color: gray;
+      }
+      .hidden {
+        display: none;
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200%;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* 툴팁 위치 조정 */
+        left: 50%;
+
+        opacity: 0; /* 초기 투명도 설정 */
+        transition: opacity 0.3s; /* 애니메이션 효과 */
+        white-space: normal; /* 줄바꿈이 자연스럽게 되도록 설정 */
+        word-wrap: break-word; /* 긴 단어가 있을 경우 줄바꿈 허용 */
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1; /* 호버 시 투명도 변경 */
+      }
+      .container {
+        display: flex;
+        flex-direction: column; /* 세로로 나열 */
+        box-sizing: border-box;
+        padding: 10px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>주머니 상점 정보</h1>
-    <div class="tooltip"> 
-        <a class="link" href="https://openapi.nexon.com/ko/my-application/" target="_blank">API 키 생성하러가기 click!</a>
-        <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
-        </div>
-        <p id="next_time"></p>
-    <p>API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름 클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다<br>
-    0시에 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요. 넥슨이 보통 10분 후에 데이터 준다고 했음. (Please wait until the data is ready 같은 오류 발생함)<br>
-    OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api 사용량을 다썼다는 뜻입니다.</p>
+
+    <p id="next_time"></p>
+    <p>
+      API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름
+      클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다<br />
+      리셋됐을 때 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요. 넥슨이 보통 10분
+      후에 데이터 준다고 했음. (Please wait until the data is ready 같은 오류
+      발생함)<br />
+      OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api 사용량을
+      다썼다는 뜻입니다.
+    </p>
 
     <!-- 서버 선택 및 채널 입력 -->
     <label for="serverSelect">서버 선택:</label>
     <select id="serverSelect">
-        <option value="류트" selected>류트</option>
-        <option value="만돌린">만돌린</option>
-        <option value="하프">하프</option>
-        <option value="울프">울프</option>
+      <option value="류트" selected>류트</option>
+      <option value="만돌린">만돌린</option>
+      <option value="하프">하프</option>
+      <option value="울프">울프</option>
     </select>
 
     <label for="channelInput">채널 번호:</label>
-    <input type="text" id="channelInput" placeholder="채널 번호를 입력하세요" value="1" style="width: 30px;" />
+    <input
+      type="text"
+      id="channelInput"
+      placeholder="채널 번호를 입력하세요"
+      value="1"
+      style="width: 30px"
+    />
 
     <label for="apiKeyInput">API 키:</label>
-    <input type="text" id="apiKeyInput" placeholder="API 키를 입력하세요" value="" style="width: 750px;" />  <!-- 초기값 설정 -->
-    <div class="tooltip"> 
-        <button id="fetchButton" class="link">검색</button>
-        <span class="tooltiptext">API 키 입력 안하시면 검색이 안됩니다</span>
-        </div>
-    
-    <hr>
+    <input
+      type="text"
+      id="apiKeyInput"
+      placeholder="API 키를 입력하세요"
+      value=""
+      style="width: 750px"
+    />
+    <!-- 초기값 설정 -->
+    <div class="tooltip">
+      <button id="fetchButton" class="link">검색</button>
+      <span class="tooltiptext">API 키 입력 안하시면 검색이 안됩니다</span>
+    </div>
+    <div class="tooltip">
+      <label>
+        <input type="checkbox" id="autoFetchCheckbox" /> 자동 실행
+      </label>
+      <span class="tooltiptext"
+        >체크해놓으면 너무 빨리 불러서 오류 발생하고 api 횟수만 소모하는 것을 방지하기 위해 초기화 10분 후
+        자동실행됩니다</span>
+    </div>
+    <div class="tooltip">
+      <a
+        class="link"
+        href="https://openapi.nexon.com/ko/my-application/"
+        target="_blank"
+        >API 키 생성하러가기 click!</a
+      >
+      <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
+    </div>
+    <hr />
     <label for="outerColor">겉감 RGB :</label>
-    <input type="text" id="outerColor" placeholder="예: (255, 0, 0)" value="(255, 255, 255)">
+    <input
+      type="text"
+      id="outerColor"
+      placeholder="예: (255, 0, 0)"
+    />
 
     <label for="romanColor">로마자 RGB :</label>
-    <input type="text" id="romanColor" placeholder="예: (0, 255, 0)">
+    <input type="text" id="romanColor" placeholder="예: (0, 255, 0)" />
 
     <label for="innerColor">안감 RGB :</label>
-    <input type="text" id="innerColor" placeholder="예: (0, 0, 255)">
-    
+    <input type="text" id="innerColor" placeholder="예: (0, 0, 255)" />
+
     <label for="toleranceInput">오차 범위:</label>
-    <input type="text" id="toleranceInput" placeholder="오차 범위" value="10" style="width: 50px;" />
-    
+    <input
+      type="text"
+      id="toleranceInput"
+      placeholder="오차 범위"
+      value="10"
+      style="width: 50px"
+    />
+
     <div class="tooltip">
-    <button id="filterButton" class="link">필터링</button>
-    <span class="tooltiptext">검색 후 필터링해주세요. 겉감,로마자,안감의 기준은 색순서 1,2,3 입니다</span>
+      <button id="filterButton" class="link">필터링</button>
+      <span class="tooltiptext"
+        >검색 후 필터링해주세요. 겉감,로마자,안감의 기준은 색순서 1,2,3
+        입니다</span>
     </div>
-    <br>
-    <hr>
     <div class="tooltip">
-        <label for="locationSelect">교역소 선택:</label>
-        <select id="locationSelect">
-            <option value="전체" selected>전체</option>
-        </select>
-        <span class="tooltiptext">특정 교역소만 선택해서 볼 수 있습니다</span>
+      <label>
+        <input type="checkbox" id="autoFilter" /> 자동 필터링
+      </label>
+      <span class="tooltiptext"
+        >체크했을 때 검색 후 자동으로 필터링됩니다</span>
+    </div>
+    <br />
+    <hr />
+    <div class="tooltip">
+      <label for="locationSelect">교역소 선택:</label>
+      <select id="locationSelect">
+        <option value="전체" selected>전체</option>
+      </select>
+      <span class="tooltiptext">특정 교역소만 선택해서 볼 수 있습니다</span>
     </div>
 
     <div id="content"></div>
 
-    <script src="script.js"></script>  <!-- JavaScript 파일 연결 -->
-    <script>
-        let fetchedData = [];  // 전체 데이터를 저장할 변수
-
-
-        // RGB 값을 비교하기 위한 헬퍼 함수
-function parseRgb(rgbString) {
-    const rgbValues = rgbString.replace(/[^\d,]/g, '').split(',').map(Number);
-    return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };
-}
-
-// 두 RGB 값이 주어진 오차 범위 내에 있는지 확인
-function isWithinTolerance(color1, color2, tolerance) {
-    return Math.abs(color1.r - color2.r) <= tolerance &&
-           Math.abs(color1.g - color2.g) <= tolerance &&
-           Math.abs(color1.b - color2.b) <= tolerance;
-}
-
-// 필터링 로직
-function filterData() {
-    const outerColorInput = document.getElementById("outerColor").value;
-    const romanColorInput = document.getElementById("romanColor").value;
-    const innerColorInput = document.getElementById("innerColor").value;
-    const tolerance = parseInt(document.getElementById("toleranceInput").value, 10) || 10;
-
-    const outerColor = outerColorInput ? parseRgb(outerColorInput) : null;
-    const romanColor = romanColorInput ? parseRgb(romanColorInput) : null;
-    const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
-
-    document.querySelectorAll("td").forEach(td => {
-        const color1 = td.querySelector('.color-1') ? window.getComputedStyle(td.querySelector('.color-1')).backgroundColor : null;
-        const color2 = td.querySelector('.color-2') ? window.getComputedStyle(td.querySelector('.color-2')).backgroundColor : null;
-        const color3 = td.querySelector('.color-3') ? window.getComputedStyle(td.querySelector('.color-3')).backgroundColor : null;
-
-        let show = true;
-
-        if (outerColor && color1) {
-            const color1Rgb = parseRgb(color1);
-            show = show && isWithinTolerance(outerColor, color1Rgb, tolerance);
-        }
-
-        if (romanColor && color2) {
-            const color2Rgb = parseRgb(color2);
-            show = show && isWithinTolerance(romanColor, color2Rgb, tolerance);
-        }
-
-        if (innerColor && color3) {
-            const color3Rgb = parseRgb(color3);
-            show = show && isWithinTolerance(innerColor, color3Rgb, tolerance);
-        }
-
-        // 조건에 맞는 td만 보여줍니다
-        if (show) {
-            td.classList.remove("hidden");
-        } else {
-            td.classList.add("hidden");
-        }
-    });
-}
-
-// 필터 버튼에 이벤트 리스너 추가
-document.getElementById("filterButton").addEventListener("click", filterData);
-
-        window.onload = function() {
-            const storedApiKey = localStorage.getItem('apiKey');
-            if (storedApiKey) {
-                document.getElementById('apiKeyInput').value = storedApiKey;
-            }
-
-            const storedServer = localStorage.getItem('server');
-            const storedChannel = localStorage.getItem('channel');
-            if (storedServer) {
-                document.getElementById('serverSelect').value = storedServer;
-            }
-            if (storedChannel) {
-                document.getElementById('channelInput').value = storedChannel;
-            }
-
-            // locations 배열을 기반으로 locationSelect에 옵션 추가
-            const locationSelect = document.getElementById("locationSelect");
-            locations.forEach(({ location }) => {
-                const option = document.createElement("option");
-                option.value = location;
-                option.textContent = location;
-                locationSelect.appendChild(option);
-            });
-        };
-
-        document.getElementById('apiKeyInput').addEventListener('input', function() {
-            const apiKey = this.value;
-            localStorage.setItem('apiKey', apiKey);
-        });
-
-        document.getElementById('serverSelect').addEventListener('change', function() {
-            const server = this.value;
-            localStorage.setItem('server', server);
-        });
-
-        document.getElementById('channelInput').addEventListener('input', function() {
-            const channel = this.value;
-            localStorage.setItem('channel', channel);
-        });
-
-        async function fetchData() {
-            const resultList = [];
-            let errortext = "";
-            const serverName = document.getElementById("serverSelect").value;
-            const channelNumber = document.getElementById("channelInput").value;
-            const apiKey = document.getElementById("apiKeyInput").value;
-
-            const headers = {
-                'accept': 'application/json',
-                'x-nxopen-api-key': apiKey
-            };
-
-            for (const { location, npc } of locations) {
-                const params = new URLSearchParams({
-                    'npc_name': npc,
-                    'server_name': serverName,
-                    'channel': channelNumber
-                });
-
-                try {
-                    const response = await fetch(`${url}?${params}`, { headers });
-                    if (!response.ok) {
-                        errortext = await response.text();
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.json();
-
-                    const shops = data.shop.filter(shop => shop.tab_name === '주머니');
-                    const items = [];
-
-                    for (const shop of shops) {
-                        for (const item of shop.item) {
-                            const itemDisplayName = item.item_display_name;
-                            const imageUrl = item.image_url;
-
-                            if (imageUrl.includes('item_color=')) {
-                                const encodedString = imageUrl.split('item_color=')[1];
-                                const decodedString = decodeURIComponent(encodedString);
-                                const colors = JSON.parse(decodedString);
-
-                                items.push({ itemDisplayName, colors,imageUrl });
-                            }
-                        }
-                    }
-
-                    resultList.push({ location, items });
-                } catch (error) {
-                    const content = document.getElementById("content");
-                    content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}, ${errortext}</div>`;
-                    return 0;
-                }
-            }
-
-            fetchedData = resultList;  // 받아온 데이터를 저장
-            return resultList;
-        }
-
-        function renderData(filteredData) {
-            const content = document.getElementById("content");
-            content.innerHTML = "";
-
-            filteredData.forEach(({ location, items }) => {
-                const locationDiv = document.createElement("div");
-                locationDiv.className = "location";
-                locationDiv.textContent = location;
-                content.appendChild(locationDiv);
-
-                const table = document.createElement("table");
-                let row = document.createElement("tr");
-
-                items.forEach(({ itemDisplayName, colors, imageUrl }) => {
-                    const cell = document.createElement("td");
-                    cell.style.paddingLeft = "10px";
-                    cell.style.textAlign = "left";
-                
-                    // 왼쪽과 오른쪽을 나누기 위한 div 생성
-                    const container = document.createElement("div");
-                    container.className='container'
-                    const upDiv = document.createElement("div");
-                    const downDiv = document.createElement("div");
-                    
-                    
-                    // 왼쪽 부분: 색상 박스
-                    const leftDiv = document.createElement("div");
-                    leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
-                    upDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
-                
-                    let index = 1;
-                    for (const [colorName, colorValue] of Object.entries(colors)) {
-                        const colorBox = document.createElement("div");
-                        colorBox.className = `color-box color-${index}`;
-                        colorBox.style.backgroundColor = colorValue;
-                        colorBox.style.width = "20px"; // 색상 박스의 너비
-                        colorBox.style.height = "20px"; // 색상 박스의 높이
-                        colorBox.style.display = "inline-block"; // 색상 박스를 가로로 나열
-                        leftDiv.appendChild(colorBox);
-                        leftDiv.innerHTML += `${hexToRgb(colorValue)}<br>`;
-                        index++;
-                    }
-                
-                    // 오른쪽 부분: 이미지
-                    const rightDiv = document.createElement("div");
-                    rightDiv.style.flex = "1"; // 오른쪽 div가 1배 비율
-                    const img = document.createElement("img");
-                    img.src = imageUrl;
-                    img.alt = itemDisplayName; // 이미지 설명
-                    img.style.maxWidth = "100%"; // 이미지의 최대 너비를 100%로 설정
-                    img.style.height = "auto"; // 자동 높이 조절
-                
-                    rightDiv.appendChild(img);
-                
-                    // 왼쪽과 오른쪽 div를 container에 추가
-                    downDiv.appendChild(leftDiv);
-                    downDiv.appendChild(rightDiv);
-                    container.appendChild(upDiv);
-                    container.appendChild(downDiv);
-                
-                    cell.appendChild(container);
-                    row.appendChild(cell);
-                
-                    // 행에 6개의 셀이 추가되면 새 행 생성
-                    if (row.children.length % 6 === 0) {
-                        table.appendChild(row);
-                        row = document.createElement("tr");
-                    }
-                });
-                
-
-                table.appendChild(row);
-                content.appendChild(table);
-            });
-        }
-
-        document.getElementById("fetchButton").addEventListener("click", async () => {
-            const data = await fetchData();
-            if (data) {
-                renderData(data);
-            }
-        });
-
-        // locationSelect 변경 시 필터링된 데이터 렌더링
-        document.getElementById("locationSelect").addEventListener("change", () => {
-            const selectedLocation = document.getElementById("locationSelect").value;
-            const filteredData = selectedLocation === "전체"
-                ? fetchedData  // 전체 선택 시 모든 데이터 표시
-                : fetchedData.filter(({ location }) => location === selectedLocation);  // 선택된 위치에 해당하는 데이터만 필터링
-
-            renderData(filteredData);
-        });
-
-        function updateNextResetTime() {
-            const now = new Date();
-            const minutesPassed = now.getHours() * 60 + now.getMinutes();
-            const nextResetMinutes = Math.ceil(minutesPassed / 36) * 36;
-            let nextResetHours = Math.floor(nextResetMinutes / 60);
-            const nextResetMinutesRemainder = nextResetMinutes % 60;
-
-            // 현재 시간이 다음 리셋 시간보다 클 경우 다음 날로 설정
-            if (nextResetMinutes <= minutesPassed) {
-                nextResetHours += 24; // 24시간 추가
-            }
-
-            const nextResetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextResetHours, nextResetMinutesRemainder);
-            const timeString = nextResetTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('next_time').innerText = `다음 리셋 시간: ${timeString}`;
-        }
-
-        updateNextResetTime();
-        setInterval(updateNextResetTime, 1000);
-    </script>
-</body>
+    <script src="script.js"></script>
+    <script></script>
+    <!-- JavaScript 파일 연결 -->
+  </body>
 </html>
