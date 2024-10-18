@@ -19,7 +19,7 @@ const locations = [
 ];
 
 const mabibase_url = "https://api.na.mabibase.com/assets/item/icon/";
-const mabibase_url_filter = "?colors="
+const mabibase_url_filter = "?colors=";
 const mabibase_jumoney = [
   "5110005",
   "5110006",
@@ -50,14 +50,7 @@ const mabibase_jumoney = [
 // API 요청 URL
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
 
-
-
-function mabibase_go(){
-  
-}
-
-
-
+function mabibase_go() {}
 
 // hex 색상을 RGB로 변환하는 함수
 function hexToRgb(hex) {
@@ -69,6 +62,15 @@ function hexToRgb(hex) {
 
 let fetchedData = []; // 전체 데이터를 저장할 변수
 
+//필터링
+function isWithinTolerance(colorA, colorB, tolerance) {
+  const rDiff = Math.abs(colorB.r - colorA.r);
+  const gDiff = Math.abs(colorB.g - colorA.g);
+  const bDiff = Math.abs(colorB.b - colorA.b);
+
+  return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;
+}
+
 // RGB 값을 비교하기 위한 헬퍼 함수
 function parseRgb(rgbString) {
   const rgbValues = rgbString
@@ -78,39 +80,44 @@ function parseRgb(rgbString) {
   return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };
 }
 
-// 두 RGB 값이 주어진 오차 범위 내에 있는지 확인
-function isWithinTolerance(color1, color2, tolerance) {
-  return (
-    Math.abs(color1.r - color2.r) <= tolerance &&
-    Math.abs(color1.g - color2.g) <= tolerance &&
-    Math.abs(color1.b - color2.b) <= tolerance
-  );
-}
-
-// 필터링 로직
 function filterData() {
+  const anywhereColorInput = document.getElementById("anywhereColor").value;
   const outerColorInput = document.getElementById("outerColor").value;
   const romanColorInput = document.getElementById("romanColor").value;
   const innerColorInput = document.getElementById("innerColor").value;
   const tolerance =
     parseInt(document.getElementById("toleranceInput").value, 10) || 10;
 
+  const anywhereColor = anywhereColorInput ? parseRgb(anywhereColorInput) : null;
   const outerColor = outerColorInput ? parseRgb(outerColorInput) : null;
   const romanColor = romanColorInput ? parseRgb(romanColorInput) : null;
   const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
 
   document.querySelectorAll(".cell").forEach((td) => {
-    const color1 = td.querySelector(".color-1")
-      ? window.getComputedStyle(td.querySelector(".color-1")).backgroundColor
+    const color1 = td.querySelector(".color_01")
+      ? window.getComputedStyle(td.querySelector(".color_01")).backgroundColor
       : null;
-    const color2 = td.querySelector(".color-2")
-      ? window.getComputedStyle(td.querySelector(".color-2")).backgroundColor
+    const color2 = td.querySelector(".color_02")
+      ? window.getComputedStyle(td.querySelector(".color_02")).backgroundColor
       : null;
-    const color3 = td.querySelector(".color-3")
-      ? window.getComputedStyle(td.querySelector(".color-3")).backgroundColor
+    const color3 = td.querySelector(".color_03")
+      ? window.getComputedStyle(td.querySelector(".color_03")).backgroundColor
       : null;
 
     let show = true;
+
+    // anywhereColorInput 조건 추가
+    if (anywhereColor) {
+      const matchesAnyColor = [color1, color2, color3].some((color) => {
+        if (color) {
+          const colorRgb = parseRgb(color); // filterParseRgb 대신 parseRgb 사용
+          // tolerance를 사용하여 색상 비교
+          return isWithinTolerance(anywhereColor, colorRgb, tolerance);
+        }
+        return false;
+      });
+      show = matchesAnyColor; // 하나라도 맞으면 show가 true
+    }
 
     if (outerColor && color1) {
       const color1Rgb = parseRgb(color1);
@@ -136,6 +143,7 @@ function filterData() {
   });
   filterToggle = 1;
 }
+
 
 function resetFilterData() {
   document.querySelectorAll(".cell").forEach((td) => {
@@ -241,7 +249,6 @@ async function fetchData() {
             const encodedString = imageUrl.split("item_color=")[1];
             const decodedString = decodeURIComponent(encodedString);
             const colors = JSON.parse(decodedString);
-            
 
             // 필요한 색상만 선택
             const selectedColors = {};
@@ -249,10 +256,11 @@ async function fetchData() {
 
             colorKeys.forEach((key) => {
               if (colors[key]) {
-                selectedColors[key] = colors[key].replace('#', '').toLowerCase();
+                selectedColors[key] = colors[key]
+                  .replace("#", "")
+                  .toLowerCase();
               }
             });
-            
 
             // items에 추가
             items.push({ itemDisplayName, colors: selectedColors, imageUrl });
@@ -277,7 +285,6 @@ function renderData(filteredData) {
   const content = document.getElementById("content");
   content.innerHTML = ""; // 기존 내용을 초기화
 
-
   filteredData.forEach(({ location, items }) => {
     const locationDiv = document.createElement("div");
     locationDiv.className = "location";
@@ -289,7 +296,7 @@ function renderData(filteredData) {
     let row = document.createElement("div");
     row.className = "row"; // row 클래스 추가
 
-    items.forEach(({ itemDisplayName, colors, imageUrl },itemIndex) => {
+    items.forEach(({ itemDisplayName, colors, imageUrl }, itemIndex) => {
       const cell = document.createElement("div");
       cell.className = "cell"; // cell 클래스 추가
 
@@ -305,41 +312,43 @@ function renderData(filteredData) {
       leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
       upDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
 
-
       for (const [colorName, colorValue] of Object.entries(colors)) {
         const colorBox = document.createElement("div");
         colorBox.className = `color-box ${colorName}`;
-        colorBox.style.backgroundColor = "#"+colorValue;
+        colorBox.style.backgroundColor = "#" + colorValue;
         colorBox.style.width = "20px"; // 색상 박스의 너비
         colorBox.style.height = "20px"; // 색상 박스의 높이
         // colorBox.style.display = "inline-block"; // 색상 박스를 가로로 나열
         leftDiv.appendChild(colorBox);
-        leftDiv.innerHTML += `${hexToRgb(colorValue)}<br>`;
-        
+        leftDiv.innerHTML += `${hexToRgb("#" + colorValue)}<br>`;
+        console.log(`colorvalue:${colorValue} ,${hexToRgb(colorValue)} `);
       }
       const [hex1, hex2, hex3] = Object.values(colors).slice(0, 3);
-      mabibase_color = [hex1, hex2, hex3].map(hex => `0x${hex}`).join('%2C')
-
+      mabibase_color = [hex1, hex2, hex3].map((hex) => `0x${hex}`).join("%2C");
 
       // 오른쪽 부분: 이미지
       const rightDiv = document.createElement("div");
       rightDiv.style.flex = "1"; // 오른쪽 div가 1배 비율
       const img = document.createElement("img");
-      img.src = mabibase_url+mabibase_jumoney[itemIndex]+mabibase_url_filter+mabibase_color;
+      img.src =
+        mabibase_url +
+        mabibase_jumoney[itemIndex] +
+        mabibase_url_filter +
+        mabibase_color;
       // 이미지 로드 실패 시 대체 이미지 설정
-      img.onerror = function() {
-        console.log('이미지 로드 실패:', img.src);
-        img.src = 'no_image.png'; // 대체 이미지 경로
+      img.onerror = function () {
+        console.log("이미지 로드 실패:", img.src);
+        img.src = "no_image.png"; // 대체 이미지 경로
       };
 
       img.alt = itemDisplayName; // 이미지 설명
       img.style.width = "58px"; // 이미지의 최대 너비를 100%로 설정
       img.style.height = "auto"; // 자동 높이 조절
-      img.style.paddingBottom ="3px";
+      img.style.paddingBottom = "3px";
 
       const img0 = document.createElement("img");
-      img0.src = imageUrl;      
-      img0.style.maxWidth="64px";
+      img0.src = imageUrl;
+      img0.style.maxWidth = "64px";
 
       rightDiv.appendChild(img0);
       rightDiv.appendChild(img);
@@ -423,11 +432,14 @@ window.onload = function () {
   }
 
   // RGB 색상 및 오차 범위 값 가져오기
+  const anywhereColor = localStorage.getItem("anywhereColor");
   const storedOuterColor = localStorage.getItem("outerColor");
   const storedRomanColor = localStorage.getItem("romanColor");
   const storedInnerColor = localStorage.getItem("innerColor");
   const storedTolerance = localStorage.getItem("tolerance");
-
+  if (anywhereColor) {
+    document.getElementById("anywhereColor").value = storedOuterColor;
+  }
   if (storedOuterColor) {
     document.getElementById("outerColor").value = storedOuterColor;
   }
@@ -461,6 +473,11 @@ document.getElementById("channelInput").addEventListener("input", function () {
 });
 
 // RGB 색상 입력 필드에 이벤트 리스너 추가
+document.getElementById("anywhereColor").addEventListener("input", function () {
+  const anywhereColor = this.value; // 입력값 가져오기
+  localStorage.setItem("anywhereColor", anywhereColor); // 로컬 스토리지에 저장
+});
+
 document.getElementById("outerColor").addEventListener("input", function () {
   const outerColor = this.value; // 입력값 가져오기
   localStorage.setItem("outerColor", outerColor); // 로컬 스토리지에 저장

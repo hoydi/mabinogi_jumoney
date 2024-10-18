@@ -32,6 +32,9 @@
         width: 250px; /* 셀 최대 너비 설정 (반응형에 따라 조정 가능) */
         border: 1px solid #4ac4e6;
       }
+      .filterColor input {
+  width: 100px;
+}
 
       /* @media (max-width: 1200px) {
         .cell {
@@ -135,6 +138,7 @@
   </head>
   <body>
     <h1>주머니 상점 정보</h1>
+    <p id="hiddenParagraph" style="display: none;">최신업데이트시간 241018 1605</p>
     <p id="next_time"></p>
     <p>
       API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름
@@ -195,13 +199,16 @@
       <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
     </div>
     <hr />
+    <div class="filterColor">
+      <label for="anywhereColor">전체 RGB :</label>
+      <input type="text" id="anywhereColor" placeholder="예: (0, 255, 0)" />
+  
     <label for="outerColor">겉감 RGB :</label>
     <input
       type="text"
       id="outerColor"
       placeholder="예: (255, 0, 0)"
     />
-
     <label for="romanColor">로마자 RGB :</label>
     <input type="text" id="romanColor" placeholder="예: (0, 255, 0)" />
 
@@ -216,7 +223,6 @@
       value="10"
       style="width: 50px"
     />
-
     <div class="tooltip">
       <button id="filterButton" class="link">필터링</button>
       <span class="tooltiptext"
@@ -225,11 +231,14 @@
     </div>
     <div class="tooltip">
       <label>
-        <input type="checkbox" id="autoFilter" /> 자동 필터링
+        <input type="checkbox" id="autoFilter"style="width: auto;" /> 자동 필터링
       </label>
       <span class="tooltiptext"
         >체크했을 때 검색 후 자동으로 필터링됩니다</span>
     </div>
+  </div>
+
+
     <br />
     <hr />
     <div class="tooltip">
