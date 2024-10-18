@@ -169,30 +169,57 @@ document.getElementById("autoFilter").addEventListener("change", function () {
     resetFilterData();
   }
 });
-
 window.onload = function () {
+  console.log('온로드');
+
+  // 로컬 스토리지에서 API 키 가져오기
   const storedApiKey = localStorage.getItem("apiKey");
   if (storedApiKey) {
-    document.getElementById("apiKeyInput").value = storedApiKey;
+    document.getElementById("apiKeyInput").value = storedApiKey; // 가져온 키를 입력 필드에 설정
   }
 
+  // 로컬 스토리지에서 서버 및 채널 값 가져오기
   const storedServer = localStorage.getItem("server");
   const storedChannel = localStorage.getItem("channel");
   if (storedServer) {
-    document.getElementById("serverSelect").value = storedServer;
+    document.getElementById("serverSelect").value = storedServer; // 서버 선택 설정
   }
   if (storedChannel) {
-    document.getElementById("channelInput").value = storedChannel;
+    document.getElementById("channelInput").value = storedChannel; // 채널 입력 설정
   }
 
   // locations 배열을 기반으로 locationSelect에 옵션 추가
   const locationSelect = document.getElementById("locationSelect");
   locations.forEach(({ location }) => {
+    console.log('location');
     const option = document.createElement("option");
     option.value = location;
     option.textContent = location;
     locationSelect.appendChild(option);
   });
+
+  // RGB 색상 및 오차 범위 값 가져오기
+  const anywhereColor = localStorage.getItem("anywhereColor");
+  const storedOuterColor = localStorage.getItem("outerColor");
+  const storedRomanColor = localStorage.getItem("romanColor");
+  const storedInnerColor = localStorage.getItem("innerColor");
+  const storedTolerance = localStorage.getItem("tolerance");
+  
+  if (anywhereColor) {
+    document.getElementById("anywhereColor").value = anywhereColor; // anywhereColor를 올바르게 설정
+  }
+  if (storedOuterColor) {
+    document.getElementById("outerColor").value = storedOuterColor;
+  }
+  if (storedRomanColor) {
+    document.getElementById("romanColor").value = storedRomanColor;
+  }
+  if (storedInnerColor) {
+    document.getElementById("innerColor").value = storedInnerColor;
+  }
+  if (storedTolerance) {
+    document.getElementById("toleranceInput").value = storedTolerance;
+  }
 };
 
 document.getElementById("apiKeyInput").addEventListener("input", function () {
@@ -400,7 +427,7 @@ function renderData(filteredData) {
     content.appendChild(table);
   });
   const cells = document.querySelectorAll(".cell");
-  new ChannelingHandler(cells);
+  // new ChannelingHandler(cells);
 }
 
 // locationSelect 변경 시 필터링된 데이터 렌더링
@@ -437,46 +464,6 @@ document.getElementById("fetchButton").addEventListener("click", async () => {
 
 //////////////////////////////
 
-// 페이지가 로드될 때 실행
-window.onload = function () {
-  // 로컬 스토리지에서 API 키 가져오기
-  const storedApiKey = localStorage.getItem("apiKey");
-  if (storedApiKey) {
-    document.getElementById("apiKeyInput").value = storedApiKey; // 가져온 키를 입력 필드에 설정
-  }
-
-  // 로컬 스토리지에서 서버 및 채널 값 가져오기
-  const storedServer = localStorage.getItem("server");
-  const storedChannel = localStorage.getItem("channel");
-  if (storedServer) {
-    document.getElementById("serverSelect").value = storedServer; // 서버 선택 설정
-  }
-  if (storedChannel) {
-    document.getElementById("channelInput").value = storedChannel; // 채널 입력 설정
-  }
-
-  // RGB 색상 및 오차 범위 값 가져오기
-  const anywhereColor = localStorage.getItem("anywhereColor");
-  const storedOuterColor = localStorage.getItem("outerColor");
-  const storedRomanColor = localStorage.getItem("romanColor");
-  const storedInnerColor = localStorage.getItem("innerColor");
-  const storedTolerance = localStorage.getItem("tolerance");
-  if (anywhereColor) {
-    document.getElementById("anywhereColor").value = storedOuterColor;
-  }
-  if (storedOuterColor) {
-    document.getElementById("outerColor").value = storedOuterColor;
-  }
-  if (storedRomanColor) {
-    document.getElementById("romanColor").value = storedRomanColor;
-  }
-  if (storedInnerColor) {
-    document.getElementById("innerColor").value = storedInnerColor;
-  }
-  if (storedTolerance) {
-    document.getElementById("toleranceInput").value = storedTolerance;
-  }
-};
 
 // API 키 입력 필드에 이벤트 리스너 추가
 document.getElementById("apiKeyInput").addEventListener("input", function () {
