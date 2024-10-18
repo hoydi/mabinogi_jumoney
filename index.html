@@ -80,6 +80,7 @@
         font-size: 14px;
       }
       .link {
+        height: 100%;
         display: inline-block;
         padding: 10px 20px;
         background-color: #4ac4e6;
@@ -106,7 +107,7 @@
 
       .tooltip .tooltiptext {
         visibility: hidden;
-        width: 200%;
+        width: 200px;
         background-color: #555;
         color: #fff;
         text-align: center;
@@ -114,18 +115,19 @@
         padding: 5px;
         position: absolute;
         z-index: 1;
-        bottom: 125%; /* 툴팁 위치 조정 */
-        left: 50%;
+        bottom: -150%; /* 툴팁 위치 조정 */
+        left: 30%;
 
         opacity: 0; /* 초기 투명도 설정 */
         transition: opacity 0.3s; /* 애니메이션 효과 */
         white-space: normal; /* 줄바꿈이 자연스럽게 되도록 설정 */
         word-wrap: break-word; /* 긴 단어가 있을 경우 줄바꿈 허용 */
+        pointer-events: none; /* 클릭 무시 */
       }
 
       .tooltip:hover .tooltiptext {
         visibility: visible;
-        opacity: 1; /* 호버 시 투명도 변경 */
+        opacity: 0.7; /* 호버 시 투명도 변경 */
       }
       .container {
         align-items: center;
@@ -137,7 +139,14 @@
     </style>
   </head>
   <body>
-    <h1>주머니 상점 정보</h1>
+    <div style="display: flex; align-items: center;">
+    <h1>주머니 상점 정보</h1> 
+    <div class="tooltip">
+    <a class="link" href="https://x.com/maitipoppop/status/1846960785014325299?t=JW5W36VZNYAiJWvvFqHKbg&s=19" target="_blank">트위터 문의하기?</a>
+    <span class="tooltiptext"
+    >오류를 발견하셨거나 추가하면 좋을 것 같은 기능이 있으면 쪽지나 인용으로 알려주세요</span>
+  </div>
+  </div>
     <p id="hiddenParagraph" style="display: none;">최신업데이트시간 241018 1605</p>
     <p id="next_time"></p>
     <p>
