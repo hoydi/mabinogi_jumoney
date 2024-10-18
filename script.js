@@ -1,21 +1,21 @@
 const locations = [
   { location: "티르코네일", npc: "상인 네루" },
-  { location: "던바튼", npc: "상인 누누" },
-  { location: "카브", npc: "상인 아루" },
-  { location: "반호르", npc: "상인 라누" },
-  { location: "이멘마하", npc: "상인 메루" },
-  { location: "탈틴", npc: "상인 베루" },
-  { location: "타라", npc: "상인 에루" },
-  { location: "벨바스트", npc: "상인 피루" },
-  { location: "스카하", npc: "상인 세누" },
-  { location: "켈라베이스", npc: "테일로" },
-  { location: "카루", npc: "귀넥" },
-  { location: "코르", npc: "리나" },
-  { location: "오아시스", npc: "얼리" },
-  { location: "필리아", npc: "켄" },
-  { location: "발레스", npc: "카디" },
-  { location: "페라", npc: "데위" },
-  { location: "칼리다", npc: "모락" },
+  // { location: "던바튼", npc: "상인 누누" },
+  // { location: "카브", npc: "상인 아루" },
+  // { location: "반호르", npc: "상인 라누" },
+  // { location: "이멘마하", npc: "상인 메루" },
+  // { location: "탈틴", npc: "상인 베루" },
+  // { location: "타라", npc: "상인 에루" },
+  // { location: "벨바스트", npc: "상인 피루" },
+  // { location: "스카하", npc: "상인 세누" },
+  // { location: "켈라베이스", npc: "테일로" },
+  // { location: "카루", npc: "귀넥" },
+  // { location: "코르", npc: "리나" },
+  // { location: "오아시스", npc: "얼리" },
+  // { location: "필리아", npc: "켄" },
+  // { location: "발레스", npc: "카디" },
+  // { location: "페라", npc: "데위" },
+  // { location: "칼리다", npc: "모락" },
 ];
 
 const mabibase_url = "https://api.na.mabibase.com/assets/item/icon/";
@@ -88,7 +88,9 @@ function filterData() {
   const tolerance =
     parseInt(document.getElementById("toleranceInput").value, 10) || 10;
 
-  const anywhereColor = anywhereColorInput ? parseRgb(anywhereColorInput) : null;
+  const anywhereColor = anywhereColorInput
+    ? parseRgb(anywhereColorInput)
+    : null;
   const outerColor = outerColorInput ? parseRgb(outerColorInput) : null;
   const romanColor = romanColorInput ? parseRgb(romanColorInput) : null;
   const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
@@ -143,7 +145,6 @@ function filterData() {
   });
   filterToggle = 1;
 }
-
 
 function resetFilterData() {
   document.querySelectorAll(".cell").forEach((td) => {
@@ -209,10 +210,12 @@ document.getElementById("channelInput").addEventListener("input", function () {
   localStorage.setItem("channel", channel);
 });
 
+
+//////////////////////////////////////
+
 //api 호출
 async function fetchData() {
   const resultList = [];
-  let errortext = "";
   const serverName = document.getElementById("serverSelect").value;
   const channelNumber = document.getElementById("channelInput").value;
   const apiKey = document.getElementById("apiKeyInput").value;
@@ -223,55 +226,11 @@ async function fetchData() {
   };
 
   for (const { location, npc } of locations) {
-    const params = new URLSearchParams({
-      npc_name: npc,
-      server_name: serverName,
-      channel: channelNumber,
-    });
-
     try {
-      const response = await fetch(`${url}?${params}`, { headers });
-      if (!response.ok) {
-        errortext = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-
-      const shops = data.shop.filter((shop) => shop.tab_name === "주머니");
-      const items = [];
-
-      for (const shop of shops) {
-        for (const item of shop.item) {
-          const itemDisplayName = item.item_display_name;
-          const imageUrl = item.image_url;
-
-          if (imageUrl.includes("item_color=")) {
-            const encodedString = imageUrl.split("item_color=")[1];
-            const decodedString = decodeURIComponent(encodedString);
-            const colors = JSON.parse(decodedString);
-
-            // 필요한 색상만 선택
-            const selectedColors = {};
-            const colorKeys = ["color_01", "color_02", "color_03"];
-
-            colorKeys.forEach((key) => {
-              if (colors[key]) {
-                selectedColors[key] = colors[key]
-                  .replace("#", "")
-                  .toLowerCase();
-              }
-            });
-
-            // items에 추가
-            items.push({ itemDisplayName, colors: selectedColors, imageUrl });
-          }
-        }
-      }
-
+      const items = await fetchLocationData(npc, serverName, channelNumber, headers);
       resultList.push({ location, items });
     } catch (error) {
-      const content = document.getElementById("content");
-      content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}, ${errortext}</div>`;
+      displayError(error);
       return 0;
     }
   }
@@ -279,6 +238,66 @@ async function fetchData() {
   fetchedData = resultList; // 받아온 데이터를 저장
   return resultList;
 }
+
+async function fetchLocationData(npc, serverName, channelNumber, headers) {
+  const params = new URLSearchParams({
+    npc_name: npc,
+    server_name: serverName,
+    channel: channelNumber,
+  });
+
+  const response = await fetch(`${url}?${params}`, { headers });
+  if (!response.ok) {
+    const errortext = await response.text();
+    throw new Error(`HTTP error! status: ${response.status}, ${errortext}`);
+  }
+
+  const data = await response.json();
+  return processShops(data.shop);
+}
+
+function processShops(shops) {
+  const items = [];
+
+  const filteredShops = shops.filter((shop) => shop.tab_name === "주머니");
+  for (const shop of filteredShops) {
+    for (const item of shop.item) {
+      const itemDisplayName = item.item_display_name;
+      const imageUrl = item.image_url;
+
+      if (imageUrl.includes("item_color=")) {
+        const selectedColors = extractColors(imageUrl);
+        items.push({ itemDisplayName, colors: selectedColors, imageUrl });
+      }
+    }
+  }
+
+  return items;
+}
+
+function extractColors(imageUrl) {
+  const encodedString = imageUrl.split("item_color=")[1];
+  const decodedString = decodeURIComponent(encodedString);
+  const colors = JSON.parse(decodedString);
+
+  // 필요한 색상만 선택
+  const selectedColors = {};
+  const colorKeys = ["color_01", "color_02", "color_03"];
+  
+  colorKeys.forEach((key) => {
+    if (colors[key]) {
+      selectedColors[key] = colors[key].replace("#", "").toLowerCase();
+    }
+  });
+
+  return selectedColors;
+}
+
+function displayError(error) {
+  const content = document.getElementById("content");
+  content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}</div>`;
+}
+////////////////////////////////////
 
 // API 정보 배치 렌더링
 function renderData(filteredData) {
@@ -304,16 +323,19 @@ function renderData(filteredData) {
       const container = document.createElement("div");
       container.className = "container";
       const upDiv = document.createElement("div");
+      upDiv.className = "itemName";
       const downDiv = document.createElement("div");
       // downDiv.style.display = "flex"; // 수평 배치
 
       // 왼쪽 부분: 색상 박스
       const leftDiv = document.createElement("div");
       leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
-      upDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
+      leftDiv.className="bgColor"
+      upDiv.innerHTML = `${itemDisplayName}`; // 아이템 이름 추가
 
       for (const [colorName, colorValue] of Object.entries(colors)) {
         const colorBox = document.createElement("div");
+        
         colorBox.className = `color-box ${colorName}`;
         colorBox.style.backgroundColor = "#" + colorValue;
         colorBox.style.width = "20px"; // 색상 박스의 너비
@@ -377,6 +399,8 @@ function renderData(filteredData) {
 
     content.appendChild(table);
   });
+  const cells = document.querySelectorAll(".cell");
+  new ChannelingHandler(cells);
 }
 
 // locationSelect 변경 시 필터링된 데이터 렌더링
@@ -615,4 +639,50 @@ function showNotification(msg) {
   notification.onclick = () => {
     window.focus();
   };
+}
+
+// ChannelingHandler 클래스 정의
+class ChannelingHandler {
+  constructor(cells) {
+    this.cells = cells;
+    this.init();
+  }
+
+  init() {
+    this.cells.forEach((cell) => {
+      cell.addEventListener("click", () => this.handleCellClick(cell));
+    });
+  }
+
+  handleCellClick(cell) {
+    const itemName = this.getItemName(cell);
+    const rgbCodes = this.getRGBCode(cell); // RGB 코드 가져오기
+    const confirmationMessage = `${itemName}를 기준으로 채널링할까요?\nRGB Codes: ${rgbCodes.join(', ')}`;
+
+    if (this.confirmAction(confirmationMessage)) {
+      this.logCompletion(itemName);
+    }
+  }
+
+  getItemName(cell) {
+    return cell.querySelector(".container .itemName").textContent;
+  }
+  //rgb 코드 리스트
+  getRGBCode(cell) {
+    const colorBoxes = cell.querySelectorAll('.color-box'); // color-box 요소 선택
+    const rgbCodes = Array.from(colorBoxes).map(box => {
+      const bgColor = window.getComputedStyle(box).backgroundColor; // 배경색 가져오기
+      return bgColor; // RGB 값 반환
+    });
+    return rgbCodes; // 배열로 반환
+  }
+
+  confirmAction(message) {
+    return confirm(message);
+  }
+
+  logCompletion(itemName,rgbCodes) {
+
+    console.log(`${itemName} 순회완료`);
+  }
 }
