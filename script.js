@@ -18,8 +18,46 @@ const locations = [
   { location: "칼리다", npc: "모락" },
 ];
 
+const mabibase_url = "https://api.na.mabibase.com/assets/item/icon/";
+const mabibase_url_filter = "?colors="
+const mabibase_jumoney = [
+  "5110005",
+  "5110006",
+  "5110007",
+  "5110008",
+  "5110009",
+  "5110010",
+  "5110011",
+  "5110012",
+  "5110013",
+  "5110014",
+  "5110015",
+  "5110016",
+  "5110017",
+  "5110018",
+  "5110019",
+  "5110020",
+  "5110021",
+  "5110022",
+  "5110023",
+  "5110024",
+  "5110025",
+  "5110044",
+];
+
+// const mabibase_color = `?colors=0x${hex1}%2C0x${hex2}%2C0x${hex3}`;
+
 // API 요청 URL
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
+
+
+
+function mabibase_go(){
+  
+}
+
+
+
 
 // hex 색상을 RGB로 변환하는 함수
 function hexToRgb(hex) {
@@ -96,32 +134,29 @@ function filterData() {
       td.classList.add("hidden");
     }
   });
-  filterToggle=1;
+  filterToggle = 1;
 }
 
-function resetFilterData(){
+function resetFilterData() {
   document.querySelectorAll(".cell").forEach((td) => {
-      td.classList.remove("hidden");
+    td.classList.remove("hidden");
   });
-  filterToggle=0;
+  filterToggle = 0;
 }
 let filterToggle = 0;
 // 필터 버튼에 이벤트 리스너 추가
-document.getElementById("filterButton").addEventListener("click", function(){
-  if (filterToggle!=1){  
-  filterData();
-}
-else {
-  resetFilterData();
-}
-
+document.getElementById("filterButton").addEventListener("click", function () {
+  if (filterToggle != 1) {
+    filterData();
+  } else {
+    resetFilterData();
+  }
 });
-document.getElementById("autoFilter").addEventListener("change", function() {
+document.getElementById("autoFilter").addEventListener("change", function () {
   if (this.checked) {
     // 체크박스가 체크되었을 때 실행할 함수
     filterData();
-  }
-  else{
+  } else {
     resetFilterData();
   }
 });
@@ -206,6 +241,7 @@ async function fetchData() {
             const encodedString = imageUrl.split("item_color=")[1];
             const decodedString = decodeURIComponent(encodedString);
             const colors = JSON.parse(decodedString);
+            
 
             // 필요한 색상만 선택
             const selectedColors = {};
@@ -213,9 +249,10 @@ async function fetchData() {
 
             colorKeys.forEach((key) => {
               if (colors[key]) {
-                selectedColors[key] = colors[key];
+                selectedColors[key] = colors[key].replace('#', '').toLowerCase();
               }
             });
+            
 
             // items에 추가
             items.push({ itemDisplayName, colors: selectedColors, imageUrl });
@@ -240,6 +277,7 @@ function renderData(filteredData) {
   const content = document.getElementById("content");
   content.innerHTML = ""; // 기존 내용을 초기화
 
+
   filteredData.forEach(({ location, items }) => {
     const locationDiv = document.createElement("div");
     locationDiv.className = "location";
@@ -251,7 +289,7 @@ function renderData(filteredData) {
     let row = document.createElement("div");
     row.className = "row"; // row 클래스 추가
 
-    items.forEach(({ itemDisplayName, colors, imageUrl }) => {
+    items.forEach(({ itemDisplayName, colors, imageUrl },itemIndex) => {
       const cell = document.createElement("div");
       cell.className = "cell"; // cell 클래스 추가
 
@@ -267,28 +305,43 @@ function renderData(filteredData) {
       leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
       upDiv.innerHTML = `<div>${itemDisplayName}</div>`; // 아이템 이름 추가
 
-      let index = 1;
+
       for (const [colorName, colorValue] of Object.entries(colors)) {
         const colorBox = document.createElement("div");
-        colorBox.className = `color-box color-${index}`;
-        colorBox.style.backgroundColor = colorValue;
+        colorBox.className = `color-box ${colorName}`;
+        colorBox.style.backgroundColor = "#"+colorValue;
         colorBox.style.width = "20px"; // 색상 박스의 너비
         colorBox.style.height = "20px"; // 색상 박스의 높이
         // colorBox.style.display = "inline-block"; // 색상 박스를 가로로 나열
         leftDiv.appendChild(colorBox);
         leftDiv.innerHTML += `${hexToRgb(colorValue)}<br>`;
-        index++;
+        
       }
+      const [hex1, hex2, hex3] = Object.values(colors).slice(0, 3);
+      mabibase_color = [hex1, hex2, hex3].map(hex => `0x${hex}`).join('%2C')
+
 
       // 오른쪽 부분: 이미지
       const rightDiv = document.createElement("div");
       rightDiv.style.flex = "1"; // 오른쪽 div가 1배 비율
       const img = document.createElement("img");
-      img.src = imageUrl;
-      img.alt = itemDisplayName; // 이미지 설명
-      img.style.maxWidth = "100%"; // 이미지의 최대 너비를 100%로 설정
-      img.style.height = "auto"; // 자동 높이 조절
+      img.src = mabibase_url+mabibase_jumoney[itemIndex]+mabibase_url_filter+mabibase_color;
+      // 이미지 로드 실패 시 대체 이미지 설정
+      img.onerror = function() {
+        console.log('이미지 로드 실패:', img.src);
+        img.src = 'no_image.png'; // 대체 이미지 경로
+      };
 
+      img.alt = itemDisplayName; // 이미지 설명
+      img.style.width = "58px"; // 이미지의 최대 너비를 100%로 설정
+      img.style.height = "auto"; // 자동 높이 조절
+      img.style.paddingBottom ="3px";
+
+      const img0 = document.createElement("img");
+      img0.src = imageUrl;      
+      img0.style.maxWidth="64px";
+
+      rightDiv.appendChild(img0);
       rightDiv.appendChild(img);
 
       // 왼쪽과 오른쪽 div를 container에 추가
@@ -330,23 +383,23 @@ document.getElementById("locationSelect").addEventListener("change", () => {
 
 // 버튼 클릭 시 데이터 가져오기 및 렌더링
 document.getElementById("fetchButton").addEventListener("click", async () => {
-  
-  if (lastNextResetTime && lastNextResetTime.getTime() === nextResetTime.getTime()) {
-    console.log('아직 시간 안바뀜');
+  if (
+    lastNextResetTime &&
+    lastNextResetTime.getTime() === nextResetTime.getTime()
+  ) {
+    console.log("아직 시간 안바뀜");
     return;
   }
 
   const data = await fetchData();
   if (data) {
-    
     renderData(data);
-    if(document.getElementById("autoFilter").checked){
-      console.log('자동필터링 실행');
-      filterData()
+    if (document.getElementById("autoFilter").checked) {
+      console.log("자동필터링 실행");
+      filterData();
     }
     lastNextResetTime = nextResetTime;
   }
-
 });
 
 //////////////////////////////
@@ -424,11 +477,12 @@ document.getElementById("innerColor").addEventListener("input", function () {
 });
 
 // 오차 범위 입력 필드에 이벤트 리스너 추가
-document.getElementById("toleranceInput").addEventListener("input", function () {
-  const tolerance = this.value; // 입력값 가져오기
-  localStorage.setItem("tolerance", tolerance); // 로컬 스토리지에 저장
-});
-
+document
+  .getElementById("toleranceInput")
+  .addEventListener("input", function () {
+    const tolerance = this.value; // 입력값 가져오기
+    localStorage.setItem("tolerance", tolerance); // 로컬 스토리지에 저장
+  });
 
 ////////////////////////////
 const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
@@ -438,7 +492,8 @@ const totalIntervals = totalMinutesInDay / intervalMinutes; // 36분으로 나�
 let previousResetTime = null; // 이전 초기화 시간
 let timerId = null; // 타이머 ID
 let nextResetTime = null; // 글로벌 변수로 nextResetTime 선언
-let lastNextResetTime = null; 
+let lastNextResetTime = null;
+let resetTime = null; // 1타임 전 시간을 저장할 변수
 
 function updateNextResetTime() {
   const currentTime = new Date();
@@ -466,11 +521,18 @@ function updateNextResetTime() {
     nextResetTime.setDate(nextResetTime.getDate() + 1);
   }
 
+  // 1타임 전 시간을 계산
+  resetTime = new Date(nextResetTime);
+  resetTime.setMinutes(resetTime.getMinutes() - intervalMinutes); // 36분 전
+
   // 초 단위로 업데이트
   const secondsRemaining = Math.ceil((nextResetTime - currentTime) / 1000);
 
   // 시간 변경 시 함수 호출
-  if (previousResetTime && previousResetTime.getTime() !== nextResetTime.getTime()) {
+  if (
+    previousResetTime &&
+    previousResetTime.getTime() !== nextResetTime.getTime()
+  ) {
     console.log("시간 바뀜"); // 시간 변경 메시지
 
     // 체크박스가 체크되어 있을 때만 fetchData 실행
@@ -484,7 +546,7 @@ function updateNextResetTime() {
         if (data) {
           renderData(data); // 가져온 데이터를 렌더링하는 함수
           if (document.getElementById("autoFilter").checked) {
-            console.log('자동필터링 실행');
+            console.log("자동필터링 실행");
             filterData();
           }
           notification("주머니 업데이트");
@@ -499,7 +561,10 @@ function updateNextResetTime() {
   // 결과를 표시
   document.getElementById(
     "next_time"
-  ).innerText = `다음 초기화 시간: ${nextResetTime.toLocaleTimeString([], {
+  ).innerText = `이번 시간: ${resetTime.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })} ~ ${nextResetTime.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   })} (남은 시간: ${secondsRemaining}초)`;
@@ -509,30 +574,28 @@ document.addEventListener("DOMContentLoaded", () => {
   updateNextResetTime();
   setInterval(updateNextResetTime, 1000);
 });
-
 ////////////////////////////
 
-
 //윈도우 알림 띄우기
-function notification(msg){
+function notification(msg) {
   if (Notification.permission !== "granted") {
-    Notification.requestPermission().then(permission => {
-        if (permission === "granted") {
-            showNotification(msg);
-        }
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        showNotification(msg);
+      }
     });
-} else {
+  } else {
     showNotification(msg);
-}
+  }
 }
 
 function showNotification(msg) {
   const notification = new Notification("제목", {
-      body: msg
-      // icon: "아이콘 URL" // 선택 사항
+    body: msg,
+    // icon: "아이콘 URL" // 선택 사항
   });
 
   notification.onclick = () => {
-      window.focus();
+    window.focus();
   };
 }
