@@ -1,6 +1,3 @@
-import { testdata } from './variables.js'; 
-
-console.log(testdata)
 const locations = [
   { location: "티르코네일", npc: "상인 네루" },
    { location: "던바튼", npc: "상인 누누" },
@@ -48,7 +45,7 @@ const mabibase_jumoney = [
   "5110044",
 ];
 
-// const mabibase_color = `?colors=0x${hex1}%2C0x${hex2}%2C0x${hex3}`;
+
 
 // API 요청 URL
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
@@ -648,3 +645,48 @@ function showNotification(msg) {
   };
 }
 
+// ChannelingHandler 클래스 정의
+class ChannelingHandler {
+  constructor(cells) {
+    this.cells = cells;
+    this.init();
+  }
+
+  init() {
+    this.cells.forEach((cell) => {
+      cell.addEventListener("click", () => this.handleCellClick(cell));
+    });
+  }
+
+  handleCellClick(cell) {
+    const itemName = this.getItemName(cell);
+    const rgbCodes = this.getRGBCode(cell); // RGB 코드 가져오기
+    const confirmationMessage = `${itemName}를 기준으로 채널링할까요?\nRGB Codes: ${rgbCodes.join(', ')}`;
+
+    if (this.confirmAction(confirmationMessage)) {
+      this.logCompletion(itemName);
+    }
+  }
+
+  getItemName(cell) {
+    return cell.querySelector(".container .itemName").textContent;
+  }
+  //rgb 코드 리스트
+  getRGBCode(cell) {
+    const colorBoxes = cell.querySelectorAll('.color-box'); // color-box 요소 선택
+    const rgbCodes = Array.from(colorBoxes).map(box => {
+      const bgColor = window.getComputedStyle(box).backgroundColor; // 배경색 가져오기
+      return bgColor; // RGB 값 반환
+    });
+    return rgbCodes; // 배열로 반환
+  }
+
+  confirmAction(message) {
+    return confirm(message);
+  }
+
+  logCompletion(itemName,rgbCodes) {
+
+    console.log(`${itemName} 순회완료`);
+  }
+}
