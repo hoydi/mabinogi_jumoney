@@ -50,8 +50,6 @@ const mabibase_jumoney = [
 // API 요청 URL
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
 
-function mabibase_go() {}
-
 // hex 색상을 RGB로 변환하는 함수
 function hexToRgb(hex) {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -72,13 +70,14 @@ function isWithinTolerance(colorA, colorB, tolerance) {
 }
 
 // RGB 값을 비교하기 위한 헬퍼 함수
-function parseRgb(rgbString) {
+function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
   const rgbValues = rgbString
-    .replace(/[^\d,]/g, "")
-    .split(",")
+    .replace(/[^0-9]/g, " ")
+    .trim()
+    .split(/\s+/)
     .map(Number);
-  return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };
-}
+  if (rgbValues.length !== 3 || rgbValues.some(value => isNaN(value) || value === undefined)) {return null;}
+  return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };}
 
 function filterData() {
   const anywhereColorInput = document.getElementById("anywhereColor").value;
