@@ -145,7 +145,6 @@ window.onload = function () {
   // locations 배열을 기반으로 locationSelect에 옵션 추가
   const locationSelect = document.getElementById("locationSelect");
   locations.forEach(({ location }) => {
-    console.log('location');
     const option = document.createElement("option");
     option.value = location;
     option.textContent = location;
