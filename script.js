@@ -1,96 +1,44 @@
 const locations = [
-  { location: "티르코네일", npc: "상인 네루" },
-   { location: "던바튼", npc: "상인 누누" },
-   { location: "카브", npc: "상인 아루" },
-   { location: "반호르", npc: "상인 라누" },
-   { location: "이멘마하", npc: "상인 메루" },
-   { location: "탈틴", npc: "상인 베루" },
-   { location: "타라", npc: "상인 에루" },
-   { location: "벨바스트", npc: "상인 피루" },
-   { location: "스카하", npc: "상인 세누" },
-   { location: "켈라베이스", npc: "테일로" },
-   { location: "카루", npc: "귀넥" },
-   { location: "코르", npc: "리나" },
-   { location: "오아시스", npc: "얼리" },
-   { location: "필리아", npc: "켄" },
-   { location: "발레스", npc: "카디" },
-   { location: "페라", npc: "데위" },
-   { location: "칼리다", npc: "모락" },
-];
+  { location: "티르코네일", npc: "상인 네루" }, { location: "던바튼", npc: "상인 누누" }, { location: "카브", npc: "상인 아루" }, { location: "반호르", npc: "상인 라누" }, { location: "이멘마하", npc: "상인 메루" }, { location: "탈틴", npc: "상인 베루" }, { location: "타라", npc: "상인 에루" }, { location: "벨바스트", npc: "상인 피루" }, { location: "스카하", npc: "상인 세누" }, { location: "켈라베이스", npc: "테일로" }, { location: "카루", npc: "귀넥" }, { location: "코르", npc: "리나" }, { location: "오아시스", npc: "얼리" }, { location: "필리아", npc: "켄" }, { location: "발레스", npc: "카디" }, { location: "페라", npc: "데위" }, { location: "칼리다", npc: "모락" },];
 
 const mabibase_url = "https://api.na.mabibase.com/assets/item/icon/";
 const mabibase_url_filter = "?colors=";
-const mabibase_jumoney = [
-  "5110005",
-  "5110006",
-  "5110007",
-  "5110008",
-  "5110009",
-  "5110010",
-  "2041",
-  "2042",
-  "2043",
-  "5110014",
-  "5110015",
-  "5110016",
-  "5110017",
-  "5110018",
-  "5110019",
-  "5110020",
-  "5110021",
-  "5110022",
-  "5110023",
-  "5110024",
-  "5110025",
-  "5110044",
-];
+const mabibase_jumoney = ["5110005", "5110006","5110007",  "5110008",  "5110009",  "5110010",  "2041",  "2042",  "2043",  "5110014",  "5110015",  "5110016",  "5110017",  "5110018",  "5110019",  "5110020",  "5110021",  "5110022", "5110023",  "5110024",  "5110025",  "5110044",];
+
+const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";// API 요청 URL
 
 
-
-// API 요청 URL
-const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
-
-function mabibase_go() {}
-
-// hex 색상을 RGB로 변환하는 함수
-function hexToRgb(hex) {
+function hexToRgb(hex) {// hex 색상을 RGB로 변환하는 함수
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-  return `(${r}, ${g}, ${b})`;
-}
+  return `(${r}, ${g}, ${b})`;}
 
 let fetchedData = []; // 전체 데이터를 저장할 변수
 
-//필터링
-function isWithinTolerance(colorA, colorB, tolerance) {
+function isWithinTolerance(colorA, colorB, tolerance) {//필터링
   const rDiff = Math.abs(colorB.r - colorA.r);
   const gDiff = Math.abs(colorB.g - colorA.g);
   const bDiff = Math.abs(colorB.b - colorA.b);
+  return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;}
 
-  return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;
-}
-
-// RGB 값을 비교하기 위한 헬퍼 함수
-function parseRgb(rgbString) {
+function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
   const rgbValues = rgbString
-    .replace(/[^\d,]/g, "")
-    .split(",")
+    .replace(/[^0-9]/g, " ")
+    .trim()
+    .split(/\s+/)
     .map(Number);
-  return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };
-}
+  if (rgbValues.length !== 3 || rgbValues.some(value => isNaN(value) || value === undefined)) {return null;}
+  return { r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] };}
 
 function filterData() {
   const anywhereColorInput = document.getElementById("anywhereColor").value;
   const outerColorInput = document.getElementById("outerColor").value;
   const romanColorInput = document.getElementById("romanColor").value;
   const innerColorInput = document.getElementById("innerColor").value;
-  const tolerance =
-    parseInt(document.getElementById("toleranceInput").value, 10) || 10;
+  const tolerance = parseInt(document.getElementById("toleranceInput").value, 10) || 10;
 
-  const anywhereColor = anywhereColorInput
-    ? parseRgb(anywhereColorInput)
-    : null;
+  const anywhereColor = anywhereColorInput ? parseRgb(anywhereColorInput) : null;
   const outerColor = outerColorInput ? parseRgb(outerColorInput) : null;
   const romanColor = romanColorInput ? parseRgb(romanColorInput) : null;
   const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
@@ -108,17 +56,15 @@ function filterData() {
 
     let show = true;
 
-    // anywhereColorInput 조건 추가
     if (anywhereColor) {
       const matchesAnyColor = [color1, color2, color3].some((color) => {
         if (color) {
           const colorRgb = parseRgb(color); // filterParseRgb 대신 parseRgb 사용
-          // tolerance를 사용하여 색상 비교
           return isWithinTolerance(anywhereColor, colorRgb, tolerance);
         }
         return false;
       });
-      show = matchesAnyColor; // 하나라도 맞으면 show가 true
+      show = matchesAnyColor;
     }
 
     if (outerColor && color1) {
@@ -212,7 +158,7 @@ window.onload = function () {
   const storedRomanColor = localStorage.getItem("romanColor");
   const storedInnerColor = localStorage.getItem("innerColor");
   const storedTolerance = localStorage.getItem("tolerance");
-  
+
   if (anywhereColor) {
     document.getElementById("anywhereColor").value = anywhereColor; // anywhereColor를 올바르게 설정
   }
@@ -318,7 +264,7 @@ function extractColors(imageUrl) {
   // 필요한 색상만 선택
   const selectedColors = {};
   const colorKeys = ["color_01", "color_02", "color_03"];
-  
+
   colorKeys.forEach((key) => {
     if (colors[key]) {
       selectedColors[key] = colors[key].replace("#", "").toLowerCase();
@@ -365,12 +311,12 @@ function renderData(filteredData) {
       // 왼쪽 부분: 색상 박스
       const leftDiv = document.createElement("div");
       leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
-      leftDiv.className="bgColor"
+      leftDiv.className = "bgColor"
       upDiv.innerHTML = `${itemDisplayName}`; // 아이템 이름 추가
 
       for (const [colorName, colorValue] of Object.entries(colors)) {
         const colorBox = document.createElement("div");
-        
+
         colorBox.className = `color-box ${colorName}`;
         colorBox.style.backgroundColor = "#" + colorValue;
         colorBox.style.width = "20px"; // 색상 박스의 너비
@@ -450,7 +396,7 @@ document.getElementById("locationSelect").addEventListener("change", () => {
 });
 
 //채널바꾸면 lastNextResetTime null 만들어서 fetch 되게
-document.getElementById("channelInput").addEventListener("change", function() {
+document.getElementById("channelInput").addEventListener("change", function () {
   console.log('채널변경')
   lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
 });
@@ -528,7 +474,7 @@ document
 
 
 
-  
+
 
 ////////////////////////////
 const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
@@ -686,7 +632,7 @@ class ChannelingHandler {
     return confirm(message);
   }
 
-  logCompletion(itemName,rgbCodes) {
+  logCompletion(itemName, rgbCodes) {
 
     console.log(`${itemName} 순회완료`);
   }
