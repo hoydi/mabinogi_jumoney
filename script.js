@@ -24,7 +24,7 @@ function isWithinTolerance(colorA, colorB, tolerance) {//필터링
 
 function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
   const rgbValues = rgbString
-    .replace(/[^0-9]/g, " ")
+    .replace(/[^0-9\s]/g, " ")
     .trim()
     .split(/\s+/)
     .map(Number);
