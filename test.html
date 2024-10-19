@@ -1,42 +1,115 @@
-<canvas id="canvas" width="500" height="500"></canvas>
-<img id="image" src="test.png" style="display:none;">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Color Overlay</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="850" height="360"></canvas>
+    <img id="image1" src="origin.png" style="display:none;">
+    <img id="image2" src="in.png" style="display:none;">
+    <img id="image3" src="out.png" style="display:none;">
+    <img id="image4" src="leatherLight.png" style="display:none;">
 
-<script>
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
-  const img = document.getElementById("image");
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
 
-  img.onload = function() {
-    // 이미지 그리기
-    ctx.drawImage(img, 0, 0);
-    // 픽셀 데이터 가져오기
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
+        const image1 = document.getElementById('image1');
+        const image2 = document.getElementById('image2');
+        const image3 = document.getElementById('image3');
+        const image4 = document.getElementById('image4');
 
-    // 흰색을 원하는 색상으로 변경
-    const targetColor = { r: 255, g: 0, b: 0 }; // 원하는 색상 (예: 빨간색)
-    const tolerance = 30; // 색상 허용 오차
+        // 이미지 로딩 완료 시 호출되는 함수
+        let imagesLoaded = 0;
+        const totalImages = 4;
 
-    for (let i = 0; i < data.length; i += 4) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
+        function imageLoaded() {
+            imagesLoaded++;
+            if (imagesLoaded === totalImages) {
+                drawImages();
+            }
+        }
 
-      // 흰색과 유사한 색상인지 확인
-      if (isWithinTolerance(r, g, b, 255, tolerance)) {
-        data[i] = targetColor.r;     // R
-        data[i + 1] = targetColor.g; // G
-        data[i + 2] = targetColor.b; // B
-      }
-    }
+        // 이미지가 로드되면 호출
+        image1.onload = imageLoaded;
+        image2.onload = imageLoaded;
+        image3.onload = imageLoaded;
+        image4.onload = imageLoaded;
 
-    // 변경된 데이터를 캔버스에 다시 그리기
-    ctx.putImageData(imageData, 0, 0);
-  };
+        function applyColorToWhitePixels(image, color) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = image.width;
+            tempCanvas.height = image.height;
 
-  function isWithinTolerance(r1, g1, b1, r2, tolerance) {
-    return Math.abs(r1 - r2) <= tolerance &&
-           Math.abs(g1 - r2) <= tolerance &&
-           Math.abs(b1 - r2) <= tolerance;
-  }
-</script>
+            // 이미지 그리기
+            tempCtx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            // 픽셀 데이터를 가져옴
+            const imageData = tempCtx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            // 투명도를 제외한 흰색 픽셀에 색 입히기
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const alpha = data[i + 3];
+
+                // 완전한 흰색인 경우 (RGB가 255이고 투명도가 있는 픽셀)
+                if (r === 255 && g === 255 && b === 255 && alpha > 0) {
+                    data[i] = color.r;      // R
+                    data[i + 1] = color.g;  // G
+                    data[i + 2] = color.b;  // B
+                }
+            }
+
+            // 색상이 입혀진 데이터를 다시 캔버스에 적용
+            tempCtx.putImageData(imageData, 0, 0);
+            return tempCanvas;
+        }
+
+        // 이미지를 그리는 함수
+        function drawImages() {
+
+          ctx.globalCompositeOperation = 'multiply';
+            
+            ctx.drawImage(image1, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(image1, 0, 0, canvas.width, canvas.height);
+
+            // 첫 번째 이미지를 캔버스에 그리기
+            ctx.filter = 'none';
+            //ctx.filter = 'constrast(200%)';
+            
+            const blueOverlay = applyColorToWhitePixels(image3, { r: 147, g: 93, b: 97 });
+            ctx.drawImage(blueOverlay, 0, 0, canvas.width, canvas.height);
+            
+            // 두 번째 이미지(빨간색을 흰색 부분에 적용)
+            const redOverlay = applyColorToWhitePixels(image2, { r: 118, g: 113, b: 95 });
+            ctx.drawImage(redOverlay, 0, 0, canvas.width, canvas.height);
+
+
+
+            ctx.globalCompositeOperation = 'color-dodge';
+            ctx.filter = 'brightness(200%)';
+            ctx.drawImage(image4, 0, 0, canvas.width, canvas.height);
+            // 블렌딩 모드를 기본값으로 되돌림
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = 1.0;
+        }
+
+        // 이미지 소스를 설정하여 로드 시작
+        image1.src = 'origin.png';
+        image2.src = 'in.png';
+        image3.src = 'out.png';
+        image4.src ='leatherLight.png';
+    </script>
+</body>
+</html>
