@@ -286,13 +286,15 @@ function renderData(filteredData) {
   content.innerHTML = ""; // 기존 내용을 초기화
 
   filteredData.forEach(({ location, items }) => {
+
     const locationDiv = document.createElement("div");
     locationDiv.className = "location";
-    locationDiv.textContent = location;
+    locationDiv.innerHTML = `<div class="location_name">${location}<div>`;
     content.appendChild(locationDiv);
 
     const table = document.createElement("div");
     table.className = "table"; // 테이블 클래스 추가
+    
     let row = document.createElement("div");
     row.className = "row"; // row 클래스 추가
 
@@ -306,6 +308,7 @@ function renderData(filteredData) {
       const upDiv = document.createElement("div");
       upDiv.className = "itemName";
       const downDiv = document.createElement("div");
+      downDiv.className="itemDetail"
       // downDiv.style.display = "flex"; // 수평 배치
 
       // 왼쪽 부분: 색상 박스
@@ -378,7 +381,8 @@ function renderData(filteredData) {
       table.appendChild(row);
     }
 
-    content.appendChild(table);
+    // content.appendChild(table);
+    locationDiv.appendChild(table);
   });
   const cells = document.querySelectorAll(".cell");
   // new ChannelingHandler(cells);

@@ -11,13 +11,35 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="850" height="360"></canvas>
-    <img id="image1" src="origin.png" style="display:none;">
-    <img id="image2" src="in.png" style="display:none;">
-    <img id="image3" src="out.png" style="display:none;">
-    <img id="image4" src="leatherLight.png" style="display:none;">
+    <canvas id="canvas" width="43" height="45"></canvas>
+    <!-- <img id="image1" src="./pouch/silk/실크-베이스.png" style="display:none;">
+    <img id="image2" src="./pouch/silk/실크-안감.png" style="display:none;">
+    <img id="image3" src="./pouch/silk/실크-겉감.png" style="display:none;">
+    <img id="image4" src="./pouch/silk/실크-라이트.png" style="display:none;"> -->
+
+    <!-- <img id="image1" src="./pouch/fabric/최고급-베이스.png" style="display:none;">
+    <img id="image2" src="./pouch/fabric/최고급-안감.png" style="display:none;">
+    <img id="image3" src="./pouch/fabric/최고급-겉감.png" style="display:none;">
+    <img id="image4" src="./pouch/fabric/최고급-라이트.png" style="display:none;"> -->
+
+    <img id="image1" src="./pouch/leather/가죽-베이스.png" style="display:none;">
+    <img id="image2" src="./pouch/leather/가죽-안감.png" style="display:none;">
+    <img id="image3" src="./pouch/leather/가죽-겉감.png" style="display:none;">
+    <img id="image4" src="./pouch/leather/가죽-라이트.png" style="display:none;">
 
     <script>
+        
+        // 'rgb(206, 179, 165)' 형식의 문자열에서 숫자 추출
+        function rgbStringToObject(colorRgb) {
+            const rgbValues = colorRgb.match(/\d+/g);
+            return {
+                r: parseInt(rgbValues[0], 10),
+                g: parseInt(rgbValues[1], 10),
+                b: parseInt(rgbValues[2], 10)
+            };
+        }
+
+
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
@@ -33,6 +55,8 @@
         function imageLoaded() {
             imagesLoaded++;
             if (imagesLoaded === totalImages) {
+                canvas.width = image1.width;
+        canvas.height = image1.height;
                 drawImages();
             }
         }
@@ -79,37 +103,38 @@
         // 이미지를 그리는 함수
         function drawImages() {
 
-          ctx.globalCompositeOperation = 'multiply';
-            
+            ctx.globalCompositeOperation = 'multiply';
             ctx.drawImage(image1, 0, 0, canvas.width, canvas.height);
+            //ctx.globalCompositeOperation = 'overlay'
             ctx.drawImage(image1, 0, 0, canvas.width, canvas.height);
 
-            // 첫 번째 이미지를 캔버스에 그리기
-            ctx.filter = 'none';
-            //ctx.filter = 'constrast(200%)';
-            
-            const blueOverlay = applyColorToWhitePixels(image3, { r: 147, g: 93, b: 97 });
+            ctx.filter = 'saturate(120%)';
+            //const blueOverlay = applyColorToWhitePixels(image3, { r: 212, g: 132, b: 137 });
+            //const blueOverlay = applyColorToWhitePixels(image3, { r: 115, g: 0, b: 0 });
+            //const blueOverlay = applyColorToWhitePixels(image3, { r: 255, g: 255, b: 255 });
+            const blueOverlay = applyColorToWhitePixels(image3, { r: 140, g: 125, b: 176 });
+            //const blueOverlay = applyColorToWhitePixels(image3, { r: 0, g: 0, b: 0 });
+           
             ctx.drawImage(blueOverlay, 0, 0, canvas.width, canvas.height);
             
-            // 두 번째 이미지(빨간색을 흰색 부분에 적용)
-            const redOverlay = applyColorToWhitePixels(image2, { r: 118, g: 113, b: 95 });
+            //ctx.filter = 'none';
+            //const redOverlay = applyColorToWhitePixels(image2, { r: 141, g: 117, b: 180 });
+            //const redOverlay = applyColorToWhitePixels(image2, { r: 0, g: 0, b: 0 });
+            //const redOverlay = applyColorToWhitePixels(image2, { r: 194, g: 178, b: 231 });
+            const redOverlay = applyColorToWhitePixels(image2, { r: 255, g: 255, b: 255 });
+            //const redOverlay = applyColorToWhitePixels(image2, { r: 194, g: 178, b: 231 });
+                        
             ctx.drawImage(redOverlay, 0, 0, canvas.width, canvas.height);
 
 
-
-            ctx.globalCompositeOperation = 'color-dodge';
-            ctx.filter = 'brightness(200%)';
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.filter = 'brightness(100%)';
             ctx.drawImage(image4, 0, 0, canvas.width, canvas.height);
             // 블렌딩 모드를 기본값으로 되돌림
             ctx.globalCompositeOperation = 'source-over';
             ctx.globalAlpha = 1.0;
         }
 
-        // 이미지 소스를 설정하여 로드 시작
-        image1.src = 'origin.png';
-        image2.src = 'in.png';
-        image3.src = 'out.png';
-        image4.src ='leatherLight.png';
     </script>
 </body>
 </html>
