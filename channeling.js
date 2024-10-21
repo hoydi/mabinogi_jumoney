@@ -337,10 +337,3 @@ document
     tooltipText.textContent = `체크시 ${selectedServer} 서버만 채널링합니다`;
   });
   
-  // 페이지 로드 시 선택된 서버 값을 미리 설정
-  window.onload = function() {
-    const selectedServer = document.getElementById('serverSelect').value;
-    const tooltipText = document.getElementById('channelingTooltipText');
-    tooltipText.textContent = `체크시 현재 서버인 ${selectedServer} 서버만 채널링합니다`;
-  };
-  

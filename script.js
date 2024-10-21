@@ -175,7 +175,9 @@ window.onload = function () {
     document.getElementById("toleranceInput").value = storedTolerance;
   }
 
-
+  const selectedServer = document.getElementById('serverSelect').value;
+  const tooltipText = document.getElementById('channelingTooltipText');
+  tooltipText.textContent = `체크시 현재 서버인 ${selectedServer} 서버만 채널링합니다`;
 };
 
 document.getElementById("apiKeyInput").addEventListener("input", function () {
