@@ -174,6 +174,8 @@ window.onload = function () {
   if (storedTolerance) {
     document.getElementById("toleranceInput").value = storedTolerance;
   }
+
+
 };
 
 document.getElementById("apiKeyInput").addEventListener("input", function () {
@@ -220,23 +222,30 @@ async function fetchData() {
   return resultList;
 }
 
-async function fetchLocationData(npc, serverName, channelNumber, headers) {
+
+//fetch 로 데이터 받아오기
+function fetchLocationData(npc, serverName, channelNumber, headers) {
   const params = new URLSearchParams({
     npc_name: npc,
     server_name: serverName,
     channel: channelNumber,
   });
 
-  const response = await fetch(`${url}?${params}`, { headers });
-  if (!response.ok) {
-    const errortext = await response.text();
-    throw new Error(`HTTP error! status: ${response.status}, ${errortext}`);
-  }
-
-  const data = await response.json();
-  return processShops(data.shop);
+  return fetch(`${url}?${params}`, { headers })
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(errortext => {
+          throw new Error(`HTTP error! status: ${response.status}, ${errortext}`);
+        });
+      }
+      return response.json();  // JSON 데이터를 반환
+    })
+    .then(data => {
+      return processShops(data.shop);  // JSON 데이터 처리
+    });
 }
 
+//받아온 데이터에서 주머니 걸러내기
 function processShops(shops) {
   const items = [];
 
