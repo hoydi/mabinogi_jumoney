@@ -19,8 +19,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>주머니 상점 정보</title>
     <style>
-      .question-button {
-        padding: 5px;
+.question-button {
+  padding: 5px;
   margin-left: 10px;
   font-size: 14px;  /* 물음표 아이콘 크기 */
   background-color: #4ac4e6;  /* 버튼 배경색 */
@@ -31,12 +31,26 @@
   justify-content: center;
   align-items: center;  /* 텍스트(물음표) 가운데 정렬 */
   cursor: pointer;  /* 마우스를 올렸을 때 포인터 모양 */
-  
+  animation: blink 2s infinite;
+}
+
+/* 애니메이션 정의 */
+@keyframes blink {
+  0%,100% {
+    background-color: #4ac4e6; /* 기본 배경색 */
+    color: white;
+  }
+  50% {
+    background-color: #ffffa8; /* 중간 색상 */
+    color: black;
+  }
+
 }
 
 .question-button:hover {
-  background-color: #ffffa8;  /* 호버 시 배경 색상 변경 */
-  color: black;
+  animation: none; /* 애니메이션 중지 */
+  background-color: #ffffa8;
+  color: black; /* 호버 시 글자 색상 변경 */
 }
       .set-check{
         font-size: 20;
@@ -317,7 +331,8 @@
       다썼다는 뜻입니다.<br />
       안감 이미지의 경우 비공식 팬페이지 api 를 불러와서 안감이 안보이고 이미지
       못불러옴이 뜰 수 있습니다. 수정예정입니다.<br /></p>
-      <p style="color: red;">채널링 기능이 추가됐습니다! 채널링을 하고싶은 주머니를 클릭하시면 됩니다.</p>
+      <p style="color: red;">채널링 기능이 추가됐습니다! 채널링을 하고싶은 주머니를 클릭하시면 됩니다.<br/>
+      채널링 시 api 호출을 많이 하므로 호출 한계 200만인 서비스 단계로 키를 발급받으시는 게 좋습니다. 키 생성방법을 참조하세요.</p>
     <p>Data based on NEXON Open API</p>
 <div class="search" style="display: flex;flex-wrap: wrap;">
     <!-- 서버 선택 및 채널 입력 -->
