@@ -523,11 +523,13 @@ function renderData(filteredData) {
 
 // locationSelect 변경 시 필터링된 데이터 렌더링
 document.getElementById("locationSelect").addEventListener("change", () => {
+  let server = document.getElementById("serverSelect").value;
+  let channel = document.getElementById("channelInput").value;
   const selectedLocation = document.getElementById("locationSelect").value;
   const filteredData =
     selectedLocation === "전체"
-      ? fetchedData // 전체 선택 시 모든 데이터 표시
-      : fetchedData.filter(({ location }) => location === selectedLocation); // 선택된 위치에 해당하는 데이터만 필터링
+      ? fetchedData.filter(({ serverNum,serverName }) => server==serverName&&channel==serverNum)
+      : fetchedData.filter(({ location,serverNum,serverName }) => location === selectedLocation&&server==serverName&&channel==serverNum); // 선택된 위치에 해당하는 데이터만 필터링
 
   renderData(filteredData);
 });
