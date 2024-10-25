@@ -16,7 +16,7 @@
       gtag("config", "G-FSX9R0HH1Q");
     </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport"/>
     <title>주머니 상점 정보</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="font.css" />
@@ -35,7 +35,7 @@
     <div id="body-container">
       <div id="top-menu">
         <!-- End Google Tag Manager (noscript) -->
-        <div style="display: flex; align-items: center">
+        <div style="display: flex; justify-content: space-between">
           <!-- <div class="tooltip">
         <a
           class="link" style="font-size: x-large;"
@@ -51,31 +51,38 @@
         <img src="cofi.png" />
         <span class="tooltiptext cofi">cofi. 링크같은 건 없슴니다</span>
       </div> -->
-        </div>
-        <p id="hiddenParagraph" style="display: none">
-          최신업데이트시간 241018 1913
-        </p>
-        <p id="next_time"></p>
 
-        <p>
-          Data based on NEXON Open API / 색상값 by 주머니디코@jumeonidik3038
-          님(감사합니다!)
-        </p>
-        <div class="search" style="display: flex; flex-direction: column">
-          <div style="padding: 3px; width: 100%; max-width: 730px">
+          <p id="hiddenParagraph" style="display: none">
+            최신업데이트시간 241018 1913
+          </p>
+          <p
+            id="next-time"
+            style="
+            padding:0;
+            margin:0;
+              padding-left: 10px;
+              font-size: 30px;
+              font-family: 'Pretendard-Regular';
+              font-weight: 800;
+              color: black;
+            "
+          ></p>
+          <div style="padding: 3px; ">
             <label for="apiKeyInput" style="width: 20%">API키:</label>
             <input
               type="text"
               id="apiKeyInput"
               placeholder="API 키를 입력하세요"
               value=""
-              style="width: 80%; max-width: 730px"
             />
           </div>
+        </div>
+        <hr />
+        <div class="search" style="display: flex; ">
           <!-- 서버 선택 및 채널 입력 -->
-          <div style="display: flex">
-            <div style="padding: 3px">
-              <label for="serverSelect">서버 선택:</label>
+          <div style="display: flex;padding: 3px">
+            <div>
+              <label for="serverSelect">서버</label>
               <select id="serverSelect">
                 <option value="류트" selected>류트</option>
                 <option value="만돌린">만돌린</option>
@@ -83,13 +90,8 @@
                 <option value="울프">울프</option>
               </select>
 
-              <label for="channelInput">채널 번호:</label>
-              <input
-                type="text"
-                id="channelInput"
-                placeholder="채널 번호를 입력하세요"
-                style="width: 30px"
-              />
+              <label for="channelInput">채널 </label>
+              <select id="channelInput" style="width: 60px"></select>
               <div class="tooltip">
                 <button id="fetchButton" class="link">검색</button>
                 <span class="tooltiptext"
@@ -105,24 +107,47 @@
                 >
               </div>
             </div>
+            <div>
+              <div class="tooltip">
+                <label for="locationSelect">교역소</label>
+                <select id="locationSelect">
+                  <option value="전체" selected>전체</option>
+                </select>
+                <span class="tooltiptext gyo"
+                  >특정 교역소만 선택해서 볼 수 있습니다</span
+                >
+              </div>
+              <div class="tooltip">
+                <label>
+                  <input
+                    type="checkbox"
+                    id="channelingServer"
+                    style="width: auto"
+                  /><span>특정서버 채널링</span>
+                </label>
+                <span class="tooltiptext" id="channelingTooltipText"
+                  >체크시 선택한 서버만 채널링합니다</span
+                >
+              </div>
+            </div>
           </div>
         </div>
         <!-- 초기값 설정 -->
 
         <hr />
         <div class="filterColor">
-          <label for="anywhereColor">전체 RGB :</label>
+          <label for="anywhereColor">전체 RGB</label>
           <input type="text" id="anywhereColor" placeholder="예: 0, 255, 0" />
 
-          <label for="outerColor">겉감 RGB :</label>
+          <label for="outerColor">겉감 RGB</label>
           <input type="text" id="outerColor" placeholder="예: 255. 0. 0" />
-          <label for="romanColor">로마자 RGB :</label>
+          <label for="romanColor">로마자 RGB</label>
           <input type="text" id="romanColor" placeholder="예: 0/255/0" />
 
-          <label for="innerColor">안감 RGB :</label>
+          <label for="innerColor">안감 RGB</label>
           <input type="text" id="innerColor" placeholder="예: 0/0//255" />
 
-          <label for="toleranceInput">오차 범위:</label>
+          <label for="toleranceInput">오차 범위</label>
           <input
             type="text"
             id="toleranceInput"
@@ -150,61 +175,47 @@
           </div>
         </div>
         <p>
-          필터링 검색값은 숫자 3개만 넣으면 구분을 어떻게 하든 상관없습니다.
+          　필터링 검색값은 숫자 3개만 넣으면 구분을 어떻게 하든 상관없습니다.
           예시 - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
         </p>
-        <hr />
-        <div class="tooltip">
-          <label for="locationSelect">교역소 선택:</label>
-          <select id="locationSelect">
-            <option value="전체" selected>전체</option>
-          </select>
-          <span class="tooltiptext gyo"
-            >특정 교역소만 선택해서 볼 수 있습니다</span
-          >
-        </div>
-        <div class="tooltip">
-          <label>
-            <input
-              type="checkbox"
-              id="channelingServer"
-              style="width: auto"
-            /><span>특정서버 채널링</span>
-          </label>
-          <span class="tooltiptext" id="channelingTooltipText"
-            >체크시 선택한 서버만 채널링합니다</span
-          >
-        </div>
+
+
         <hr />
       </div>
       <div id="content">
-        <div style="display: flex; width: 100%">
-          <div class="tooltip">
-            <a
-              class="link"
-              href="https://openapi.nexon.com/ko/my-application/"
-              target="_blank"
-              >API 키 생성</a
-            >
-            <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
+        <div style="align-items: center">
+          <p>
+            Data based on NEXON Open API / 색상값 by 주머니디코@jumeonidik3038
+            님(감사합니다!)
+          </p>
+          <div style="display: flex; width: 100%">
+            <div class="tooltip">
+              <a
+                class="link"
+                href="https://openapi.nexon.com/ko/my-application/"
+                target="_blank"
+                >API 키 생성</a
+              >
+              <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
+            </div>
+            <button class="question-button">?키 생성방법?</button>
           </div>
-          <button class="question-button">?키 생성방법?</button>
+          <p id="jyujul">
+            리셋됐을 때 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요.
+            넥슨이 보통 10분 후에 데이터 준다고 했음. (Please wait until the
+            data is ready 같은 오류 발생함)<br />
+            OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api
+            사용량을 다썼다는 뜻입니다.<br />
+            안감 이미지의 경우 비공식 팬페이지 api 를 불러와서 안감이 안보이고
+            이미지 못불러옴이 뜰 수 있습니다. 수정예정입니다.<br />
+          </p>
+          <p style="color: red">
+            채널링 기능이 추가됐습니다! 채널링을 하고싶은 주머니를 클릭하시면
+            됩니다. 특정서버 채널링 체크하시면 그 채널만 돕니다.<br />
+            채널링 시 api 호출을 많이 하므로 호출 한계 200만인 [서비스 단계]로
+            키를 발급받으시는 게 좋습니다. 키 생성방법을 참조하세요.
+          </p>
         </div>
-        <p id="jyujul">
-          리셋됐을 때 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요. 넥슨이
-          보통 10분 후에 데이터 준다고 했음. (Please wait until the data is
-          ready 같은 오류 발생함)<br />
-          OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api
-          사용량을 다썼다는 뜻입니다.<br />
-          안감 이미지의 경우 비공식 팬페이지 api 를 불러와서 안감이 안보이고
-          이미지 못불러옴이 뜰 수 있습니다. 수정예정입니다.<br />
-        </p>
-        <p style="color: red">
-          채널링 기능이 추가됐습니다! 채널링을 하고싶은 주머니를 클릭하시면
-          됩니다. 특정서버 채널링 체크하시면 그 채널만 돕니다.<br />
-          채널링 시 api 호출을 많이 하므로 호출 한계 200만인 [서비스 단계]로
-          키를 발급받으시는 게 좋습니다. 키 생성방법을 참조하세요.
-        </p>
       </div>
 
       <!-- 모달창 -->

@@ -7,6 +7,7 @@ const mabibase_jumoney = ["5110005", "5110006","5110007",  "5110008",  "5110009"
 
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";// API 요청 URL
 
+let resultList = [];
 
 function hexToRgb(hex) {// hex 색상을 RGB로 변환하는 함수
   const r = parseInt(hex.slice(1, 3), 16);
@@ -195,7 +196,7 @@ document.getElementById("channelInput").addEventListener("input", function () {
 
 //api 호출
 async function fetchData() {
-  const resultList = [];
+  
   const serverName = document.getElementById("serverSelect").value;
   const channelNumber = document.getElementById("channelInput").value;
   const apiKey = document.getElementById("apiKeyInput").value;
@@ -281,9 +282,9 @@ let decodeData; // 외부에서 접근 가능한 decodeData 변수
 // decode.json 파일 불러오기 함수
 async function loadDecodeData() {
     try {
-        const response = await fetch('decode.json'); // JSON 파일 경로
+        const response = await fetch('combined_result.json'); // JSON 파일 경로
         decodeData = await response.json(); // JSON 데이터를 전역 변수에 할당
-        console.log("Loaded decodeData:", decodeData); // 데이터 로딩 후 로그 출력
+        // console.log("Loaded decodeData:", decodeData['A']["1"]["upper"]["5A"]); // 데이터 로딩 후 로그 출력
     } catch (error) {
         console.error('Error loading JSON data:', error);
     }
@@ -327,8 +328,13 @@ function findColorData(url) {
     const keys = ['A', 'B', 'C'];
     blocks.forEach((block, blockIdx) => {
         block.forEach((code, idx) => {
+          //block=4b54,4f52,4c49 blockIdx=0 code=4b54 idx=0
+          // console.log(`block=${block} blockIdx=${blockIdx} code=${code} idx=${idx}`)
+          
             const key = keys[blockIdx];
-            const data = decodeData[key]?.[idx + 1]?.[code];
+            const data = ((decodeData[key]?.[idx + 1]?.['upper']?.[code.slice(0, 2).toUpperCase()])*16+(decodeData[key]?.[idx + 1]?.['lower']?.[code.slice(2).toUpperCase()]))
+
+            // console.log(`cod=${code}, codeslice=${code.slice(0, 2).toUpperCase()} key=${key} idx=${idx+1} data=${(decodeData[key]?.[idx + 1]?.['upper']?.[code.slice(0, 2).toUpperCase()])}`)
             result[key].push(data !== undefined ? data : null);
         });
     });
@@ -342,12 +348,16 @@ function findColorData(url) {
 
 function displayError(error) {
   const content = document.getElementById("content");
-  const jsonString = errorMessage.substring(errorMessage.indexOf('{'));
+  const jsonString = error.message.substring(error.message.indexOf('{'));
   const errorObject = JSON.parse(jsonString);
-  if (errorObject.error.name === "OPENAPI00009") {
-    content.innerHTML = `<div style="color: red;">OPENAPI00009</div>`;
+  console.log(errorObject.error.name.includes("OPENAPI00009"))
+  if (errorObject.error.name.includes("OPENAPI00009")) {
+    content.innerHTML = `<div>아직 데이터가 준비되지 않았습니다. 잠시 후 다시 시도해주세요.</div>`;
+    console.log(errorObject);
 }
+else{
   content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}</div>`;
+}
 }
 ////////////////////////////////////
 
@@ -385,6 +395,7 @@ function renderData(filteredData) {
       // 왼쪽 부분: 색상 박스
       const leftDiv = document.createElement("div");
       leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
+      
       leftDiv.className = "bgColor"
       upDiv.innerHTML = `${itemDisplayName}`; // 아이템 이름 추가
 
@@ -406,6 +417,9 @@ function renderData(filteredData) {
       // 오른쪽 부분: 이미지
       const rightDiv = document.createElement("div");
       rightDiv.style.flex = "1"; // 오른쪽 div가 1배 비율
+      rightDiv.className='item-img';
+      rightDiv.style.display='flex';
+      rightDiv.style.justifyContent='center';
       const img = document.createElement("img");
       img.src =
         mabibase_url +
@@ -478,6 +492,25 @@ document.getElementById("channelInput").addEventListener("change", function () {
 
 // 버튼 클릭 시 데이터 가져오기 및 렌더링
 document.getElementById("fetchButton").addEventListener("click", async () => {
+  const serverName = document.getElementById("serverSelect").value;
+  const channelNumber = document.getElementById("channelInput").value;
+  const apiKey = document.getElementById("apiKeyInput").value;
+
+  // 빈 값 체크
+  if (!serverName || !channelNumber || !apiKey) {
+      alert('빈 값이 있으면 검색이 되지 않습니다.');
+
+      // 빈값인 첫 번째 입력란에 포커스
+      if (!serverName) {
+          document.getElementById("serverSelect").focus();
+      } else if (!channelNumber) {
+          document.getElementById("channelInput").focus();
+      } else if (!apiKey) {
+          document.getElementById("apiKeyInput").focus();
+      }
+      
+      return; // 함수 종료
+  }
   if (
     lastNextResetTime &&
     lastNextResetTime.getTime() === nextResetTime.getTime()
@@ -590,7 +623,7 @@ function updateNextResetTime() {
 
   // 1타임 전 시간을 계산
   resetTime = new Date(nextResetTime);
-  resetTime.setMinutes(resetTime.getMinutes() - intervalMinutes); // 36분 전
+  resetTime.setMinutes(resetTime.getMinutes() - intervalMinutes+1); // 36분 전
 
   // 초 단위로 업데이트
   const secondsRemaining = Math.ceil((nextResetTime - currentTime) / 1000);
@@ -627,14 +660,14 @@ function updateNextResetTime() {
 
   // 결과를 표시
   document.getElementById(
-    "next_time"
-  ).innerText = `이번 시간: ${resetTime.toLocaleTimeString([], {
+    "next-time"
+  ).innerHTML = `[${resetTime.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   })} ~ ${nextResetTime.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-  })} (남은 시간: ${secondsRemaining}초)`;
+  })}] <span id="secondsRemaining">⌛${secondsRemaining}초</span> 후 초기화`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

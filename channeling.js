@@ -39,6 +39,32 @@ let serverObject = { 류트: 42, 하프: 24, 울프: 15, 만돌린: 15 };
 //     console.log(`${instrument}: ${value}`);
 // }
 
+const serverSelect = document.getElementById("serverSelect");
+const channelInput = document.getElementById("channelInput");
+
+// 서버 선택이 변경될 때마다 호출되는 함수
+function updateChannelOptions() {
+    const selectedServer = serverSelect.value; // 현재 선택된 서버
+    const maxChannels = serverObject[selectedServer]; // 해당 서버의 최대 채널 수
+
+    // 채널 옵션 초기화
+    channelInput.innerHTML = ""; // 기존 옵션 제거
+
+    // 새로운 옵션 추가
+    for (let i = 1; i <= maxChannels; i++) {
+        const option = document.createElement("option");
+        option.value = i; // 값은 1부터 maxChannels까지
+        option.textContent = i; // 표시되는 텍스트도 동일
+        channelInput.appendChild(option); // 옵션을 select에 추가
+    }
+}
+
+// 초기 옵션 설정
+updateChannelOptions();
+
+// 서버 선택이 변경될 때마다 옵션을 업데이트
+serverSelect.addEventListener("change", updateChannelOptions);
+
 ////////////////////////////////////////////////////////////// cell 에 클릭이벤트 넣기
 document.addEventListener("DOMContentLoaded", function () {
   let content = document.getElementById("content");
