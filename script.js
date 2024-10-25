@@ -44,14 +44,14 @@ function filterData() {
   const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
 
   document.querySelectorAll(".cell").forEach((td) => {
-    const color1 = td.querySelector(".color_01")
-      ? window.getComputedStyle(td.querySelector(".color_01")).backgroundColor
+    const color1 = td.querySelector(".A")
+      ? window.getComputedStyle(td.querySelector(".A")).backgroundColor
       : null;
-    const color2 = td.querySelector(".color_02")
-      ? window.getComputedStyle(td.querySelector(".color_02")).backgroundColor
+    const color2 = td.querySelector(".B")
+      ? window.getComputedStyle(td.querySelector(".B")).backgroundColor
       : null;
-    const color3 = td.querySelector(".color_03")
-      ? window.getComputedStyle(td.querySelector(".color_03")).backgroundColor
+    const color3 = td.querySelector(".C")
+      ? window.getComputedStyle(td.querySelector(".C")).backgroundColor
       : null;
 
     let show = true;
@@ -246,9 +246,11 @@ function processShops(shops) {
       const itemDisplayName = item.item_display_name;
       const imageUrl = item.image_url;
 
-      if (imageUrl.includes("item_color=")) {
-        const selectedColors = extractColors(imageUrl);
+//"image_url": "https://open.api.nexon.com/static/mabinogi/img/1d34c4779a0fd31b62ac98881726142e?q=4b4549555b525d5887464e4c5a4f48564a8a50425e4648534a4e844350574c484e555e8f4c434f4543454d4b884849585f525d484d"
+      if (imageUrl.includes("img")) {
+        const selectedColors = findColorData(imageUrl);
         items.push({ itemDisplayName, colors: selectedColors, imageUrl });
+        // console.log(`item colors: ${JSON.stringify(selectedColors)} `)
       }
     }
   }
@@ -256,23 +258,88 @@ function processShops(shops) {
   return items;
 }
 
-function extractColors(imageUrl) {
-  const encodedString = imageUrl.split("item_color=")[1];
-  const decodedString = decodeURIComponent(encodedString);
-  const colors = JSON.parse(decodedString);
+// function extractColors(imageUrl) {
 
-  // 필요한 색상만 선택
-  const selectedColors = {};
-  const colorKeys = ["color_01", "color_02", "color_03"];
+//   const encodedString = imageUrl.split("item_color=")[1];
+//   const decodedString = decodeURIComponent(encodedString);
+//   const colors = JSON.parse(decodedString);
 
-  colorKeys.forEach((key) => {
-    if (colors[key]) {
-      selectedColors[key] = colors[key].replace("#", "").toLowerCase();
+//   // 필요한 색상만 선택
+//   const selectedColors = {};
+//   const colorKeys = ["color_01", "color_02", "color_03"];
+
+//   colorKeys.forEach((key) => {
+//     if (colors[key]) {
+//       selectedColors[key] = colors[key].replace("#", "").toLowerCase();
+//     }
+//   });
+
+//   return selectedColors;
+  
+// }
+let decodeData; // 외부에서 접근 가능한 decodeData 변수
+
+// decode.json 파일 불러오기 함수
+async function loadDecodeData() {
+    try {
+        const response = await fetch('decode.json'); // JSON 파일 경로
+        decodeData = await response.json(); // JSON 데이터를 전역 변수에 할당
+        console.log("Loaded decodeData:", decodeData); // 데이터 로딩 후 로그 출력
+    } catch (error) {
+        console.error('Error loading JSON data:', error);
     }
-  });
-
-  return selectedColors;
 }
+
+// async 함수로 초기화 후 사용
+async function initialize() {
+    await loadDecodeData(); // decodeData 로드 완료
+    
+}
+
+initialize();
+// extractColors 함수
+function extractColors(url) {
+    const queryString = url.split("?q=")[1];
+  
+    // 18자리씩 분리 후 변환
+    const blocks = queryString.match(/.{1,18}/g).map(block =>
+      block.length === 18 ? block.slice(4, -2) : block.slice(4)
+    ).map(block => block.match(/.{1,4}/g));
+    
+    // 첫 3개 블록만 반환
+    return blocks.slice(0, 3);
+}
+
+// decode.json에서 색상 데이터 찾기 함수
+function findColorData(url) {
+  function rgbToHex(rgbObj) {
+    const hexObj = {};
+    for (const key in rgbObj) {
+        hexObj[key] = rgbObj[key].map(value =>
+            (value !== null ? value : 0x11).toString(16).padStart(2, '0')
+        ).join('').toString();
+    }
+    return hexObj;
+}
+
+    const blocks = extractColors(url);
+    const result = { A: [], B: [], C: [] };
+
+    const keys = ['A', 'B', 'C'];
+    blocks.forEach((block, blockIdx) => {
+        block.forEach((code, idx) => {
+            const key = keys[blockIdx];
+            const data = decodeData[key]?.[idx + 1]?.[code];
+            result[key].push(data !== undefined ? data : null);
+        });
+    });
+    // console.log(`findColorData: ${JSON.stringify(rgbToHex(result))}`);
+  
+    return rgbToHex(result);
+}
+
+
+
 
 function displayError(error) {
   const content = document.getElementById("content");

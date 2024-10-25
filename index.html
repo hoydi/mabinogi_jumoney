@@ -1,14 +1,157 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-FSX9R0HH1Q"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-FSX9R0HH1Q");
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>주머니 상점 정보</title>
     <style>
+.question-button {
+  padding: 5px;
+  margin-left: 10px;
+  font-size: 14px;  /* 물음표 아이콘 크기 */
+  background-color: #4ac4e6;  /* 버튼 배경색 */
+  color: white;  /* 글자 색 (물음표 색) */
+  border: none;  /* 테두리 없애기 */
+  border-radius: 5px;  /* 둥근 모서리 */
+  display: flex;
+  justify-content: center;
+  align-items: center;  /* 텍스트(물음표) 가운데 정렬 */
+  cursor: pointer;  /* 마우스를 올렸을 때 포인터 모양 */
+  animation: blink 2s infinite;
+}
+
+/* 애니메이션 정의 */
+@keyframes blink {
+  0%,100% {
+    background-color: #4ac4e6; /* 기본 배경색 */
+    color: white;
+  }
+  50% {
+    background-color: #ffffa8; /* 중간 색상 */
+    color: black;
+  }
+
+}
+.cell:hover{
+  background-color: rgba(152, 200, 255, 0.2);
+}
+
+.question-button:hover {
+  animation: none; /* 애니메이션 중지 */
+  background-color: #ffffa8;
+  color: black; /* 호버 시 글자 색상 변경 */
+}
+      .set-check{
+        font-size: 20;
+        color: red;
+      }
+      .modal-color{
+        display: flex;
+      }
+      .modal-color-div {
+        display: flex;
+      }
+      /* 모달창 스타일 */
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 배경색 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+#modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 1200px;
+  
+  box-sizing: border-box; /* 패딩이 크기에 영향을 주지 않도록 */
+  max-height: 80vh;
+  overflow-y: auto;
+ 
+}
+#modal-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+}
+#modal-body > *{
+ margin: 2px;
+}
+
+      #modal-close {
+        position: sticky; /* 스크롤 시 버튼 고정 */
+  top: 0px; /* 모달의 상단에서 10px 떨어지게 설정 */
+  right: 5px; /* 오른쪽에서 20px 간격 */
+        color: #aaa;
+        float: right;
+        font-size: 56px;
+        font-weight: bold;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      #modal-close:hover,
+      #modal-close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      /* 로딩 스피너 스타일 */
+.spinner {
+  border: 20px solid #4ac4e6;
+  border-top: 20px solid #ffffff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto !important;
+}
+
+/* 스피너 애니메이션 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 로딩 텍스트 스타일 */
+.loading-text {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  color: #333;
+  margin-top: 10px;
+}
+
       .location_name {
         font-size: 20px;
         font-weight: bold;
-        
       }
       #content {
         display: flex;
@@ -39,6 +182,14 @@
       }
       .filterColor input {
         width: 100px;
+      }
+      .filterColor p {
+        margin: 2px;
+      }
+      .filterColor{
+        display: flex;
+        flex-wrap: wrap;
+
       }
 
       /* @media (max-width: 1200px) {
@@ -77,19 +228,18 @@
         margin-right: 5px;
       }
       .link {
-        margin-left: 10px;
-        font-size: 14px;
-      }
-      .link {
-        height: 100%;
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #4ac4e6;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
+        padding: 5px;
+  margin-left: 10px;
+  font-size: 14px;  /* 물음표 아이콘 크기 */
+  background-color: #4ac4e6;  /* 버튼 배경색 */
+  color: white;  /* 글자 색 (물음표 색) */
+  border: none;  /* 테두리 없애기 */
+  border-radius: 5px;  /* 둥근 모서리 */
+  display: flex;
+  justify-content: center;
+  align-items: center;  /* 텍스트(물음표) 가운데 정렬 */
+  cursor: pointer;  /* 마우스를 올렸을 때 포인터 모양 */
+  text-decoration: none;
       }
       .link:hover {
         background-color: #ffffa8;
@@ -130,7 +280,7 @@
       }
       .cofi {
         bottom: -50% !important;
-        left:0% !important;
+        left: 0% !important;
       }
 
       .tooltip:hover .tooltiptext {
@@ -147,20 +297,29 @@
     </style>
   </head>
   <body>
-    <div style="display: flex; align-items: center">
-      <h1>주머니 상점 정보</h1>
-      <div class="tooltip">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T47T3F7D"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div style="display: flex; align-items: center;">
+      <h1 style="padding: 0; margin-bottom: 0;">주머니 상점 정보</h1>
+      <!-- <div class="tooltip">
         <a
-          class="link"
-          href="https://x.com/maitipoppop/status/1846960785014325299?t=JW5W36VZNYAiJWvvFqHKbg&s=19"
-          target="_blank"
-          >트위터 문의하기?</a
+          class="link" style="font-size: x-large;"
+          href="https://hoydi.github.io/jumoney_test/"
+         
+          >채널링 해보러가기</a
         >
         <span class="tooltiptext"
-          >오류를 발견하셨거나 추가하면 좋을 것 같은 기능이 있으면 쪽지나
-          인용으로 알려주세요</span
+          >테스트 중인 채널링 기능</span
         >
-      </div>
+      </div> -->
       <!-- <div class="tooltip">
         <img src="cofi.png" />
         <span class="tooltiptext cofi">cofi. 링크같은 건 없슴니다</span>
@@ -170,20 +329,22 @@
       최신업데이트시간 241018 1913
     </p>
     <p id="next_time"></p>
-    <p id="jyujul">
-      API 키는 애플리케이션 등록하기 눌러서 원하는 이름으로 만든 후, 그 이름
-      클릭해서 들어가서 첫번째 API Key 복사해오시면 됩니다<br />
-      리셋됐을 때 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요. 넥슨이
-      보통 10분 후에 데이터 준다고 했음. (Please wait until the data is ready
-      같은 오류 발생함)<br />
-      OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api 사용량을
-      다썼다는 뜻입니다.<br />
-      안감 이미지의 경우 비공식 팬페이지 api 를 불러와서 그런지 안감이 안보이고
-      이미지 못불러옴이 뜰 수 있습니다. 수정예정입니다.
-    </p>
-    <p>Data based on NEXON Open API</p>
 
+    <p>Data based on NEXON Open API</p>
+<div class="search" style="display: flex; flex-direction: column;">
+  <div style="padding: 3px; width: 100%;max-width: 730px;">
+    <label for="apiKeyInput" style="width: 20%;">API 키:</label>
+    <input
+      type="text"
+      id="apiKeyInput"
+      placeholder="API 키를 입력하세요"
+      value=""
+      style="width: 80%;max-width: 730px;"
+    />
+  </div>
     <!-- 서버 선택 및 채널 입력 -->
+     <div style="display:flex;">
+     <div style="padding: 3px;">
     <label for="serverSelect">서버 선택:</label>
     <select id="serverSelect">
       <option value="류트" selected>류트</option>
@@ -191,25 +352,15 @@
       <option value="하프">하프</option>
       <option value="울프">울프</option>
     </select>
+  
 
     <label for="channelInput">채널 번호:</label>
     <input
       type="text"
       id="channelInput"
       placeholder="채널 번호를 입력하세요"
-      value="1"
       style="width: 30px"
     />
-
-    <label for="apiKeyInput">API 키:</label>
-    <input
-      type="text"
-      id="apiKeyInput"
-      placeholder="API 키를 입력하세요"
-      value=""
-      style="width: 750px"
-    />
-    <!-- 초기값 설정 -->
     <div class="tooltip">
       <button id="fetchButton" class="link">검색</button>
       <span class="tooltiptext">API 키 입력 안하시면 검색이 안됩니다</span>
@@ -219,31 +370,37 @@
         <input type="checkbox" id="autoFetchCheckbox" /> 자동 실행
       </label>
       <span class="tooltiptext"
-        >체크해놓으면 너무 빨리 불러서 오류 발생하고 api 횟수만 소모하는 것을
-        방지하기 위해 초기화 10분 후 자동실행됩니다</span
+        >체크해놓으면 초기화 10분 후 자동실행됩니다</span
       >
     </div>
-    <div class="tooltip">
-      <a
-        class="link"
-        href="https://openapi.nexon.com/ko/my-application/"
-        target="_blank"
-        >API 키 생성하러가기 click!</a
-      >
-      <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
+      </div>
+      <div  style="display:flex;">
+        <div class="tooltip">
+          <a
+            class="link"
+            href="https://openapi.nexon.com/ko/my-application/"
+            target="_blank"
+            >API 키 생성</a>
+          <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
+        </div>
+        <button class="question-button">?키 생성방법?</button>
+      </div>
     </div>
+  </div>
+    <!-- 초기값 설정 -->
+
     <hr />
     <div class="filterColor">
       <label for="anywhereColor">전체 RGB :</label>
-      <input type="text" id="anywhereColor" placeholder="예: (0, 255, 0)" />
+      <input type="text" id="anywhereColor" placeholder="예: 0, 255, 0" />
 
       <label for="outerColor">겉감 RGB :</label>
-      <input type="text" id="outerColor" placeholder="예: (255, 0, 0)" />
+      <input type="text" id="outerColor" placeholder="예: 255. 0. 0" />
       <label for="romanColor">로마자 RGB :</label>
-      <input type="text" id="romanColor" placeholder="예: (0, 255, 0)" />
+      <input type="text" id="romanColor" placeholder="예: 0/255/0" />
 
       <label for="innerColor">안감 RGB :</label>
-      <input type="text" id="innerColor" placeholder="예: (0, 0, 255)" />
+      <input type="text" id="innerColor" placeholder="예: 0/0//255" />
 
       <label for="toleranceInput">오차 범위:</label>
       <input
@@ -272,8 +429,10 @@
         >
       </div>
     </div>
-
-    <br />
+    <p>
+      필터링 검색값은 숫자 3개만 넣으면 구분을 어떻게 하든 상관없습니다. 예시
+      - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
+    </p>
     <hr />
     <div class="tooltip">
       <label for="locationSelect">교역소 선택:</label>
@@ -282,8 +441,40 @@
       </select>
       <span class="tooltiptext gyo">특정 교역소만 선택해서 볼 수 있습니다</span>
     </div>
+    <div class="tooltip">
+      <label>
+        <input type="checkbox" id="channelingServer" style="width: auto" /><span
+          
+          >특정서버 채널링</span
+        >
+      </label>
+      <span class="tooltiptext" id="channelingTooltipText"
+        >체크시 선택한 서버만 채널링합니다</span
+      >
+    </div>
+    <hr/>
 
-    <div id="content"></div>
+    <div id="content">
+      <p id="jyujul">
+        리셋됐을 때 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요. 넥슨이
+        보통 10분 후에 데이터 준다고 했음. (Please wait until the data is ready
+        같은 오류 발생함)<br />
+        OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api 사용량을
+        다썼다는 뜻입니다.<br />
+        안감 이미지의 경우 비공식 팬페이지 api 를 불러와서 안감이 안보이고 이미지
+        못불러옴이 뜰 수 있습니다. 수정예정입니다.<br /></p>
+        <p style="color: red;">채널링 기능이 추가됐습니다! 채널링을 하고싶은 주머니를 클릭하시면 됩니다. 특정서버 채널링 체크하시면 그 채널만 돕니다.<br/>
+        채널링 시 api 호출을 많이 하므로 호출 한계 200만인 [서비스 단계]로 키를 발급받으시는 게 좋습니다. 키 생성방법을 참조하세요.</p>
+    </div>
+    <div id="channeling-tooltip" style="position: absolute; display: none; background-color: #333; color: white; padding: 5px; border-radius: 5px; pointer-events: none;"></div>
+    <!-- 모달창 -->
+    <div id="modal">
+      <div id="modal-content">
+        <span id="modal-close">&times;</span>
+        
+        <div id="modal-body"></div>
+      </div>
+    </div>
     <!-- <script src="variables.js" type="module"></script> -->
     <!-- <script src="channeling.js" type="module"></script> -->
     <script src="script.js"></script>
