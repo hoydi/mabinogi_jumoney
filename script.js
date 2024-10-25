@@ -710,7 +710,7 @@ function updateNextResetTime() {
           }
           notification("주머니 업데이트");
         }
-      }, 10 * 60 * 1000); // 10분 후
+      }, 8 * 60 * 1000); // 8분 후
     }
   }
 
