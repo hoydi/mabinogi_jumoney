@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 마우스 오버 시 툴팁 표시
   content.addEventListener("mouseover", function (event) {
+
     let cell = event.target.closest(".cell");
     if (cell) {
       let container = cell.querySelector(".container");
@@ -164,6 +165,44 @@ document.addEventListener("DOMContentLoaded", function () {
       tooltip.style.display = "none"; // 툴팁 숨기기
     }
   });
+
+  // top-menu 안의 .tooltip에 마우스 오버할 때 툴팁 표시
+  let topMenu = document.querySelector("#top-menu");
+  topMenu.addEventListener("mouseover", function (event) {
+    let tooltipElement = event.target.closest(".tooltip");
+    if (tooltipElement) {
+      let tooltipText = tooltipElement.querySelector(".tooltiptext");
+      if (tooltipText) {
+        tooltip.innerHTML = tooltipText.textContent; // 툴팁 텍스트 설정
+        console.log(tooltipText.textContent)
+        tooltip.style.display = "block"; // 툴팁 보이기
+      }
+    }
+  });
+
+    // 마우스 이동 시 툴팁 위치 업데이트
+    topMenu.addEventListener("mousemove", function (event) {
+      tooltip.style.left = event.pageX + 10 + "px"; // 마우스 우측에 툴팁 표시
+      tooltip.style.top = event.pageY + 10 + "px"; // 마우스 아래에 툴팁 표시
+    });
+
+  // 마우스가 top-menu 밖으로 나가면 툴팁 숨기기
+  topMenu.addEventListener("mouseout", function (event) {
+    let tooltipElement = event.target.closest(".tooltip");
+    if (tooltipElement) {
+      tooltip.style.display = "none"; // 툴팁 숨기기
+    }
+  });
+
+  // 마우스가 전체 문서에서 나갈 때 툴팁 숨기기
+  document.addEventListener("mouseout", function (event) {
+    if (!topMenu.contains(event.relatedTarget)) {
+      tooltip.style.display = "none"; // 툴팁 숨기기
+    }
+  });
+
+
+
 });
 
 //rgb 를 hex로

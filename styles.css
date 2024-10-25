@@ -350,7 +350,7 @@ p {
 .tooltip {
   display: flex;
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
   align-items: center !important; 
 }
 
@@ -381,10 +381,11 @@ p {
   left: 0% !important;
 }
 
-.tooltip:hover .tooltiptext {
+/* .tooltip:hover .tooltiptext {
   visibility: visible;
-  opacity: 0.7; /* 호버 시 투명도 변경 */
-}
+  opacity: 0.7; 호버 시 투명도 변경
+} */
+
 .container {
   align-items: center;
   display: flex;
@@ -440,4 +441,13 @@ input {
   padding: 50px; 
   border-radius: 5px;
   z-index: 1000; /* 알림을 가장 위에 표시 */
+}
+
+.search{
+  align-items: center;
+}
+
+label{
+  display: flex;
+  align-items: center;
 }
