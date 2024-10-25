@@ -109,9 +109,13 @@ function filterData() {
 }
 
 function resetFilterData() {
+  document.querySelectorAll("#content > .location").forEach((self)=>{
+    self.classList.remove("hidden");
+  })
   document.querySelectorAll(".cell").forEach((td) => {
     td.classList.remove("hidden");
   });
+
   filterToggle = 0;
 }
 let filterToggle = 0;
