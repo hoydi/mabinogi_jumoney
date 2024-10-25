@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 로드 및 캔버스 생성</title>
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <script>
+        const CANVAS_WIDTH = 64;
+        const CANVAS_HEIGHT = 64;
+        const IMAGE_SRC = './pouch/crop/감자 주머니-베이스.png'; // 이미지 파일 경로
+
+        // 이미지 파일의 너비와 높이를 가져오는 함수
+        function getImageDimensions(callback) {
+            const img = new Image();
+            img.onload = function() {
+                callback(img.width, img.height); // 이미지 로드 후 너비와 높이를 콜백으로 전달
+            };
+            img.src = IMAGE_SRC; // 이미지 파일 로드
+        }
+
+        // 캔버스를 생성하고 이미지를 중앙에 정렬하는 함수
+        function createCanvasWithImage(imageWidth, imageHeight) {
+            // 캔버스 생성
+            const canvas = document.createElement('canvas');
+            canvas.width = CANVAS_WIDTH;
+            canvas.height = CANVAS_HEIGHT;
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+
+            // 비율 계산
+            const scale = Math.min(canvas.width / imageWidth, canvas.height / imageHeight);
+            const scaledWidth = imageWidth * scale;
+            const scaledHeight = imageHeight * scale;
+
+            // 중앙 정렬을 위한 오프셋
+            const offsetX = (canvas.width - scaledWidth) / 2;
+            const offsetY = (canvas.height - scaledHeight) / 2;
+
+            // 이미지 그리기
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, offsetX, offsetY, scaledWidth, scaledHeight); // 중앙에 그리기
+            };
+            img.src = IMAGE_SRC; // 이미지 파일 로드
+        }
+
+        // 이미지의 너비와 높이를 가져와서 캔버스 생성
+        getImageDimensions((width, height) => {
+            createCanvasWithImage(width, height); // 이미지 크기로 캔버스 생성
+        });
+    </script>
+</body>
+</html>

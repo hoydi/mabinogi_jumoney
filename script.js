@@ -1,71 +1,37 @@
 const locations = [
-  { location: "티르코네일", npc: "상인 네루" },
-   { location: "던바튼", npc: "상인 누누" },
-   { location: "카브", npc: "상인 아루" },
-   { location: "반호르", npc: "상인 라누" },
-   { location: "이멘마하", npc: "상인 메루" },
-   { location: "탈틴", npc: "상인 베루" },
-   { location: "타라", npc: "상인 에루" },
-   { location: "벨바스트", npc: "상인 피루" },
-   { location: "스카하", npc: "상인 세누" },
-   { location: "켈라베이스", npc: "테일로" },
-   { location: "카루", npc: "귀넥" },
-   { location: "코르", npc: "리나" },
-   { location: "오아시스", npc: "얼리" },
-   { location: "필리아", npc: "켄" },
-   { location: "발레스", npc: "카디" },
-   { location: "페라", npc: "데위" },
-   { location: "칼리다", npc: "모락" },
-];
+  { location: "티르코네일", npc: "상인 네루" }, { location: "던바튼", npc: "상인 누누" }, { location: "카브", npc: "상인 아루" }, { location: "반호르", npc: "상인 라누" }, { location: "이멘마하", npc: "상인 메루" }, { location: "탈틴", npc: "상인 베루" }, { location: "타라", npc: "상인 에루" }, { location: "벨바스트", npc: "상인 피루" }, { location: "스카하", npc: "상인 세누" }, { location: "켈라베이스", npc: "테일로" }, { location: "카루", npc: "귀넥" }, { location: "코르", npc: "리나" }, { location: "오아시스", npc: "얼리" }, { location: "필리아", npc: "켄" }, { location: "발레스", npc: "카디" }, { location: "페라", npc: "데위" }, { location: "칼리다", npc: "모락" },];
 
 const mabibase_url = "https://api.na.mabibase.com/assets/item/icon/";
 const mabibase_url_filter = "?colors=";
-const mabibase_jumoney = [
-  "5110005",
-  "5110006",
-  "5110007",
-  "5110008",
-  "5110009",
-  "5110010",
-  "2041",
-  "2042",
-  "2043",
-  "5110014",
-  "5110015",
-  "5110016",
-  "5110017",
-  "5110018",
-  "5110019",
-  "5110020",
-  "5110021",
-  "5110022",
-  "5110023",
-  "5110024",
-  "5110025",
-  "5110044",
-];
+const mabibase_jumoney = ["5110005", "5110006","5110007",  "5110008",  "5110009",  "5110010",  "2041",  "2042",  "2043",  "5110014",  "5110015",  "5110016",  "5110017",  "5110018",  "5110019",  "5110020",  "5110021",  "5110022", "5110023",  "5110024",  "5110025",  "5110044",];
+
+const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";// API 요청 URL
 
 
+<<<<<<< HEAD
 
 // API 요청 URL
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
 
 // hex 색상을 RGB로 변환하는 함수
 function hexToRgb(hex) {
+=======
+function hexToRgb(hex) {// hex 색상을 RGB로 변환하는 함수
+>>>>>>> dc1dd4be3443635b4b6e987c945a73fe107ffe37
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-  return `(${r}, ${g}, ${b})`;
-}
+  return `(${r}, ${g}, ${b})`;}
 
 let fetchedData = []; // 전체 데이터를 저장할 변수
 
-//필터링
-function isWithinTolerance(colorA, colorB, tolerance) {
+function isWithinTolerance(colorA, colorB, tolerance) {//필터링
   const rDiff = Math.abs(colorB.r - colorA.r);
   const gDiff = Math.abs(colorB.g - colorA.g);
   const bDiff = Math.abs(colorB.b - colorA.b);
+  return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;}
 
+<<<<<<< HEAD
   return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;
 }
 
@@ -73,6 +39,11 @@ function isWithinTolerance(colorA, colorB, tolerance) {
 function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
   const rgbValues = rgbString
     .replace(/[^0-9\s]/g, " ")
+=======
+function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
+  const rgbValues = rgbString
+    .replace(/[^0-9]/g, " ")
+>>>>>>> dc1dd4be3443635b4b6e987c945a73fe107ffe37
     .trim()
     .split(/\s+/)
     .map(Number);
@@ -84,40 +55,35 @@ function filterData() {
   const outerColorInput = document.getElementById("outerColor").value;
   const romanColorInput = document.getElementById("romanColor").value;
   const innerColorInput = document.getElementById("innerColor").value;
-  const tolerance =
-    parseInt(document.getElementById("toleranceInput").value, 10) || 10;
+  const tolerance = parseInt(document.getElementById("toleranceInput").value, 10) || 10;
 
-  const anywhereColor = anywhereColorInput
-    ? parseRgb(anywhereColorInput)
-    : null;
+  const anywhereColor = anywhereColorInput ? parseRgb(anywhereColorInput) : null;
   const outerColor = outerColorInput ? parseRgb(outerColorInput) : null;
   const romanColor = romanColorInput ? parseRgb(romanColorInput) : null;
   const innerColor = innerColorInput ? parseRgb(innerColorInput) : null;
 
   document.querySelectorAll(".cell").forEach((td) => {
-    const color1 = td.querySelector(".color_01")
-      ? window.getComputedStyle(td.querySelector(".color_01")).backgroundColor
+    const color1 = td.querySelector(".A")
+      ? window.getComputedStyle(td.querySelector(".A")).backgroundColor
       : null;
-    const color2 = td.querySelector(".color_02")
-      ? window.getComputedStyle(td.querySelector(".color_02")).backgroundColor
+    const color2 = td.querySelector(".B")
+      ? window.getComputedStyle(td.querySelector(".B")).backgroundColor
       : null;
-    const color3 = td.querySelector(".color_03")
-      ? window.getComputedStyle(td.querySelector(".color_03")).backgroundColor
+    const color3 = td.querySelector(".C")
+      ? window.getComputedStyle(td.querySelector(".C")).backgroundColor
       : null;
 
     let show = true;
 
-    // anywhereColorInput 조건 추가
     if (anywhereColor) {
       const matchesAnyColor = [color1, color2, color3].some((color) => {
         if (color) {
           const colorRgb = parseRgb(color); // filterParseRgb 대신 parseRgb 사용
-          // tolerance를 사용하여 색상 비교
           return isWithinTolerance(anywhereColor, colorRgb, tolerance);
         }
         return false;
       });
-      show = matchesAnyColor; // 하나라도 맞으면 show가 true
+      show = matchesAnyColor;
     }
 
     if (outerColor && color1) {
@@ -210,7 +176,7 @@ window.onload = function () {
   const storedRomanColor = localStorage.getItem("romanColor");
   const storedInnerColor = localStorage.getItem("innerColor");
   const storedTolerance = localStorage.getItem("tolerance");
-  
+
   if (anywhereColor) {
     document.getElementById("anywhereColor").value = anywhereColor; // anywhereColor를 올바르게 설정
   }
@@ -298,9 +264,11 @@ function processShops(shops) {
       const itemDisplayName = item.item_display_name;
       const imageUrl = item.image_url;
 
-      if (imageUrl.includes("item_color=")) {
-        const selectedColors = extractColors(imageUrl);
+//"image_url": "https://open.api.nexon.com/static/mabinogi/img/1d34c4779a0fd31b62ac98881726142e?q=4b4549555b525d5887464e4c5a4f48564a8a50425e4648534a4e844350574c484e555e8f4c434f4543454d4b884849585f525d484d"
+      if (imageUrl.includes("img")) {
+        const selectedColors = findColorData(imageUrl);
         items.push({ itemDisplayName, colors: selectedColors, imageUrl });
+        // console.log(`item colors: ${JSON.stringify(selectedColors)} `)
       }
     }
   }
@@ -308,23 +276,88 @@ function processShops(shops) {
   return items;
 }
 
-function extractColors(imageUrl) {
-  const encodedString = imageUrl.split("item_color=")[1];
-  const decodedString = decodeURIComponent(encodedString);
-  const colors = JSON.parse(decodedString);
+// function extractColors(imageUrl) {
 
-  // 필요한 색상만 선택
-  const selectedColors = {};
-  const colorKeys = ["color_01", "color_02", "color_03"];
+//   const encodedString = imageUrl.split("item_color=")[1];
+//   const decodedString = decodeURIComponent(encodedString);
+//   const colors = JSON.parse(decodedString);
+
+//   // 필요한 색상만 선택
+//   const selectedColors = {};
+//   const colorKeys = ["color_01", "color_02", "color_03"];
+
+//   colorKeys.forEach((key) => {
+//     if (colors[key]) {
+//       selectedColors[key] = colors[key].replace("#", "").toLowerCase();
+//     }
+//   });
+
+//   return selectedColors;
   
-  colorKeys.forEach((key) => {
-    if (colors[key]) {
-      selectedColors[key] = colors[key].replace("#", "").toLowerCase();
-    }
-  });
+// }
+let decodeData; // 외부에서 접근 가능한 decodeData 변수
 
-  return selectedColors;
+// decode.json 파일 불러오기 함수
+async function loadDecodeData() {
+    try {
+        const response = await fetch('decode.json'); // JSON 파일 경로
+        decodeData = await response.json(); // JSON 데이터를 전역 변수에 할당
+        console.log("Loaded decodeData:", decodeData); // 데이터 로딩 후 로그 출력
+    } catch (error) {
+        console.error('Error loading JSON data:', error);
+    }
 }
+
+// async 함수로 초기화 후 사용
+async function initialize() {
+    await loadDecodeData(); // decodeData 로드 완료
+    
+}
+
+initialize();
+// extractColors 함수
+function extractColors(url) {
+    const queryString = url.split("?q=")[1];
+  
+    // 18자리씩 분리 후 변환
+    const blocks = queryString.match(/.{1,18}/g).map(block =>
+      block.length === 18 ? block.slice(4, -2) : block.slice(4)
+    ).map(block => block.match(/.{1,4}/g));
+    
+    // 첫 3개 블록만 반환
+    return blocks.slice(0, 3);
+}
+
+// decode.json에서 색상 데이터 찾기 함수
+function findColorData(url) {
+  function rgbToHex(rgbObj) {
+    const hexObj = {};
+    for (const key in rgbObj) {
+        hexObj[key] = rgbObj[key].map(value =>
+            (value !== null ? value : 0x11).toString(16).padStart(2, '0')
+        ).join('').toString();
+    }
+    return hexObj;
+}
+
+    const blocks = extractColors(url);
+    const result = { A: [], B: [], C: [] };
+
+    const keys = ['A', 'B', 'C'];
+    blocks.forEach((block, blockIdx) => {
+        block.forEach((code, idx) => {
+            const key = keys[blockIdx];
+            const data = decodeData[key]?.[idx + 1]?.[code];
+            result[key].push(data !== undefined ? data : null);
+        });
+    });
+    // console.log(`findColorData: ${JSON.stringify(rgbToHex(result))}`);
+  
+    return rgbToHex(result);
+}
+
+
+
 
 function displayError(error) {
   const content = document.getElementById("content");
@@ -338,13 +371,15 @@ function renderData(filteredData) {
   content.innerHTML = ""; // 기존 내용을 초기화
 
   filteredData.forEach(({ location, items }) => {
+
     const locationDiv = document.createElement("div");
     locationDiv.className = "location";
-    locationDiv.textContent = location;
+    locationDiv.innerHTML = `<div class="location_name">${location}<div>`;
     content.appendChild(locationDiv);
 
     const table = document.createElement("div");
     table.className = "table"; // 테이블 클래스 추가
+    
     let row = document.createElement("div");
     row.className = "row"; // row 클래스 추가
 
@@ -358,17 +393,18 @@ function renderData(filteredData) {
       const upDiv = document.createElement("div");
       upDiv.className = "itemName";
       const downDiv = document.createElement("div");
+      downDiv.className="itemDetail"
       // downDiv.style.display = "flex"; // 수평 배치
 
       // 왼쪽 부분: 색상 박스
       const leftDiv = document.createElement("div");
       leftDiv.style.flex = "1"; // 왼쪽 div가 1배 비율
-      leftDiv.className="bgColor"
+      leftDiv.className = "bgColor"
       upDiv.innerHTML = `${itemDisplayName}`; // 아이템 이름 추가
 
       for (const [colorName, colorValue] of Object.entries(colors)) {
         const colorBox = document.createElement("div");
-        
+
         colorBox.className = `color-box ${colorName}`;
         colorBox.style.backgroundColor = "#" + colorValue;
         colorBox.style.width = "20px"; // 색상 박스의 너비
@@ -430,7 +466,8 @@ function renderData(filteredData) {
       table.appendChild(row);
     }
 
-    content.appendChild(table);
+    // content.appendChild(table);
+    locationDiv.appendChild(table);
   });
   const cells = document.querySelectorAll(".cell");
   // new ChannelingHandler(cells);
@@ -448,7 +485,7 @@ document.getElementById("locationSelect").addEventListener("change", () => {
 });
 
 //채널바꾸면 lastNextResetTime null 만들어서 fetch 되게
-document.getElementById("channelInput").addEventListener("change", function() {
+document.getElementById("channelInput").addEventListener("change", function () {
   console.log('채널변경')
   lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
 });
@@ -526,7 +563,7 @@ document
 
 
 
-  
+
 
 ////////////////////////////
 const totalMinutesInDay = 24 * 60; // 24시간을 분으로 변환
@@ -684,7 +721,7 @@ class ChannelingHandler {
     return confirm(message);
   }
 
-  logCompletion(itemName,rgbCodes) {
+  logCompletion(itemName, rgbCodes) {
 
     console.log(`${itemName} 순회완료`);
   }
