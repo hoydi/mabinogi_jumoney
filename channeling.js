@@ -1,3 +1,5 @@
+let channelingFetchedData = [];
+
 let itemNameList = {
   작물: [
     { "튼튼한 달걀 주머니": [] },
@@ -44,19 +46,19 @@ const channelInput = document.getElementById("channelInput");
 
 // 서버 선택이 변경될 때마다 호출되는 함수
 function updateChannelOptions() {
-    const selectedServer = serverSelect.value; // 현재 선택된 서버
-    const maxChannels = serverObject[selectedServer]; // 해당 서버의 최대 채널 수
+  const selectedServer = serverSelect.value; // 현재 선택된 서버
+  const maxChannels = serverObject[selectedServer]; // 해당 서버의 최대 채널 수
 
-    // 채널 옵션 초기화
-    channelInput.innerHTML = ""; // 기존 옵션 제거
+  // 채널 옵션 초기화
+  channelInput.innerHTML = ""; // 기존 옵션 제거
 
-    // 새로운 옵션 추가
-    for (let i = 1; i <= maxChannels; i++) {
-        const option = document.createElement("option");
-        option.value = i; // 값은 1부터 maxChannels까지
-        option.textContent = i; // 표시되는 텍스트도 동일
-        channelInput.appendChild(option); // 옵션을 select에 추가
-    }
+  // 새로운 옵션 추가
+  for (let i = 1; i <= maxChannels; i++) {
+    const option = document.createElement("option");
+    option.value = i; // 값은 1부터 maxChannels까지
+    option.textContent = i; // 표시되는 텍스트도 동일
+    channelInput.appendChild(option); // 옵션을 select에 추가
+  }
 }
 
 // 초기 옵션 설정
@@ -75,12 +77,23 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cell) {
       let container = cell.querySelector(".container");
       if (container) {
+        if (event.target.classList.contains('color-box-color')) {
+
+          navigator.clipboard.writeText(event.target.textContent)
+        .then(() => {
+          showNotification(`"${event.target.textContent}"가 복사되었습니다.`);
+        })
+        .catch(err => {
+            console.error('복사 실패:', err);
+        });
+        } else{
         let itemName = container.querySelector(".itemName").textContent;
         let colors = Array.from(
           container.querySelectorAll(".bgColor .color-box")
         ).map(function (colorBox) {
           return window.getComputedStyle(colorBox).backgroundColor;
         });
+        let imgDiv = container.querySelector(".item-img")
 
         let locationName = cell
           .closest(".location")
@@ -94,14 +107,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (userConfirmation) {
           // 사용자가 확인을 눌렀을 때 실행할 코드
-          let fatchData = fetchLocationByServers(
+          let fatchData = channelingRender(
             locationName,
             convertRgbToHex(colors),
-            itemName
+            itemName,
+            imgDiv
           );
         }
       }
     }
+  }
   });
 
   // 마우스 오버 시 툴팁 표시
@@ -116,15 +131,22 @@ document.addEventListener("DOMContentLoaded", function () {
         ).map(function (colorBox) {
           return window.getComputedStyle(colorBox).backgroundColor;
         });
+        if (event.target.classList.contains('color-box-color')) {
+          tooltip.innerHTML = `클릭해서 ${event.target.textContent} 복사`;
+          console.log(event.target.textContent)
+          tooltip.style.display = "block"; // 툴팁 보이기
+        } else {
+          let locationName = cell
+            .closest(".location")
+            .querySelector(".location_name").textContent;
 
-        let locationName = cell
-          .closest(".location")
-          .querySelector(".location_name").textContent;
+          // 툴팁 내용 설정
+          tooltip.innerHTML = `채널링 할 주머니를 클릭하세요`;
 
-        // 툴팁 내용 설정
-        tooltip.innerHTML = `채널링 할 주머니를 클릭하세요`;
+          tooltip.style.display = "block"; // 툴팁 보이기
+        }
 
-        tooltip.style.display = "block"; // 툴팁 보이기
+
       }
     }
   });
@@ -161,7 +183,7 @@ function convertRgbToHex(rgbStrings) {
 // 색상 비교 함수
 function compareColors(colors, hexColors) {
   // colors 객체의 값들을 소문자로 변환하여 hexColors 배열과 비교
-  return Object.values(colors).every((color,index) =>
+  return Object.values(colors).every((color, index) =>
     color.toLowerCase() === hexColors[index].toLowerCase()
   );
 }
@@ -204,8 +226,70 @@ function resetItemNameList() {
   };
 }
 
+async function fetchLocationByServers(targetLocation, selectedServer) {
+  let locationData = locations.find((loc) => loc.location === targetLocation);
+  // console.log(`${locationData}, ${locationData.npc}`);
+  let apiKey = document.getElementById("apiKeyInput").value;
+
+  let headers = {
+    accept: "application/json",
+    "x-nxopen-api-key": apiKey,
+  };
+
+  for (let [serverName, serverCount] of Object.entries(serverObject)) {
+    let isChannelingServerChecked =
+      document.getElementById("channelingServer").checked;
+
+    if (isChannelingServerChecked) {
+      console.log(
+        `체크박스가 체크되었습니다. 선택된 서버: ${selectedServer} 현재서버: ${serverName}`
+      );
+      if (selectedServer != serverName) {
+        continue;
+      }
+    }
+
+    for (let serverNum = 1; serverNum <= serverCount; serverNum++) {
+      if (serverNum === 11) continue;
+      try {
+        serverNum = serverNum.toString();
+        const exists = fetchedData.some(item =>
+          item.serverName == serverName &&
+          item.serverNum == serverNum &&
+          item.location == targetLocation
+        );
+        if (!exists) {
+          // 비동기 데이터 fetch
+          let items = await fetchLocationData(
+            locationData.npc,
+            serverName,
+            serverNum,
+            headers
+          );
+          let location = targetLocation;
+          fetchedData.push({ serverName, serverNum, location, items });
+        } else {
+          console.log('이미 존재하는 값');
+        }
+      } catch (error) {
+        console.log(
+          `Error fetching data for server ${serverName} ${serverNum}:`,
+          error
+        );
+        displayError(error);
+        return;
+      }
+    }
+  }
+  console.log(fetchedData)
+
+}
+
 // 특정 location에 대해 서버별 상점 정보를 가져옴)
-async function fetchLocationByServers(targetLocation, hexcolor, itemName) {
+async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
+  let pouchSrc = [];
+  let modalPouch = document.getElementById("modal-pouch");
+  modalPouch.innerHTML=``;
   let selectedServer = document.getElementById("serverSelect").value;
   modalBody.innerHTML = `
     <div class="spinner"></div>
@@ -215,12 +299,6 @@ async function fetchLocationByServers(targetLocation, hexcolor, itemName) {
   modal.style.display = "flex"; // 모달 띄우기
   console.log(`colors : ${hexcolor}`);
   let resultList = [];
-  let apiKey = document.getElementById("apiKeyInput").value;
-
-  let headers = {
-    accept: "application/json",
-    "x-nxopen-api-key": apiKey,
-  };
 
   let locationData = locations.find((loc) => loc.location === targetLocation);
   if (!locationData) {
@@ -229,9 +307,10 @@ async function fetchLocationByServers(targetLocation, hexcolor, itemName) {
   }
 
   let npc = locationData.npc;
-  let modalContent = `<h2>${selectedServer} ${
-    document.getElementById("channelInput").value
-  } 채널 ${itemName}</h2>`;
+  let modalContent = `<div class="modal-header"><div class="modal-left">
+  ${imgDiv.innerHTML}</div><div class="modal-right">
+  <h2>${targetLocation
+    } ${itemName}</h2>`;
 
   // 미리 색상 관련 HTML을 준비
   modalContent += `<div class="modal-color">`;
@@ -245,97 +324,129 @@ async function fetchLocationByServers(targetLocation, hexcolor, itemName) {
       </div>
     `;
   });
+  modalContent += `</div></div>`;
   modalContent += `</div>`;
+
+  await fetchLocationByServers(targetLocation, selectedServer);
+
+
 
   // 서버 데이터를 가져오고, 모달을 한 번에 업데이트
   for (let [serverName, serverCount] of Object.entries(serverObject)) {
     let isChannelingServerChecked =
       document.getElementById("channelingServer").checked;
-
-    if (isChannelingServerChecked) {
-      // 체크된 경우 serverSelect의 value를 읽어옴
-
-      // 선택된 서버 이름을 출력하거나 다른 작업을 수행
-      console.log(
-        `체크박스가 체크되었습니다. 선택된 서버: ${selectedServer} 현재서버: ${serverName}`
-      );
-      if (selectedServer != serverName) {
-        continue;
-      }
+    if (isChannelingServerChecked && serverSelect.value != serverName) {
+      console.log('컨티뉴')
+      continue;
     }
 
-    resetItemNameList();
-    modalContent += `<div class="serverName"><h2>${serverName}</h2></div>`;
+    fetchedData.forEach(data => {
+      if (data.serverName == serverName) {
+        // 각 데이터의 items 배열을 순회합니다.
+        data.items.forEach(item => {
+          // item의 colors A, B, C 값을 hexcolor와 비교합니다.
+          if (item.colors.A.toUpperCase() === hexcolor[0] &&
+            item.colors.B.toUpperCase() === hexcolor[1] &&
+            item.colors.C.toUpperCase() === hexcolor[2]) {
+            if (!pouchSrc.includes(item.imageUrl)) {
+              pouchSrc.push(item.imageUrl); // 존재하지 않으면 추가
 
-    for (let serverNum = 1; serverNum <= serverCount; serverNum++) {
-      if (serverNum === 11) continue;
+            }
 
-      try {
-        // 비동기 데이터 fetch
-        let items = await fetchLocationData(
-          npc,
-          serverName,
-          serverNum,
-          headers
-        );
 
-        items.forEach((item) => {
-          if (compareColors(item.colors, hexcolor)) {
-            Object.keys(itemNameList).forEach((category) => {
-              itemNameList[category].forEach((entry) => {
-                let itemName = Object.keys(entry)[0];
-                if (item.itemDisplayName === itemName) {
-                  entry[item.itemDisplayName].push(serverNum); // 서버 번호 추가
+            // itemDisplayName을 가져옵니다.
+            let displayName = item.itemDisplayName;
+
+            // itemNameList에서 각 카테고리를 순회합니다.
+            Object.values(itemNameList).forEach(category => {
+              category.forEach(obj => {
+                // 카테고리 내의 객체에서 key값이 itemDisplayName과 일치하는지 확인합니다.
+                if (obj.hasOwnProperty(displayName)) {
+                  // 일치하는 경우 serverNum을 추가합니다.
+                  if (!obj[displayName].includes(data.serverNum)) {
+                    obj[displayName].push(data.serverNum);
+                  }
                 }
               });
             });
           }
         });
-      } catch (error) {
-        console.error(
-          `Error fetching data for server ${serverName} ${serverNum}:`,
-          error
-        );
-        displayError(error);
-      }
-    }
-
-    // 각 카테고리별로 모달에 데이터 추가
-    Object.keys(itemNameList).forEach((category) => {
-      let nonEmptyItems = itemNameList[category].filter((entry) => {
-        let itemName = Object.keys(entry)[0];
-        return entry[itemName].length > 0;
-      });
-
-      if (nonEmptyItems.length > 0) {
-        modalContent += `<h3>${category}</h3>`;
-        nonEmptyItems.forEach((entry) => {
-          let itemName = Object.keys(entry)[0];
-          let serverList = entry[itemName];
-          modalContent += `<p>${itemName} 서버: ${serverList.join(", ")}</p>`;
-        });
-      }
-
-      let allItemsHaveServers = itemNameList[category].every((entry) => {
-        let itemName = Object.keys(entry)[0];
-        return entry[itemName].length > 0;
-      });
-
-      if (allItemsHaveServers) {
-        modalContent += `<p class="set-check">${category} 세트 가능! (`;
-        let setServer = [];
-        itemNameList[category].forEach((item) => {
-          const itemName = Object.keys(item)[0]; // 항목 이름 가져오기
-          const itemList = item[itemName]; // 해당 항목의 리스트 가져오기
-          const firstListItem = itemList[0]; // 리스트의 첫 번째 요소 가져오기
-          setServer.push(firstListItem);
-        });
-
-        modalContent += `${setServer.join(", ")})</p>`;
       }
     });
-    modalContent += '<hr style="color:gray;width:100%" />';
+    console.log(itemNameList);
+    modalContent += `<div class="serverName"><h2>${serverName}</h2></div>`
+    for (const category in itemNameList) {
+      if (itemNameList.hasOwnProperty(category)) {
+        let itemValuesList = [];
+        let imsiContent = "";
+        let itemLen = 0;
+        imsiContent += `<h3>${category}</h3>`; // 카테고리 제목 추가
+
+        itemNameList[category].forEach(item => {
+          // 객체의 첫 번째 키를 itemName으로 설정
+          const itemName = Object.keys(item)[0];
+          const serverList = item[itemName]; // 아이템의 값인 배열을 serverList로 설정
+          if (serverList.length != 0) {
+            itemLen = 1;
+            console.log(`itemlen: ${itemLen} - ${category}`)
+            imsiContent += `<div style="display:flex;"><div class="chanItemName">${itemName}</div>`
+            imsiContent += `<div><p>${serverList.join(", ")}</p></div></div>`;
+          }
+        });
+
+        if (itemLen) { modalContent += imsiContent; }
+        const allItemsFilled = itemNameList[category].every(item => {
+          const itemValues = Object.values(item)[0];  // 객체의 첫 번째 값을 리스트로 추출
+          if (itemValues.length > 0) {
+            itemValuesList.push(itemValues[0]);
+          }
+          return itemValues.length > 0;               // 해당 리스트가 비어있지 않은지 확인
+        });
+        if (allItemsFilled && category != "꽃바구니") {
+          console.log('세트');
+          modalContent += `<p class="set-check">${category} 세트 가능! (${itemValuesList.join(', ')})</p>`
+        }
+
+
+
+
+
+      }
+    }
+    modalContent += `<br/><hr/>`
+    modalPouch.innerHTML = '';
+    pouchSrc.forEach(src => {
+      // img 태그 생성
+      let img = document.createElement('img');
+      img.src = src; // src 속성에 이미지 URL 추가
+      img.alt = 'Pouch Image'; // 대체 텍스트 추가 (선택 사항)
+
+      // 생성한 img 태그를 pouchContainer에 추가
+
+      modalPouch.appendChild(img);
+    });
+    console.log(Array.from(pouchSrc));
+    resetItemNameList();
   }
+
+
+  //   resetItemNameList();
+  // modalContent += `<div class="serverName"><h2>${serverName}</h2></div>`;
+
+  //   modalContent += `<h3>${category}</h3>`;
+  //   modalContent += `<p>${itemName} 서버: ${serverList.join(", ")}</p>`;
+  //   modalContent += `<p class="set-check">${category} 세트 가능! (`;
+  //   let setServer = [];
+  //   itemNameList[category].forEach((item) => {
+  //     const itemName = Object.keys(item)[0]; // 항목 이름 가져오기
+  //     const itemList = item[itemName]; // 해당 항목의 리스트 가져오기
+  //     const firstListItem = itemList[0]; // 리스트의 첫 번째 요소 가져오기
+  //     setServer.push(firstListItem);
+  //   });
+
+  //   modalContent += `${setServer.join(", ")})</p>`;
+  //   modalContent += '<hr style="color:gray;width:100%" />';   
+
 
   // 모든 데이터가 처리된 후 모달에 한 번에 업데이트
   showModal(modalContent);
@@ -406,3 +517,14 @@ document.getElementById("serverSelect").addEventListener("change", function () {
   const tooltipText = document.getElementById("channelingTooltipText");
   tooltipText.textContent = `체크시 ${selectedServer} 서버만 채널링합니다`;
 });
+
+function showNotification(message) {
+  const notification = document.getElementById('notification');
+  notification.textContent = message;
+  notification.style.display = 'block'; // 알림 보이기
+
+  // 3초 후에 알림 숨기기
+  setTimeout(() => {
+      notification.style.display = 'none';
+  }, 1000);
+}

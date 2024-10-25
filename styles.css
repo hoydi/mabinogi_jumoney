@@ -141,15 +141,23 @@ a,button {
 }
 
 #modal-content {
+  position: relative;
   background-color: white;
-  padding: 20px;
+  padding: 20px 20px 60px 20px;
   border-radius: 10px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
 
   box-sizing: border-box; /* 패딩이 크기에 영향을 주지 않도록 */
   max-height: 80vh;
   overflow-y: auto;
+}
+#modal-pouch{
+  height: 100px;
+  display: flex;
+}
+#modal-pouch img{
+  height: 64px;
 }
 #modal-body {
   width: 100%;
@@ -163,7 +171,7 @@ a,button {
 }
 
 #modal-close {
-  position: sticky; /* 스크롤 시 버튼 고정 */
+  position: absolute; /* 스크롤 시 버튼 고정 */
   top: 0px; /* 모달의 상단에서 10px 떨어지게 설정 */
   right: 5px; /* 오른쪽에서 20px 간격 */
   color: #aaa;
@@ -217,15 +225,17 @@ a,button {
   text-align: center;
 }
 #content {
+  
   padding: 20px 20px;
   display: flex;
   flex-direction: column; /* 세로 방향으로 배치 */
 }
 
 .table {
+
   width: 100%;
   display: flex;
-  flex-direction: column; /* 세로 방향으로 배치 */
+  flex-wrap: wrap;
   margin-bottom: 10px; /* 각 테이블 간의 간격 */
 
   align-items: flex-start;
@@ -296,7 +306,14 @@ label {
   padding-left: 10px;
 }
 .bgColor {
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  color: #9f9f9f;
+}
+.color-box-box{
+  display: flex;
+  width: 100%;
 }
 .color-box {
   width: 30px;
@@ -385,4 +402,42 @@ input {
 }
 .itemName {
   padding-bottom: 5px;
+  font-weight: 800;
+}
+.chanItemName{
+  width: 230px;
+  text-align: left;
+  margin-right: 20px;
+}
+
+.modal-header{
+  display: flex;
+ 
+}
+.modal-left {
+  padding-right: 20px;
+  display: flex;           
+  justify-content: center; 
+  align-items: center;   
+}
+.modal-right{
+  display: flex;          
+  flex-direction: column;  
+  align-items: start; 
+}
+.modal-right h2{
+  margin: 0 0 10px 0;
+}
+
+#notification {
+  display: none; 
+  position: fixed; 
+  top: 40%; 
+  right: 40%; 
+  background-color: #5e4c77; 
+  color: white; 
+  font-size: 20px;
+  padding: 50px; 
+  border-radius: 5px;
+  z-index: 1000; /* 알림을 가장 위에 표시 */
 }
