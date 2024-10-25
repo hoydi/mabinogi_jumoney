@@ -215,10 +215,11 @@ document.getElementById("channelInput").addEventListener("input", function () {
 
 //api 호출
 async function fetchData() {
-  console.log('fetch시작')
+  
   const resultList = [];
   const serverName = document.getElementById("serverSelect").value;
   const channelNumber = document.getElementById("channelInput").value;
+  const locationSelect = document.getElementById("locationSelect").value;
   const apiKey = document.getElementById("apiKeyInput").value;
 
   const headers = {
@@ -227,40 +228,48 @@ async function fetchData() {
   };
 
   let alreadyExist=0;
- 
-  fetchedData.forEach(data => {
-    if (data.serverNum === channelNumber&&data.serverName==serverName) {
+  fetchedData.forEach(data => {    
+    // console.log(`${data.serverNum}/${channelNumber}   ${data.serverName}/${serverName}   ${data.location}/${locationSelect}`)
+    if (data.serverNum === channelNumber&&data.serverName==serverName&&data.location==locationSelect) {
+      // console.log('already')
       resultList.push(data);
       alreadyExist=1;
     }
   });
+  
   if(!alreadyExist){
+    console.log('fetch시작')
+  // console.log(`로케이션 ${locationSelect}`)
   for (const { location, npc } of locations) {
-    try {
-      const items = await fetchLocationData(npc, serverName, channelNumber, headers);
-      let serverNum = channelNumber;
-      const exists = fetchedData.some(item =>
-        item.serverName == serverName &&
-        item.serverNum == channelNumber &&
-        item.location == location
-      );
-
-      if (!exists) {
-        resultList.push({ serverName, serverNum, location, items })
-        fetchedData.push({ serverName, serverNum, location, items });
-      } else {
-        console.log('이미 존재하는 값');
+    if(locationSelect=='전체'||locationSelect==location){
+      try {
+        const items = await fetchLocationData(npc, serverName, channelNumber, headers);
+        let serverNum = channelNumber;
+        const exists = fetchedData.some(item =>
+          item.serverName == serverName &&
+          item.serverNum == channelNumber &&
+          item.location == location
+        );
+  
+        if (!exists) {
+          resultList.push({ serverName, serverNum, location, items })
+          fetchedData.push({ serverName, serverNum, location, items });
+        } else {
+          resultList.push({ serverName, serverNum, location, items })
+        }
+  
+      } catch (error) {
+        console.log(error);
+        displayError(error);
+        return 0;
       }
-
-    } catch (error) {
-      console.log(error);
-      displayError(error);
-      return 0;
     }
+
   }}
 
   // fetchedData = resultList; // 받아온 데이터를 저장
   // console.log(resultList)
+  console.log(fetchedData)
   return resultList;
 }
 
@@ -528,7 +537,10 @@ document.getElementById("channelInput").addEventListener("change", function () {
   console.log('채널변경')
   lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
 });
-
+document.getElementById("locationSelect").addEventListener("change", function () {
+  console.log('교역소변경')
+  lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
+});
 // 버튼 클릭 시 데이터 가져오기 및 렌더링
 document.getElementById("fetchButton").addEventListener("click", async () => {
   const serverName = document.getElementById("serverSelect").value;
@@ -677,7 +689,7 @@ function updateNextResetTime() {
   ) {
     console.log("시간 바뀜"); // 시간 변경 메시지
     fetchedData = [];
-    console.log(fetchData);
+    // console.log(fetchData);
 
 
     // 체크박스가 체크되어 있을 때만 fetchData 실행

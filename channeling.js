@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         if (event.target.classList.contains('color-box-color')) {
           tooltip.innerHTML = `클릭해서 ${event.target.textContent} 복사`;
-          console.log(event.target.textContent)
+          // console.log(event.target.textContent)
           tooltip.style.display = "block"; // 툴팁 보이기
         } else {
           let locationName = cell
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let tooltipText = tooltipElement.querySelector(".tooltiptext");
       if (tooltipText) {
         tooltip.innerHTML = tooltipText.textContent; // 툴팁 텍스트 설정
-        console.log(tooltipText.textContent)
+        // console.log(tooltipText.textContent)
         tooltip.style.display = "block"; // 툴팁 보이기
       }
     }
@@ -412,7 +412,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
         });
       }
     });
-    console.log(itemNameList);
+    // console.log(itemNameList);
     modalContent += `<div class="serverName"><h2>${serverName}</h2></div>`
     for (const category in itemNameList) {
       if (itemNameList.hasOwnProperty(category)) {
@@ -442,7 +442,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
           return itemValues.length > 0;               // 해당 리스트가 비어있지 않은지 확인
         });
         if (allItemsFilled && category != "꽃바구니") {
-          console.log('세트');
+          // console.log('세트');
           modalContent += `<p class="set-check">${category} 세트 가능! (${itemValuesList.join(', ')})</p>`
         }
 
@@ -464,7 +464,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
 
       modalPouch.appendChild(img);
     });
-    console.log(Array.from(pouchSrc));
+    // console.log(Array.from(pouchSrc));
     resetItemNameList();
   }
 
