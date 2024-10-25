@@ -1,0 +1,345 @@
+#top-menu {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #ebe3ff; /* 연보라색 */
+   /* 필요한 여백 추가 */
+}
+
+#body-container {
+  font-family: 'Pretendard-Regular','sans-serif';
+    max-width: 1600px; /* 최대 가로 길이 */
+    margin: 0 auto; /* 좌우 중앙 정렬 */
+    padding: 0; /* 여백 추가 */
+    
+    position: relative; /* 자식 요소를 기준으로 위치 지정 */
+}
+
+hr {
+  border: none; /* 기본 경계선 제거 */
+  height: 1px; /* 선 두께 설정 */
+  background-color: #000; /* 원하는 색상으로 변경 */
+  box-shadow: none; /* 그림자 제거 */
+  margin: 20px 0; /* 상하 여백 조정 */
+}
+.floating-button {
+    position: fixed;
+    bottom: 2%; /* 컨테이너 하단에서 20px */
+    right: 25%; /* 컨테이너 우측에서 20px */
+    padding: 10px 15px;
+    background-color: #4ac4e6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.floating-button:hover {
+    background-color: #ffffa8; /* 호버 시 색상 변경 */
+}
+
+/* 화면 너비가 1200px 이하일 때 */
+@media (max-width: 2400px) {
+.floating-button {
+  right: 20%; /* 우측에서 5%로 변경 */
+}
+}
+
+/* 화면 너비가 800px 이하일 때 */
+@media (max-width: 1600px) {
+.floating-button {
+  right:10%; /* 우측에서 2%로 변경 */
+}
+}
+
+/* 화면 너비가 500px 이하일 때 */
+@media (max-width: 600px) {
+.floating-button {
+  right: 5%; /* 우측에서 1%로 변경 */
+}
+}
+  .question-button {
+    padding: 5px;
+    margin-left: 10px;
+    font-size: 14px; /* 물음표 아이콘 크기 */
+    background-color: #4ac4e6; /* 버튼 배경색 */
+    color: white; /* 글자 색 (물음표 색) */
+    border: none; /* 테두리 없애기 */
+    border-radius: 5px; /* 둥근 모서리 */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 텍스트(물음표) 가운데 정렬 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터 모양 */
+    /*animation: blink 2s infinite;*/
+  }
+
+  /* 애니메이션 정의 
+@keyframes blink {
+0%,100% {
+background-color: #4ac4e6; 
+color: white;
+}
+50% {
+background-color: #ffffa8; 
+color: black;
+}
+
+}*/
+  .cell:hover {
+    background-color: rgba(152, 200, 255, 0.2);
+  }
+
+  .question-button:hover {
+    /*animation: none;  애니메이션 중지 */
+    background-color: #ffffa8;
+    color: black; /* 호버 시 글자 색상 변경 */
+  }
+  .set-check {
+    font-size: 20;
+    color: red;
+  }
+  .modal-color {
+    display: flex;
+  }
+  .modal-color-div {
+    display: flex;
+  }
+  /* 모달창 스타일 */
+  #modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경색 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+  }
+
+  #modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 1200px;
+
+    box-sizing: border-box; /* 패딩이 크기에 영향을 주지 않도록 */
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  #modal-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+  }
+  #modal-body > * {
+    margin: 2px;
+  }
+
+  #modal-close {
+    position: sticky; /* 스크롤 시 버튼 고정 */
+    top: 0px; /* 모달의 상단에서 10px 떨어지게 설정 */
+    right: 5px; /* 오른쪽에서 20px 간격 */
+    color: #aaa;
+    float: right;
+    font-size: 56px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  #modal-close:hover,
+  #modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /* 로딩 스피너 스타일 */
+  .spinner {
+    border: 20px solid #4ac4e6;
+    border-top: 20px solid #ffffff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto !important;
+  }
+
+  /* 스피너 애니메이션 */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* 로딩 텍스트 스타일 */
+  .loading-text {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .location_name {
+    font-family: 'HakgyoansimAllimjangTTF-B','sans-serif';
+    font-size: 30px;
+    font-weight: bold;
+    margin: 40px 0px 20px 0px;
+    text-align: center;
+  }
+  #content {
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 배치 */
+  }
+
+  .table {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 배치 */
+    margin-bottom: 10px; /* 각 테이블 간의 간격 */
+
+    align-items: flex-start;
+  }
+
+  .row {
+    display: flex; /* 가로 방향으로 배치 */
+    flex-wrap: wrap; /* 줄 바꿈 활성화 */
+    justify-content: flex-start; /* 왼쪽 정렬 */
+  }
+
+  .cell {
+    align-items: center;
+    /* flex: 1 0 16.66%; 각 셀의 기본 너비를 16.66%로 설정 (6개가 100% 차지) */
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 박스 모델 */
+    padding: 10px; /* 패딩 추가 */
+    width: 250px; /* 셀 최대 너비 설정 (반응형에 따라 조정 가능) */
+    border: 1px solid #4ac4e6;
+  }
+  .filterColor input {
+    width: 100px;
+  }
+  .filterColor p {
+    margin: 2px;
+  }
+  .filterColor {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* @media (max-width: 1200px) {
+    .cell {
+      flex: 1 0 33.33%; 
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cell {
+      flex: 1 0 50%;
+    }
+  }
+
+  @media (max-width:480px) {
+    .cell {
+      flex: 1 0 100%; 
+    }
+  } */
+
+  #next_time {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 1600px; /* 최대 가로 길이 */
+    margin: 0 auto; /* 좌우 중앙 정렬 */
+    padding: 20px; /* 여백 추가 */
+  }
+
+  label {
+    padding-left: 10px;
+  }
+  .bgColor{
+    text-align:left;
+  }
+  .color-box {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .link {
+    padding: 5px 20px;
+
+    margin-left: 10px;
+    font-size: 14px; /* 물음표 아이콘 크기 */
+    background-color: #4ac4e6; /* 버튼 배경색 */
+    color: white; /* 글자 색 (물음표 색) */
+    border: none; /* 테두리 없애기 */
+    border-radius: 5px; /* 둥근 모서리 */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 텍스트(물음표) 가운데 정렬 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터 모양 */
+    text-decoration: none;
+  }
+  .link:hover {
+    background-color: #ffffa8;
+    color: #1a1b23;
+  }
+  p {
+    color: gray;
+  }
+  .hidden {
+    display: none;
+  }
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: -150%; /* 툴팁 위치 조정 */
+    left: 30%;
+
+    opacity: 0; /* 초기 투명도 설정 */
+    transition: opacity 0.3s; /* 애니메이션 효과 */
+    white-space: normal; /* 줄바꿈이 자연스럽게 되도록 설정 */
+    word-wrap: break-word; /* 긴 단어가 있을 경우 줄바꿈 허용 */
+    pointer-events: none; /* 클릭 무시 */
+  }
+  .gyo {
+    left: 100% !important;
+  }
+  .cofi {
+    bottom: -50% !important;
+    left: 0% !important;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 0.7; /* 호버 시 투명도 변경 */
+  }
+  .container {
+    align-items: center;
+    display: flex;
+    flex-direction: column; /* 세로로 나열 */
+    box-sizing: border-box;
+    padding: 10px;
+  }

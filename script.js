@@ -342,6 +342,11 @@ function findColorData(url) {
 
 function displayError(error) {
   const content = document.getElementById("content");
+  const jsonString = errorMessage.substring(errorMessage.indexOf('{'));
+  const errorObject = JSON.parse(jsonString);
+  if (errorObject.error.name === "OPENAPI00009") {
+    content.innerHTML = `<div style="color: red;">OPENAPI00009</div>`;
+}
   content.innerHTML = `<div style="color: red;">오류 발생: ${error.message}</div>`;
 }
 ////////////////////////////////////
