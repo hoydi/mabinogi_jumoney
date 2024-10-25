@@ -451,3 +451,14 @@ label{
   display: flex;
   align-items: center;
 }
+
+.serverName {
+  background-color: #f3eaff;
+}
+
+.serverName h2 {
+  margin: 10px 0 10px 0;
+}
+.category{
+  background-color: #f9f5ff;
+}

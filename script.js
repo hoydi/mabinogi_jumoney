@@ -140,7 +140,7 @@ document.getElementById("autoFilter").addEventListener("change", function () {
 
 
 window.onload = function () {
-  console.log('온로드');
+  // console.log('온로드');
 
   // 로컬 스토리지에서 API 키 가져오기
   const storedApiKey = localStorage.getItem("apiKey");
@@ -211,6 +211,7 @@ document.getElementById("channelInput").addEventListener("input", function () {
 
 //api 호출
 async function fetchData() {
+  console.log('fetch시작')
   const resultList = [];
   const serverName = document.getElementById("serverSelect").value;
   const channelNumber = document.getElementById("channelInput").value;
@@ -224,7 +225,7 @@ async function fetchData() {
   let alreadyExist=0;
  
   fetchedData.forEach(data => {
-    if (data.serverNum === channelNumber) {
+    if (data.serverNum === channelNumber&&data.serverName==serverName) {
       resultList.push(data);
       alreadyExist=1;
     }
@@ -255,7 +256,7 @@ async function fetchData() {
   }}
 
   // fetchedData = resultList; // 받아온 데이터를 저장
-  console.log(fetchedData)
+  // console.log(resultList)
   return resultList;
 }
 
@@ -389,7 +390,7 @@ function displayError(error) {
   const content = document.getElementById("content");
   const jsonString = error.message.substring(error.message.indexOf('{'));
   const errorObject = JSON.parse(jsonString);
-  console.log(errorObject.error.name.includes("OPENAPI00009"))
+  // console.log(errorObject.error.name.includes("OPENAPI00009"))
   if (errorObject.error.name.includes("OPENAPI00009")) {
     content.innerHTML = `<div>아직 데이터가 준비되지 않았습니다. 잠시 후 다시 시도해주세요.</div>`;
     console.log(errorObject);
@@ -469,7 +470,7 @@ function renderData(filteredData) {
         mabibase_color;
       // 이미지 로드 실패 시 대체 이미지 설정
       img.onerror = function () {
-        console.log("이미지 로드 실패:", img.src);
+        // console.log("이미지 로드 실패:", img.src);
         img.src = "no_image.png"; // 대체 이미지 경로
       };
 
@@ -549,7 +550,7 @@ document.getElementById("fetchButton").addEventListener("click", async () => {
     lastNextResetTime &&
     lastNextResetTime.getTime() === nextResetTime.getTime()
   ) {
-    console.log("아직 시간 안바뀜");
+    // console.log("아직 시간 안바뀜");
     console.log(lastNextResetTime)
     return;
   }
@@ -558,7 +559,7 @@ document.getElementById("fetchButton").addEventListener("click", async () => {
   if (data) {
     renderData(data);
     if (document.getElementById("autoFilter").checked) {
-      console.log("자동필터링 실행");
+      // console.log("자동필터링 실행");
       filterData();
     }
     lastNextResetTime = nextResetTime;
@@ -578,6 +579,8 @@ document.getElementById("apiKeyInput").addEventListener("input", function () {
 document.getElementById("serverSelect").addEventListener("change", function () {
   const server = this.value; // 선택한 서버 가져오기
   localStorage.setItem("server", server); // 로컬 스토리지에 저장
+  lastNextResetTime = null;
+  console.log('null')
 });
 
 // 채널 입력 필드에 이벤트 리스너 추가

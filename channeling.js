@@ -419,7 +419,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
         let itemValuesList = [];
         let imsiContent = "";
         let itemLen = 0;
-        imsiContent += `<h3>${category}</h3>`; // 카테고리 제목 추가
+        imsiContent += `<div class="category"><h3>${category}</h3></div>`; // 카테고리 제목 추가
 
         itemNameList[category].forEach(item => {
           // 객체의 첫 번째 키를 itemName으로 설정
@@ -452,7 +452,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
 
       }
     }
-    modalContent += `<br/><hr/>`
+    
     modalPouch.innerHTML = '';
     pouchSrc.forEach(src => {
       // img 태그 생성
