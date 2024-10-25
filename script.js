@@ -8,16 +8,7 @@ const mabibase_jumoney = ["5110005", "5110006","5110007",  "5110008",  "5110009"
 const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";// API 요청 URL
 
 
-<<<<<<< HEAD
-
-// API 요청 URL
-const url = "https://open.api.nexon.com/mabinogi/v1/npcshop/list";
-
-// hex 색상을 RGB로 변환하는 함수
-function hexToRgb(hex) {
-=======
 function hexToRgb(hex) {// hex 색상을 RGB로 변환하는 함수
->>>>>>> dc1dd4be3443635b4b6e987c945a73fe107ffe37
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -31,19 +22,9 @@ function isWithinTolerance(colorA, colorB, tolerance) {//필터링
   const bDiff = Math.abs(colorB.b - colorA.b);
   return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;}
 
-<<<<<<< HEAD
-  return rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;
-}
-
-// RGB 값을 비교하기 위한 헬퍼 함수
-function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
-  const rgbValues = rgbString
-    .replace(/[^0-9\s]/g, " ")
-=======
 function parseRgb(rgbString) {// RGB 값을 비교하기 위한 헬퍼 함수
   const rgbValues = rgbString
     .replace(/[^0-9]/g, " ")
->>>>>>> dc1dd4be3443635b4b6e987c945a73fe107ffe37
     .trim()
     .split(/\s+/)
     .map(Number);
