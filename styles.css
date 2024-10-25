@@ -331,8 +331,10 @@ p {
   display: none;
 }
 .tooltip {
+  display: flex;
   position: relative;
   display: inline-block;
+  align-items: center !important; 
 }
 
 .tooltip .tooltiptext {

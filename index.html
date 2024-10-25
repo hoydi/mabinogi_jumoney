@@ -16,7 +16,7 @@
       gtag("config", "G-FSX9R0HH1Q");
     </script>
     <meta charset="UTF-8" />
-    <meta name="viewport"/>
+    <meta name="viewport" />
     <title>주머니 상점 정보</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="font.css" />
@@ -58,8 +58,8 @@
           <p
             id="next-time"
             style="
-            padding:0;
-            margin:0;
+              padding: 0;
+              margin: 0;
               padding-left: 10px;
               font-size: 30px;
               font-family: 'Pretendard-Regular';
@@ -67,7 +67,7 @@
               color: black;
             "
           ></p>
-          <div style="padding: 3px; ">
+          <div style="padding: 3px">
             <label for="apiKeyInput" style="width: 20%">API키:</label>
             <input
               type="text"
@@ -78,57 +78,60 @@
           </div>
         </div>
         <hr />
-        <div class="search" style="display: flex; ">
+        <div
+          class="search"
+          style="display: flex;"
+        >
           <!-- 서버 선택 및 채널 입력 -->
-          <div style="display: flex;padding: 3px">
-            <div>
-              <label for="serverSelect">서버</label>
-              <select id="serverSelect">
-                <option value="류트" selected>류트</option>
-                <option value="만돌린">만돌린</option>
-                <option value="하프">하프</option>
-                <option value="울프">울프</option>
-              </select>
 
-              <label for="channelInput">채널 </label>
-              <select id="channelInput" style="width: 60px"></select>
-              <div class="tooltip">
-                <button id="fetchButton" class="link">검색</button>
-                <span class="tooltiptext"
-                  >API 키 입력 안하시면 검색이 안됩니다</span
-                >
-              </div>
-              <div class="tooltip">
-                <label>
-                  <input type="checkbox" id="autoFetchCheckbox" /> 자동 실행
-                </label>
-                <span class="tooltiptext"
-                  >체크해놓으면 초기화 10분 후 자동실행됩니다</span
-                >
-              </div>
+          <div style="display: flex; padding: 3px">
+            <label for="serverSelect">서버</label>
+            <select id="serverSelect">
+              <option value="류트" selected>류트</option>
+              <option value="만돌린">만돌린</option>
+              <option value="하프">하프</option>
+              <option value="울프">울프</option>
+            </select>
+
+            <label for="channelInput">채널 </label>
+            <select id="channelInput" style="width: 60px"></select>
+            <div class="tooltip">
+              <button id="fetchButton" class="link">검색</button>
+              <span class="tooltiptext"
+                >API 키 입력 안하시면 검색이 안됩니다</span
+              >
             </div>
-            <div>
-              <div class="tooltip">
-                <label for="locationSelect">교역소</label>
-                <select id="locationSelect">
-                  <option value="전체" selected>전체</option>
-                </select>
-                <span class="tooltiptext gyo"
-                  >특정 교역소만 선택해서 볼 수 있습니다</span
-                >
-              </div>
-              <div class="tooltip">
-                <label>
-                  <input
-                    type="checkbox"
-                    id="channelingServer"
-                    style="width: auto"
-                  /><span>특정서버 채널링</span>
-                </label>
-                <span class="tooltiptext" id="channelingTooltipText"
-                  >체크시 선택한 서버만 채널링합니다</span
-                >
-              </div>
+            <div class="tooltip">
+              <label>
+                <input type="checkbox" id="autoFetchCheckbox" /> 자동 실행
+              </label>
+              <span class="tooltiptext"
+                >체크해놓으면 초기화 10분 후 자동실행됩니다</span
+              >
+            </div>
+          </div>
+          <div style="padding-left: 30px;"></div>
+          <div style="display: flex; padding: 3px;">
+            <div class="tooltip">
+              <label for="locationSelect">교역소</label>
+              <select id="locationSelect">
+                <option value="전체" selected>전체</option>
+              </select>
+              <span class="tooltiptext gyo"
+                >특정 교역소만 선택해서 볼 수 있습니다</span
+              >
+            </div>
+            <div class="tooltip">
+              <label>
+                <input
+                  type="checkbox"
+                  id="channelingServer"
+                  style="width: auto"
+                /><span>특정서버 채널링</span>
+              </label>
+              <span class="tooltiptext" id="channelingTooltipText"
+                >체크시 선택한 서버만 채널링합니다</span
+              >
             </div>
           </div>
         </div>
@@ -178,7 +181,6 @@
           　필터링 검색값은 숫자 3개만 넣으면 구분을 어떻게 하든 상관없습니다.
           예시 - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
         </p>
-
 
         <hr />
       </div>
