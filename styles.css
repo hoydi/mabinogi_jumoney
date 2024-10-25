@@ -459,6 +459,16 @@ label{
 .serverName h2 {
   margin: 10px 0 10px 0;
 }
-.category{
+.chanitems{
+  margin: 0 !important;
   background-color: #f9f5ff;
+}
+.chanItemName p{
+  margin: 2px;
+}
+.chanitems p{
+  margin: 2px;
+}
+.category h3 {
+  margin: 3px;
 }

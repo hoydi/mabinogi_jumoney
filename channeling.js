@@ -428,7 +428,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
           if (serverList.length != 0) {
             itemLen = 1;
             console.log(`itemlen: ${itemLen} - ${category}`)
-            imsiContent += `<div style="display:flex;"><div class="chanItemName">${itemName}</div>`
+            imsiContent += `<div class="chanitems" style="display:flex;"><div class="chanItemName"><p>${itemName}<p></div>`
             imsiContent += `<div><p>${serverList.join(", ")}</p></div></div>`;
           }
         });
