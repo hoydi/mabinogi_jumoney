@@ -109,7 +109,7 @@ function filterData() {
 }
 
 function resetFilterData() {
-  document.querySelectorAll("#content > .location").forEach((self)=>{
+  document.querySelectorAll("#content > .location").forEach((self) => {
     self.classList.remove("hidden");
   })
   document.querySelectorAll(".cell").forEach((td) => {
@@ -215,7 +215,7 @@ document.getElementById("channelInput").addEventListener("input", function () {
 
 //api 호출
 async function fetchData() {
-  
+
   const resultList = [];
   const serverName = document.getElementById("serverSelect").value;
   const channelNumber = document.getElementById("channelInput").value;
@@ -227,49 +227,50 @@ async function fetchData() {
     "x-nxopen-api-key": apiKey,
   };
 
-  let alreadyExist=0;
-  fetchedData.forEach(data => {    
+  let alreadyExist = 0;
+  fetchedData.forEach(data => {
     // console.log(`${data.serverNum}/${channelNumber}   ${data.serverName}/${serverName}   ${data.location}/${locationSelect}`)
-    if (data.serverNum === channelNumber&&data.serverName==serverName&&data.location==locationSelect) {
+    if (data.serverNum === channelNumber && data.serverName == serverName && data.location == locationSelect) {
       // console.log('already')
       resultList.push(data);
-      alreadyExist=1;
+      alreadyExist = 1;
     }
   });
-  
-  if(!alreadyExist){
-    console.log('fetch시작')
-  // console.log(`로케이션 ${locationSelect}`)
-  for (const { location, npc } of locations) {
-    if(locationSelect=='전체'||locationSelect==location){
-      try {
-        const items = await fetchLocationData(npc, serverName, channelNumber, headers);
-        let serverNum = channelNumber;
-        const exists = fetchedData.some(item =>
-          item.serverName == serverName &&
-          item.serverNum == channelNumber &&
-          item.location == location
-        );
-  
-        if (!exists) {
-          resultList.push({ serverName, serverNum, location, items })
-          fetchedData.push({ serverName, serverNum, location, items });
-        } else {
-          resultList.push({ serverName, serverNum, location, items })
-        }
-  
-      } catch (error) {
-        console.log(error);
-        displayError(error);
-        return 0;
-      }
-    }
 
-  }}
+  if (!alreadyExist) {
+    console.log('fetch시작')
+    // console.log(`로케이션 ${locationSelect}`)
+    for (const { location, npc } of locations) {
+      if (locationSelect == '전체' || locationSelect == location) {
+        try {
+          const items = await fetchLocationData(npc, serverName, channelNumber, headers);
+          let serverNum = channelNumber;
+          const exists = fetchedData.some(item =>
+            item.serverName == serverName &&
+            item.serverNum == channelNumber &&
+            item.location == location
+          );
+
+          if (!exists) {
+            resultList.push({ serverName, serverNum, location, items })
+            fetchedData.push({ serverName, serverNum, location, items });
+          } else {
+            resultList.push({ serverName, serverNum, location, items })
+          }
+
+        } catch (error) {
+          console.log(error);
+          displayError(error);
+          return 0;
+        }
+      }
+
+    }
+  }
 
   // fetchedData = resultList; // 받아온 데이터를 저장
   // console.log(resultList)
-  console.log(fetchedData)
+  // console.log(fetchedData)
   return resultList;
 }
 
@@ -445,15 +446,15 @@ function renderData(filteredData) {
 
       // 왼쪽 부분: 색상 박스
       const leftDiv = document.createElement("div");
-      
+
 
       leftDiv.className = "bgColor"
 
       upDiv.innerHTML = `${itemDisplayName}`; // 아이템 이름 추가
 
       for (const [colorName, colorValue] of Object.entries(colors)) {
-              const leftInDiv = document.createElement("div");
-      leftInDiv.className = "color-box-box"
+        const leftInDiv = document.createElement("div");
+        leftInDiv.className = "color-box-box"
         const colorBox = document.createElement("div");
 
         colorBox.className = `color-box ${colorName}`;
@@ -500,7 +501,7 @@ function renderData(filteredData) {
       rightDiv.appendChild(img);
 
       // 왼쪽과 오른쪽 div를 container에 추가
-      
+
       downDiv.appendChild(leftDiv);
       downDiv.appendChild(rightDiv);
       container.appendChild(upDiv);
@@ -523,26 +524,28 @@ function renderData(filteredData) {
 
 // locationSelect 변경 시 필터링된 데이터 렌더링
 document.getElementById("locationSelect").addEventListener("change", () => {
-  let server = document.getElementById("serverSelect").value;
-  let channel = document.getElementById("channelInput").value;
-  const selectedLocation = document.getElementById("locationSelect").value;
-  const filteredData =
-    selectedLocation === "전체"
-      ? fetchedData.filter(({ serverNum,serverName }) => server==serverName&&channel==serverNum)
-      : fetchedData.filter(({ location,serverNum,serverName }) => location === selectedLocation&&server==serverName&&channel==serverNum); // 선택된 위치에 해당하는 데이터만 필터링
 
-  renderData(filteredData);
+  console.log('교역소변경')
+  lastNextResetTime = null;
+  document.getElementById("fetchButton").dispatchEvent(new Event("click"));
 });
 
 //채널바꾸면 lastNextResetTime null 만들어서 fetch 되게
 document.getElementById("channelInput").addEventListener("change", function () {
-  console.log('채널변경')
+  // console.log('채널변경')
+  // let server = document.getElementById("serverSelect").value;
+  // let channel = document.getElementById("channelInput").value;
+  // const selectedLocation = document.getElementById("locationSelect").value;
+  // const filteredData =
+  //   selectedLocation === "전체"
+  //     ? fetchedData.filter(({ serverNum, serverName }) => server == serverName && channel == serverNum)
+  //     : fetchedData.filter(({ location, serverNum, serverName }) => location === selectedLocation && server == serverName && channel == serverNum); // 선택된 위치에 해당하는 데이터만 필터링
+
+  // renderData(filteredData);
   lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
+  document.getElementById("fetchButton").dispatchEvent(new Event("click"));
 });
-document.getElementById("locationSelect").addEventListener("change", function () {
-  console.log('교역소변경')
-  lastNextResetTime = null; // 값이 변경될 때 lastNextResetTime을 null로 설정
-});
+
 // 버튼 클릭 시 데이터 가져오기 및 렌더링
 document.getElementById("fetchButton").addEventListener("click", async () => {
   const serverName = document.getElementById("serverSelect").value;
@@ -599,6 +602,7 @@ document.getElementById("serverSelect").addEventListener("change", function () {
   localStorage.setItem("server", server); // 로컬 스토리지에 저장
   lastNextResetTime = null;
   console.log('null')
+  document.getElementById("fetchButton").dispatchEvent(new Event("click"));
 });
 
 // 채널 입력 필드에 이벤트 리스너 추가

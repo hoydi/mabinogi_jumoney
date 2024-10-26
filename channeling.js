@@ -320,7 +320,7 @@ async function fetchLocationByServers(targetLocation, selectedServer) {
       }
     }
   }
-  console.log(fetchedData)
+  // console.log(fetchedData)
 
 }
 
@@ -336,7 +336,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
   `;
   modal.style.display = "flex";
   modal.style.display = "flex"; // 모달 띄우기
-  console.log(`colors : ${hexcolor}`);
+  // console.log(`colors : ${hexcolor}`);
   let resultList = [];
 
   let locationData = locations.find((loc) => loc.location === targetLocation);
@@ -427,7 +427,7 @@ async function channelingRender(targetLocation, hexcolor, itemName, imgDiv) {
           const serverList = item[itemName]; // 아이템의 값인 배열을 serverList로 설정
           if (serverList.length != 0) {
             itemLen = 1;
-            console.log(`itemlen: ${itemLen} - ${category}`)
+            // console.log(`itemlen: ${itemLen} - ${category}`)
             imsiContent += `<div class="chanitems" style="display:flex;"><div class="chanItemName"><p>${itemName}<p></div>`
             imsiContent += `<div><p>${serverList.join(", ")}</p></div></div>`;
           }

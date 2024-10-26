@@ -145,7 +145,8 @@ a,button {
   background-color: white;
   padding: 20px 20px 60px 20px;
   border-radius: 10px;
-  width: 100%;
+  /* width: 100%; */
+  min-width: 300px;
   max-width: 1000px;
 
   box-sizing: border-box; /* 패딩이 크기에 영향을 주지 않도록 */
@@ -304,6 +305,7 @@ body {
 
 label {
   padding-left: 10px;
+  padding-right: 5px;
 }
 .bgColor {
   display: flex;
@@ -401,6 +403,17 @@ input {
   margin-left: 5px;
   margin-right: 10px;
 }
+#locationSelect{
+  height: 31px;
+  padding: 0;
+  margin: 0;
+}
+#prevBtn,#nextBtn{
+  margin: 0 2px 0 2px;
+  height: 90%;
+  border-radius: 5px;
+}
+
 .itemName {
   padding-bottom: 5px;
   font-weight: 800;
@@ -471,4 +484,14 @@ label{
 }
 .category h3 {
   margin: 3px;
+}
+input[type="checkbox"]{
+  width: 20px !important;
+  height: 20px;
+}
+
+
+input[type="checkbox"]:checked{
+  
+  accent-color: purple;/* 체크됐을 때 표시할 색상 */
 }
