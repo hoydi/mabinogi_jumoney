@@ -1,1 +1,223 @@
-const _0x35d007 = _0x56c7; (function (_0x4712e1, _0x16e954) { const _0x445bd1 = _0x56c7, _0x4f1255 = _0x4712e1(); while (!![]) { try { const _0x331373 = parseInt(_0x445bd1(0x119)) / 0x1 + parseInt(_0x445bd1(0xef)) / 0x2 * (-parseInt(_0x445bd1(0xf7)) / 0x3) + parseInt(_0x445bd1(0x10f)) / 0x4 + parseInt(_0x445bd1(0xf9)) / 0x5 * (-parseInt(_0x445bd1(0xda)) / 0x6) + -parseInt(_0x445bd1(0xdb)) / 0x7 + parseInt(_0x445bd1(0x109)) / 0x8 * (parseInt(_0x445bd1(0x10c)) / 0x9) + -parseInt(_0x445bd1(0xed)) / 0xa; if (_0x331373 === _0x16e954) break; else _0x4f1255['push'](_0x4f1255['shift']()); } catch (_0x3d950e) { _0x4f1255['push'](_0x4f1255['shift']()); } } }(_0x49a3, 0xa15a6)); const pouchNames = [_0x35d007(0x115), _0x35d007(0xc9), _0x35d007(0xd4), _0x35d007(0xcc), _0x35d007(0xfc), _0x35d007(0xf4), _0x35d007(0xd7), _0x35d007(0xf2), _0x35d007(0xce), _0x35d007(0x111), _0x35d007(0x114), _0x35d007(0xf5), _0x35d007(0xeb), _0x35d007(0xf3), _0x35d007(0xd2), _0x35d007(0x11a), _0x35d007(0xf8), _0x35d007(0xe8), _0x35d007(0x10a), _0x35d007(0x10e), _0x35d007(0x101), _0x35d007(0xee)], basicTypes = { '달걀': _0x35d007(0x102), '감자': _0x35d007(0xdd), '옥수수': _0x35d007(0xcb), '밀': _0x35d007(0xd3), '보리': _0x35d007(0xf6) }, textileTypes = { '양털': 'wool', '거미줄': _0x35d007(0xd8), '가는': _0x35d007(0xfe), '굵은': 'thickThread', '꽃바구니': 'flower' }, qualityMap = { '저가형': _0x35d007(0xe3), '일반': _0x35d007(0xe1), '고급': _0x35d007(0xe5), '최고급': _0x35d007(0xd5) }; function hexStringToRgb(_0x390f67) { const _0x33e605 = parseInt(_0x390f67, 0x10); return { 'r': _0x33e605 >> 0x10 & 0xff, 'g': _0x33e605 >> 0x8 & 0xff, 'b': _0x33e605 & 0xff }; } function guichana(_0x3b4b25, _0x2a07d1) { const _0x587c3d = hexStringToRgb(_0x2a07d1['A']), _0x279592 = hexStringToRgb(_0x2a07d1['B']), _0x2c8ed8 = hexStringToRgb(_0x2a07d1['C']); return drawLayers(_0x3b4b25, _0x587c3d, _0x279592, _0x2c8ed8); } const canvas = document[_0x35d007(0x105)](_0x35d007(0xde)), ctx = canvas[_0x35d007(0x10d)]('2d'); function loadImages(_0x217d59) { const _0x585d6a = _0x35d007; return Promise['all'](_0x217d59[_0x585d6a(0xca)](_0xb19ffa => { return new Promise(_0x5d2841 => { const _0x4cd702 = _0x56c7, _0x596b4a = new Image(); _0x596b4a['src'] = _0xb19ffa, _0x596b4a[_0x4cd702(0xdc)] = () => _0x5d2841(_0x596b4a); }); })); } function applyColorAndMultiply(_0x491c3f, _0x51e8f1, _0x8b0173, _0x1c1022, _0x3a6d61 = !![], _0x1fcc90 = 0x0, _0x214c36 = 0x0) { const _0x3527b8 = _0x35d007, _0xf048c6 = document[_0x3527b8(0x105)](_0x3527b8(0xde)), _0xa6c7ce = _0xf048c6[_0x3527b8(0x10d)]('2d'); _0xf048c6[_0x3527b8(0x113)] = _0x51e8f1['width'], _0xf048c6[_0x3527b8(0xea)] = _0x51e8f1[_0x3527b8(0xea)], _0xa6c7ce[_0x3527b8(0x110)](_0x51e8f1, 0x0, 0x0); const _0x44bfa7 = _0xa6c7ce['getImageData'](0x0, 0x0, _0x51e8f1[_0x3527b8(0x113)], _0x51e8f1[_0x3527b8(0xea)]), _0x25c4f2 = _0x44bfa7[_0x3527b8(0x103)]; for (let _0x50ae6d = 0x0; _0x50ae6d < _0x25c4f2[_0x3527b8(0xe7)]; _0x50ae6d += 0x4) { const _0x52f6b3 = _0x25c4f2[_0x50ae6d + 0x3]; _0x52f6b3 > 0x0 && _0x3a6d61 && (_0x25c4f2[_0x50ae6d] = _0x25c4f2[_0x50ae6d] * _0x8b0173['r'] / 0xff, _0x25c4f2[_0x50ae6d + 0x1] = _0x25c4f2[_0x50ae6d + 0x1] * _0x8b0173['g'] / 0xff, _0x25c4f2[_0x50ae6d + 0x2] = _0x25c4f2[_0x50ae6d + 0x2] * _0x8b0173['b'] / 0xff); } _0xa6c7ce['putImageData'](_0x44bfa7, 0x0, 0x0), _0x491c3f[_0x3527b8(0x107)] = _0x1c1022, _0x491c3f[_0x3527b8(0x110)](_0xf048c6, _0x1fcc90, _0x214c36), _0x491c3f[_0x3527b8(0x107)] = _0x3527b8(0x11b); } const accentuatedColor = { 'r': Math[_0x35d007(0xd9)](0xff, 0x0 + 0x32), 'g': Math[_0x35d007(0xd9)](0xff, 0x0 + 0x32), 'b': Math[_0x35d007(0xd9)](0xff, 0x0 + 0x32) }; function getImagePaths(_0x55e8c8) { const _0x1feb90 = _0x35d007; let _0x2b8291 = '', _0x3c494a = '', _0x1c02cc = []; if (basicTypes[_0x55e8c8[_0x1feb90(0xcf)]('\x20')[0x1]]) _0x3c494a = _0x1feb90(0xe4), _0x2b8291 = basicTypes[_0x55e8c8[_0x1feb90(0xcf)]('\x20')[0x1]]; else { if (textileTypes[_0x55e8c8[_0x1feb90(0xcf)]('\x20')[0x1]]) _0x3c494a = _0x1feb90(0xf0), _0x2b8291 = textileTypes[_0x55e8c8[_0x1feb90(0xcf)]('\x20')[0x1]], ![_0x55e8c8[_0x1feb90(0xcf)]('\x20')[0x1]]['includes']('양털') && _0x1c02cc[_0x1feb90(0x10b)](_0x1feb90(0xfa) + _0x3c494a + _0x1feb90(0xe0) + _0x2b8291 + '_pattern.png'); else { const _0x161152 = _0x55e8c8[_0x1feb90(0xcf)]('\x20')[0x1]; _0x3c494a = _0x55e8c8[_0x1feb90(0xcd)]('가죽') ? _0x1feb90(0xfb) : _0x55e8c8['includes']('옷감') ? _0x1feb90(0x104) : _0x1feb90(0xe6), _0x2b8291 = _0x3c494a; const _0x3575ea = qualityMap[_0x161152]; _0x1c02cc[_0x1feb90(0x10b)](_0x1feb90(0xfa) + _0x3c494a + '/' + _0x3575ea + _0x1feb90(0x118), './pouch/' + _0x3c494a + '/' + _0x3575ea + _0x1feb90(0x106), _0x1feb90(0xfa) + _0x3c494a + '/' + _0x3575ea + _0x1feb90(0xfd)); } } const _0x52924a = [_0x1feb90(0xfa) + _0x3c494a + _0x1feb90(0xe0) + _0x2b8291 + _0x1feb90(0xe9), _0x1feb90(0xfa) + _0x3c494a + '/open_' + _0x2b8291 + _0x1feb90(0xd1), _0x1feb90(0xfa) + _0x3c494a + _0x1feb90(0xe0) + _0x2b8291 + _0x1feb90(0x108), _0x1feb90(0xfa) + _0x3c494a + '/open_' + _0x2b8291 + _0x1feb90(0x117), _0x1feb90(0xd6)]; return _0x52924a[_0x1feb90(0xe2)](_0x1c02cc); } function _0x56c7(_0x28ec43, _0x163595) { const _0x49a338 = _0x49a3(); return _0x56c7 = function (_0x56c711, _0x4b2dcb) { _0x56c711 = _0x56c711 - 0xc9; let _0x3beb60 = _0x49a338[_0x56c711]; return _0x3beb60; }, _0x56c7(_0x28ec43, _0x163595); } const allImagePaths = pouchNames[_0x35d007(0xca)](_0x16f144 => getImagePaths(_0x16f144)); function _0x49a3() { const _0x57d60a = ['multiply', '튼튼한\x20감자\x20주머니', 'map', 'corn', '튼튼한\x20밀\x20주머니', 'includes', '튼튼한\x20굵은\x20실뭉치\x20주머니', 'split', 'src', '_in.png', '튼튼한\x20저가형\x20옷감\x20주머니', 'wheat', '튼튼한\x20옥수수\x20주머니', 'finest', './pouch/mark.png', '튼튼한\x20거미줄\x20주머니', 'cobweb', 'min', '186EjJPzn', '1098454mTQMlg', 'onload', 'potato', 'canvas', 'slice', '/open_', 'common', 'concat', 'cheap', 'crop', 'fine', 'silk', 'length', '튼튼한\x20최고급\x20옷감\x20주머니', '_base.png', 'height', '튼튼한\x20고급\x20가죽\x20주머니', 'image/png', '17289230pczzDr', '튼튼한\x20최고급\x20실크\x20주머니', '102566giJNPh', 'textile', 'color-burn', '튼튼한\x20가는\x20실뭉치\x20주머니', '튼튼한\x20최고급\x20가죽\x20주머니', '튼튼한\x20양털\x20주머니', '튼튼한\x20일반\x20가죽\x20주머니', 'barley', '15BqxjEi', '튼튼한\x20고급\x20옷감\x20주머니', '100005jIuEsg', './pouch/', 'leather', '튼튼한\x20보리\x20주머니', '_roman3.png', 'thinThread', 'screen', 'lighter', '튼튼한\x20고급\x20실크\x20주머니', 'egg', 'data', 'fabric', 'createElement', '_roman2.png', 'globalCompositeOperation', '_out.png', '8kKgzRu', '튼튼한\x20저가형\x20실크\x20주머니', 'push', '10941003zkfPLo', 'getContext', '튼튼한\x20일반\x20실크\x20주머니', '4085520jWWUlE', 'drawImage', '튼튼한\x20꽃바구니', 'toDataURL', 'width', '튼튼한\x20저가형\x20가죽\x20주머니', '튼튼한\x20달걀\x20주머니', 'test', '_light.png', '_roman1.png', '1186146sBPCJy', '튼튼한\x20일반\x20옷감\x20주머니', 'source-over']; _0x49a3 = function () { return _0x57d60a; }; return _0x49a3(); } async function drawLayers(_0x49c491, _0x486ff9, _0x1ef8d9, _0x3adc96) { const _0x45a7ae = _0x35d007, _0x52f541 = getImagePaths(_0x49c491), _0x50e75e = await loadImages(_0x52f541); canvas[_0x45a7ae(0x113)] = _0x50e75e[0x0][_0x45a7ae(0x113)], canvas[_0x45a7ae(0xea)] = _0x50e75e[0x0][_0x45a7ae(0xea)], applyColorAndMultiply(ctx, _0x50e75e[0x0], { 'r': 0x0, 'g': 0x0, 'b': 0x0 }, 'source-over', ![]); if (/달걀|감자|옥수수|밀|보리/[_0x45a7ae(0x116)](_0x49c491)) applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x1ef8d9, _0x45a7ae(0x11b), ![]), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, 'multiply'), applyColorAndMultiply(ctx, _0x50e75e[0x3], { 'r': 0xff, 'g': 0xff, 'b': 0xff }, _0x45a7ae(0x100), ![]); else { if (/거미줄|가는|굵은/['test'](_0x49c491)) { applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x3adc96, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x3adc96, 'multiply'), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, _0x45a7ae(0x11c)); const _0x4bbc2c = _0x50e75e[0x5]; applyColorAndMultiply(ctx, _0x4bbc2c, _0x1ef8d9, _0x45a7ae(0x11c)), applyColorAndMultiply(ctx, _0x50e75e[0x3], { 'r': 0xff, 'g': 0xff, 'b': 0xff }, _0x45a7ae(0x100), ![]); } else { if (/꽃/[_0x45a7ae(0x116)](_0x49c491)) { applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x1ef8d9, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x1ef8d9, _0x45a7ae(0x11c)), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, 'multiply'); const _0x1666d0 = _0x50e75e[0x5]; applyColorAndMultiply(ctx, _0x1666d0, _0x3adc96, 'multiply'), applyColorAndMultiply(ctx, _0x50e75e[0x3], { 'r': 0xff, 'g': 0xff, 'b': 0xff }, _0x45a7ae(0x100), ![]); } else applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x1ef8d9, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x1], _0x1ef8d9, 'multiply'), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, _0x45a7ae(0xf1)), applyColorAndMultiply(ctx, _0x50e75e[0x2], _0x486ff9, 'multiply'), applyColorAndMultiply(ctx, _0x50e75e[0x3], { 'r': 0xff, 'g': 0xff, 'b': 0xff }, _0x45a7ae(0x100), ![]); } } if (_0x49c491['includes']('가죽') || _0x49c491[_0x45a7ae(0xcd)]('옷감') || _0x49c491[_0x45a7ae(0xcd)]('실크')) { const _0x54c029 = _0x50e75e[_0x45a7ae(0xdf)](0x5, 0x8); applyColorAndMultiply(ctx, _0x54c029[0x2], _0x3adc96, 'source-over'), applyColorAndMultiply(ctx, _0x54c029[0x1], { 'r': 0x0, 'g': 0x0, 'b': 0x0 }, _0x45a7ae(0xff), ![]), applyColorAndMultiply(ctx, _0x54c029[0x0], { 'r': 0x0, 'g': 0x0, 'b': 0x0 }, 'color-burn', ![]), applyColorAndMultiply(ctx, _0x54c029[0x0], { 'r': 0x0, 'g': 0x0, 'b': 0x0 }, _0x45a7ae(0x11c), ![]), applyColorAndMultiply(ctx, _0x54c029[0x0], _0x3adc96, 'color-dodge', ![]); } const _0x1cc6c2 = _0x50e75e[0x4]; applyColorAndMultiply(ctx, _0x1cc6c2, { 'r': 0xff, 'g': 0xff, 'b': 0xff }, _0x45a7ae(0x11b), ![], 0x0, canvas[_0x45a7ae(0xea)] - _0x1cc6c2['height']); const _0xc50f4e = document['createElement']('img'); return _0xc50f4e[_0x45a7ae(0xd0)] = canvas[_0x45a7ae(0x112)](_0x45a7ae(0xec)), _0xc50f4e; }
+const pouchNames = [
+    '튼튼한 달걀 주머니', '튼튼한 감자 주머니', '튼튼한 옥수수 주머니', '튼튼한 밀 주머니', '튼튼한 보리 주머니',
+    '튼튼한 양털 주머니', '튼튼한 거미줄 주머니', '튼튼한 가는 실뭉치 주머니', '튼튼한 굵은 실뭉치 주머니', '튼튼한 꽃바구니',
+    '튼튼한 저가형 가죽 주머니', '튼튼한 일반 가죽 주머니', '튼튼한 고급 가죽 주머니', '튼튼한 최고급 가죽 주머니',
+    '튼튼한 저가형 옷감 주머니', '튼튼한 일반 옷감 주머니', '튼튼한 고급 옷감 주머니', '튼튼한 최고급 옷감 주머니',
+    '튼튼한 저가형 실크 주머니', '튼튼한 일반 실크 주머니', '튼튼한 고급 실크 주머니', '튼튼한 최고급 실크 주머니'
+];
+
+// typeName과 품질에 따른 매핑 설정
+const basicTypes = { '달걀': 'egg', '감자': 'potato', '옥수수': 'corn', '밀': 'wheat', '보리': 'barley' };
+const textileTypes = { '양털': 'wool', '거미줄': 'cobweb', '가는': 'thinThread', '굵은': 'thickThread', '꽃바구니': 'flower' };
+const qualityMap = { '저가형': 'cheap', '일반': 'common', '고급': 'fine', '최고급': 'finest' };
+
+// 색상 문자열을 RGB 객체로 변환하는 함수
+function hexStringToRgb(hex) {
+    const bigint = parseInt(hex, 16);
+    return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255,
+    };
+}
+
+function guichana(name, colorMap) {
+    const outgam = hexStringToRgb(colorMap.A); // A의 RGB 값
+    const ingam = hexStringToRgb(colorMap.B); // B의 RGB 값
+    const roman = hexStringToRgb(colorMap.C); // C의 RGB 값
+
+    drawLayers(name, outgam, ingam, roman);
+}
+
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+
+// 이미지 로드 함수
+function loadImages(sources) {
+    return Promise.all(
+        sources.map((src) => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => resolve(img);
+            });
+        })
+    );
+}
+
+// 투명도를 기준으로 색상 필터와 혼합 효과를 적용하는 함수 (x, y 좌표 추가)
+function applyColorAndMultiply(ctx, img, color, blendMode, applyColor = true, x = 0, y = 0) {
+    // 새로운 임시 캔버스 생성
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCanvas.width = img.width;
+    tempCanvas.height = img.height;
+
+    // 임시 캔버스에 이미지 그리기
+    tempCtx.drawImage(img, 0, 0);
+    const imgData = tempCtx.getImageData(0, 0, img.width, img.height);
+    const data = imgData.data;
+
+    // 투명한 부분은 건너뛰고 불투명한 픽셀에만 색상을 적용
+    for (let i = 0; i < data.length; i += 4) {
+        const alpha = data[i + 3]; // 투명도 확인
+        if (alpha > 0 && applyColor) { // applyColor가 true일 때만 색상 변환
+            data[i] = (data[i] * color.r) / 255; // Red
+            data[i + 1] = (data[i + 1] * color.g) / 255; // Green
+            data[i + 2] = (data[i + 2] * color.b) / 255; // Blue
+        }
+    }
+
+    // 수정된 데이터를 임시 캔버스에 적용
+    tempCtx.putImageData(imgData, 0, 0);
+
+    // 주 캔버스에 혼합 모드를 설정하고 임시 캔버스의 이미지를 (x, y)에 그리기
+    ctx.globalCompositeOperation = blendMode;
+    ctx.drawImage(tempCanvas, x, y);
+
+    // 기본 혼합 모드로 복귀
+    ctx.globalCompositeOperation = "source-over";
+}
+
+const accentuatedColor = {
+    r: Math.min(255, 0 + 50), // 기본 색상에 추가
+    g: Math.min(255, 0 + 50),
+    b: Math.min(255, 0 + 50)
+};
+
+
+// 이미지 경로 생성 함수
+function getImagePaths(name) {
+    let typeName = '';
+    let pouchType = '';
+    let additionalPaths = [];
+
+    if (basicTypes[name.split(' ')[1]]) {
+        pouchType = 'crop';
+        typeName = basicTypes[name.split(' ')[1]];
+    } else if (textileTypes[name.split(' ')[1]]) {
+        pouchType = 'textile';
+        typeName = textileTypes[name.split(' ')[1]];
+        if (![name.split(' ')[1]].includes('양털')) {
+            additionalPaths.push(`./pouch/${pouchType}/open_${typeName}_pattern.png`);
+        }
+
+    } else {
+        console.log(name)
+        const qualityKey = name.split(' ')[1];
+        pouchType = name.includes('가죽') ? 'leather' : name.includes('옷감') ? 'fabric' : 'silk';
+        typeName = pouchType;
+        const quality = qualityMap[qualityKey];
+        console.log(quality)
+        additionalPaths.push(
+
+            `./pouch/${pouchType}/${quality}_roman1.png`,
+            `./pouch/${pouchType}/${quality}_roman2.png`,
+            `./pouch/${pouchType}/${quality}_roman3.png`
+        );
+    }
+
+    // 공통 경로 및 추가 경로 반환
+    const basePaths = [
+        `./pouch/${pouchType}/open_${typeName}_base.png`,
+        `./pouch/${pouchType}/open_${typeName}_in.png`,
+        `./pouch/${pouchType}/open_${typeName}_out.png`,
+        `./pouch/${pouchType}/open_${typeName}_light.png`,
+        `./pouch/mark.png`
+    ];
+
+    return basePaths.concat(additionalPaths);
+}
+
+// pouchNames에 따라 이미지 경로 생성
+const allImagePaths = pouchNames.map(name => getImagePaths(name));
+console.log(allImagePaths);
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 모든 이미지 레이어를 그리는 함수
+async function drawLayers(pouchName, outgam, ingam, roman) {
+    // pouchName을 사용하여 이미지 경로 배열을 가져옴
+    const imageSources = getImagePaths(pouchName);
+
+    // 이미지 로드
+    const images = await loadImages(imageSources);
+
+    // 캔버스 크기를 첫 번째 이미지 크기로 설정
+    canvas.width = images[0].width;
+    canvas.height = images[0].height;
+
+    // 이미지 레이어 처리
+    applyColorAndMultiply(ctx, images[0], { r: 0, g: 0, b: 0 }, "source-over", false); // base
+
+    if (/달걀|감자|옥수수|밀|보리/.test(pouchName)) {
+
+
+        applyColorAndMultiply(ctx, images[1], ingam, "source-over", false); //in
+        applyColorAndMultiply(ctx, images[2], outgam, "color-burn");                       // out
+        applyColorAndMultiply(ctx, images[2], outgam, "multiply");                         // out
+        applyColorAndMultiply(ctx, images[3], { r: 255, g: 255, b: 255 }, "lighter", false); // light
+    }
+    else if (/거미줄|가는|굵은/.test(pouchName)) {
+
+        applyColorAndMultiply(ctx, images[1], roman, "color-burn"); //in
+        applyColorAndMultiply(ctx, images[1], roman, "multiply"); // in
+        applyColorAndMultiply(ctx, images[2], outgam, "color-burn");                       // out
+        applyColorAndMultiply(ctx, images[2], outgam, "multiply");                         // out
+        const pattern = images[5];
+
+        applyColorAndMultiply(ctx, pattern, ingam, "multiply");                     // pattern
+        applyColorAndMultiply(ctx, images[3], { r: 255, g: 255, b: 255 }, "lighter", false); // light
+    }
+    else if (/꽃/.test(pouchName)) {
+        applyColorAndMultiply(ctx, images[1], ingam, "color-burn"); //in
+        applyColorAndMultiply(ctx, images[1], ingam, "multiply"); // in
+        applyColorAndMultiply(ctx, images[2], outgam, "color-burn");                       // out
+        applyColorAndMultiply(ctx, images[2], outgam, "multiply");                         // out
+        const pattern = images[5];
+
+        applyColorAndMultiply(ctx, pattern, roman, "multiply");                     // pattern
+        applyColorAndMultiply(ctx, images[3], { r: 255, g: 255, b: 255 }, "lighter", false); // light
+
+    }
+    else {
+        applyColorAndMultiply(ctx, images[1], ingam, "color-burn"); //in
+        applyColorAndMultiply(ctx, images[1], ingam, "multiply"); // in
+        applyColorAndMultiply(ctx, images[2], outgam, "color-burn");                       // out
+        applyColorAndMultiply(ctx, images[2], outgam, "multiply");                         // out
+        applyColorAndMultiply(ctx, images[3], { r: 255, g: 255, b: 255 }, "lighter", false); // light
+    }
+
+
+
+
+    // 추가 레이어 (패턴 및 로만)
+    if (pouchName.includes("가죽") || pouchName.includes("옷감") || pouchName.includes("실크")) {
+        const romans = images.slice(5, 8); // 로만 이미지를 배열에서 가져옴
+        applyColorAndMultiply(ctx, romans[2], roman, "source-over");                    // roman3
+        applyColorAndMultiply(ctx, romans[1], { r: 0, g: 0, b: 0 }, "screen", false);   // roman2
+        applyColorAndMultiply(ctx, romans[0], { r: 0, g: 0, b: 0 }, "color-burn", false); // roman1
+        applyColorAndMultiply(ctx, romans[0], { r: 0, g: 0, b: 0 }, "multiply", false); // roman1
+        applyColorAndMultiply(ctx, romans[0], roman, "color-dodge", false);              // roman1
+    }
+    // mark 이미지는 마지막에 위치하므로 해당 이미지를 사용하여 표시
+    const markImage = images[4];
+    applyColorAndMultiply(ctx, markImage, { r: 255, g: 255, b: 255 }, "source-over", false, 0, canvas.height - markImage.height); // mark
+
+
+    // 최종 이미지 캔버스를 data URL로 변환하여 img 요소에 추가
+    const imgElement = document.createElement("img");
+    imgElement.src = canvas.toDataURL("image/png");
+
+}
+

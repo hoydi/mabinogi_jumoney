@@ -1,1 +1,36 @@
-const _0x9d878c = _0x56ae; (function (_0x37ef1a, _0x5f0621) { const _0x1c19f8 = _0x56ae, _0x127b75 = _0x37ef1a(); while (!![]) { try { const _0x2459ee = -parseInt(_0x1c19f8(0xdf)) / 0x1 * (-parseInt(_0x1c19f8(0xf1)) / 0x2) + parseInt(_0x1c19f8(0xe7)) / 0x3 * (-parseInt(_0x1c19f8(0xf5)) / 0x4) + -parseInt(_0x1c19f8(0xea)) / 0x5 * (parseInt(_0x1c19f8(0xe9)) / 0x6) + parseInt(_0x1c19f8(0xe3)) / 0x7 * (parseInt(_0x1c19f8(0xed)) / 0x8) + parseInt(_0x1c19f8(0xe8)) / 0x9 * (-parseInt(_0x1c19f8(0xe1)) / 0xa) + -parseInt(_0x1c19f8(0xf0)) / 0xb * (-parseInt(_0x1c19f8(0xfd)) / 0xc) + -parseInt(_0x1c19f8(0xf9)) / 0xd; if (_0x2459ee === _0x5f0621) break; else _0x127b75['push'](_0x127b75['shift']()); } catch (_0x2f7a87) { _0x127b75['push'](_0x127b75['shift']()); } } }(_0x3584, 0x52d51)); function _0x3584() { const _0x298bed = ['add', '46167CcAREQ', '716670PqgYnL', '2527830CfwTxI', '5JbNdpG', 'change', 'collapsed', '80pJxNFU', 'channelInput', 'click', '209zQodDg', '174502CKlWVe', 'chanNextBtn', 'length', 'chanPrevBtn', '4AHwsVM', 'addEventListener', 'textContent', 'toggleFilterButton', '1632904ZkfAvu', 'options', '필터링\x20접기', 'dispatchEvent', '232716kTPGIz', 'classList', '6HWolKj', 'locationSelect', '70YcqCXL', 'getElementById', '396914fxeVtg', '필터링\x20펼치기', 'selectedIndex']; _0x3584 = function () { return _0x298bed; }; return _0x3584(); } let locationSelectButton = document[_0x9d878c(0xe2)](_0x9d878c(0xe0)), channelInputButton = document[_0x9d878c(0xe2)](_0x9d878c(0xee)), prevBtn = document[_0x9d878c(0xe2)]('prevBtn'), nextBtn = document['getElementById']('nextBtn'), chanPrevBtn = document[_0x9d878c(0xe2)](_0x9d878c(0xf4)), chanNextBtn = document['getElementById'](_0x9d878c(0xf2)); function _0x56ae(_0x1172e2, _0x23fb93) { const _0x35841e = _0x3584(); return _0x56ae = function (_0x56ae0d, _0x15a53e) { _0x56ae0d = _0x56ae0d - 0xdf; let _0x4e5f81 = _0x35841e[_0x56ae0d]; return _0x4e5f81; }, _0x56ae(_0x1172e2, _0x23fb93); } prevBtn['addEventListener'](_0x9d878c(0xef), () => { const _0x7e478c = _0x9d878c; let _0x279065 = locationSelectButton[_0x7e478c(0xe5)], _0x52846e = _0x279065 === 0x0 ? locationSelectButton['options'][_0x7e478c(0xf3)] - 0x1 : _0x279065 - 0x1; locationSelectButton[_0x7e478c(0xe5)] = _0x52846e, locationSelectButton[_0x7e478c(0xfc)](new Event(_0x7e478c(0xeb))); }), nextBtn[_0x9d878c(0xf6)](_0x9d878c(0xef), () => { const _0x1c979f = _0x9d878c; let _0x216b6f = locationSelectButton[_0x1c979f(0xe5)], _0x2117bc = _0x216b6f === locationSelectButton['options'][_0x1c979f(0xf3)] - 0x1 ? 0x0 : _0x216b6f + 0x1; locationSelectButton['selectedIndex'] = _0x2117bc, locationSelectButton['dispatchEvent'](new Event(_0x1c979f(0xeb))); }), chanPrevBtn[_0x9d878c(0xf6)](_0x9d878c(0xef), () => { const _0x11d56a = _0x9d878c; let _0x55f084 = channelInputButton['selectedIndex'], _0x4657f3 = _0x55f084 === 0x0 ? channelInputButton[_0x11d56a(0xfa)][_0x11d56a(0xf3)] - 0x1 : _0x55f084 - 0x1; channelInputButton[_0x11d56a(0xe5)] = _0x4657f3, channelInputButton[_0x11d56a(0xfc)](new Event(_0x11d56a(0xeb))); }), chanNextBtn[_0x9d878c(0xf6)](_0x9d878c(0xef), () => { const _0x46e0b3 = _0x9d878c; let _0x2e98b4 = channelInputButton['selectedIndex'], _0x4681e4 = _0x2e98b4 === channelInputButton[_0x46e0b3(0xfa)][_0x46e0b3(0xf3)] - 0x1 ? 0x0 : _0x2e98b4 + 0x1; channelInputButton['selectedIndex'] = _0x4681e4, channelInputButton[_0x46e0b3(0xfc)](new Event('change')); }), document['addEventListener']('DOMContentLoaded', () => { const _0x3a9f4b = _0x9d878c, _0x224008 = document[_0x3a9f4b(0xe2)](_0x3a9f4b(0xf8)), _0x3dbce3 = document[_0x3a9f4b(0xe2)]('filterColorMenu'); let _0x13d52e = ![]; _0x224008['addEventListener']('click', () => { const _0x24f1dc = _0x3a9f4b; _0x13d52e = !_0x13d52e, _0x13d52e ? (_0x3dbce3[_0x24f1dc(0xfe)][_0x24f1dc(0xe6)](_0x24f1dc(0xec)), _0x224008[_0x24f1dc(0xf7)] = _0x24f1dc(0xe4)) : (_0x3dbce3[_0x24f1dc(0xfe)]['remove'](_0x24f1dc(0xec)), _0x224008[_0x24f1dc(0xf7)] = _0x24f1dc(0xfb)); }); });
+const locationSelect = document.getElementById("locationSelect");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+// const channelInput = document.getElementById("channelInput");
+const chanPrevBtn = document.getElementById("chanPrevBtn");
+const chanNextBtn = document.getElementById("chanNextBtn");
+// < 버튼 클릭 이벤트
+prevBtn.addEventListener("click", () => {
+    let currentIndex = locationSelect.selectedIndex; // 현재 선택된 인덱스
+    let newIndex = currentIndex === 0 ? locationSelect.options.length - 1 : currentIndex - 1; // 첫 번째일 때 마지막으로 돌아감
+    locationSelect.selectedIndex = newIndex;
+    locationSelect.dispatchEvent(new Event("change"));
+});
+
+// > 버튼 클릭 이벤트
+nextBtn.addEventListener("click", () => {
+    let currentIndex = locationSelect.selectedIndex; // 현재 선택된 인덱스
+    let newIndex = currentIndex === locationSelect.options.length - 1 ? 0 : currentIndex + 1; // 마지막일 때 처음으로 돌아감
+    locationSelect.selectedIndex = newIndex;
+    locationSelect.dispatchEvent(new Event("change"));
+});
+chanPrevBtn.addEventListener("click", () => {
+    let currentIndex = channelInput.selectedIndex; // 현재 선택된 인덱스
+    let newIndex = currentIndex === 0 ? channelInput.options.length - 1 : currentIndex - 1; // 첫 번째일 때 마지막으로 돌아감
+    channelInput.selectedIndex = newIndex;
+    channelInput.dispatchEvent(new Event("change"));
+});
+
+// > 버튼 클릭 이벤트
+chanNextBtn.addEventListener("click", () => {
+    let currentIndex = channelInput.selectedIndex; // 현재 선택된 인덱스
+    let newIndex = currentIndex === channelInput.options.length - 1 ? 0 : currentIndex + 1; // 마지막일 때 처음으로 돌아감
+    channelInput.selectedIndex = newIndex;
+    channelInput.dispatchEvent(new Event("change"));
+});
