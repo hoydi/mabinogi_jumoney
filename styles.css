@@ -483,7 +483,7 @@ input {
     font-size: 20px;
     padding: 50px;
     border-radius: 5px;
-    z-index: 1000; /* 알림을 가장 위에 표시 */
+    z-index: 1000;
 }
 
 .search {
