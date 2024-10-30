@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-FSX9R0HH1Q"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-FSX9R0HH1Q"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
 
-      gtag("config", "G-FSX9R0HH1Q");
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" />
-    <title>주머니 상점 정보</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="font.css" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-T47T3F7D"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <div id="body-container">
-      <div id="top-menu">
-        <!-- End Google Tag Manager (noscript) -->
-        <div style="display: flex; justify-content: space-between">
-          <!-- <div class="tooltip">
+            gtag('config', 'G-FSX9R0HH1Q');
+        </script>
+        <meta charset="UTF-8" />
+        <meta name="viewport" />
+        <title>주머니 상점 정보</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="font.css" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-T47T3F7D"
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden"
+            ></iframe
+        ></noscript>
+        <div id="body-container">
+            <div id="top-menu">
+                <!-- End Google Tag Manager (noscript) -->
+                <div style="display: flex; justify-content: space-between">
+                    <!-- <div class="tooltip">
         <a
           class="link" style="font-size: x-large;"
           href="https://hoydi.github.io/jumoney_test/"
@@ -47,236 +47,282 @@
           >테스트 중인 채널링 기능</span
         >
       </div> -->
-          <!-- <div class="tooltip">
+                    <!-- <div class="tooltip">
         <img src="cofi.png" />
         <span class="tooltiptext cofi">cofi. 링크같은 건 없슴니다</span>
       </div> -->
 
-          <p id="hiddenParagraph" style="display: none">
-            최신업데이트시간 241018 1913
-          </p>
-          <p
-            id="next-time"
+                    <p id="hiddenParagraph" style="display: none">
+                        최신업데이트시간 241018 1913
+                    </p>
+                    <p
+                        id="next-time"
+                        style="
+                            padding: 0;
+                            margin: 0;
+                            padding-left: 10px;
+                            font-size: 30px;
+                            font-family: 'Pretendard-Regular';
+                            font-weight: 800;
+                            color: black;
+                        "
+                    ></p>
+                    <div style="padding: 3px; display: flex">
+                        <label for="apiKeyInput" style="width: 20%"
+                            >API키</label
+                        >
+                        <input
+                            type="text"
+                            id="apiKeyInput"
+                            placeholder="API 키를 입력하세요"
+                            value=""
+                        />
+                    </div>
+                </div>
+                <hr />
+                <div class="search" style="display: flex">
+                    <!-- 서버 선택 및 채널 입력 -->
+
+                    <div style="display: flex; padding: 3px; flex-wrap: wrap">
+                        <label for="serverSelect">서버</label>
+                        <select id="serverSelect">
+                            <option value="류트" selected>류트</option>
+                            <option value="만돌린">만돌린</option>
+                            <option value="하프">하프</option>
+                            <option value="울프">울프</option>
+                        </select>
+                        <div class="tooltip">
+                            <label for="channelInput">채널 </label>
+                            <button id="chanPrevBtn">&lt;</button>
+                            <select
+                                id="channelInput"
+                                style="width: 60px"
+                            ></select>
+                            <button id="chanNextBtn">&gt;</button>
+                        </div>
+                    </div>
+                    <!-- <div style="padding-left: 30px;"></div> -->
+                    <div style="display: flex; padding: 3px; flex-wrap: wrap">
+                        <div class="tooltip">
+                            <label for="locationSelect">교역소</label>
+                            <button id="prevBtn">&lt;</button>
+                            <select id="locationSelect">
+                                <option value="전체" selected>전체</option>
+                            </select>
+                            <button id="nextBtn">&gt;</button>
+                            <span class="tooltiptext gyo"
+                                >특정 교역소만 선택해서 볼 수 있습니다</span
+                            >
+                        </div>
+                        <div class="tooltip">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    id="channelingServer"
+                                    style="width: auto"
+                                /><span>특정서버 채널링</span>
+                            </label>
+                            <span class="tooltiptext" id="channelingTooltipText"
+                                >체크시 선택한 서버만 채널링합니다</span
+                            >
+                        </div>
+                        <div class="tooltip">
+                            <button id="fetchButton" class="link">검색</button>
+                            <span class="tooltiptext"
+                                >API 키 입력 안하시면 검색이 안됩니다</span
+                            >
+                        </div>
+                        <div class="tooltip">
+                            <label>
+                                <input type="checkbox" id="autoFetchCheckbox" />
+                                자동 실행
+                            </label>
+                            <span class="tooltiptext"
+                                >체크해놓으면 초기화 30초 후
+                                자동실행됩니다</span
+                            >
+                        </div>
+                    </div>
+                </div>
+                <!-- 초기값 설정 -->
+
+                <hr />
+                <div class="filterColor" id="filterColorMenu">
+                    <div id="filterInputGroups">
+                        <div id="filterAbove">
+                            <div class="tooltip filterInput">
+                                <label for="filterType"></label>
+                                <select class="filterType">
+                                    <option value="anywhere">전체</option>
+                                    <option value="outer">겉감</option>
+                                    <option value="roman">로마자</option>
+                                    <option value="inner">안감</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    class="colorInput"
+                                    placeholder="예: 0, 255, 0"
+                                />
+                                <span class="tooltiptext">
+                                    필터링 RGB값 예시 - (0,0,0) | 0/0/0 | 0.0.0
+                                    | 0 0 0
+                                </span>
+                            </div>
+                        </div>
+                        <div id="filterBelow">
+                            <div class="tooltip">
+                                <button
+                                    id="addInputButton"
+                                    class="rounded-button"
+                                >
+                                    +
+                                </button>
+                                <span class="tooltiptext"
+                                    >새로운 필터 추가</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="filterSetting"
+                        style="flex-direction: row; justify-content: flex-start"
+                    >
+                        <div style="display: flex">
+                            <label for="toleranceInput">오차 범위</label>
+                            <input
+                                type="text"
+                                id="toleranceInput"
+                                placeholder="오차 범위"
+                                value="10"
+                                style="width: 50px"
+                            />
+
+                            <div class="tooltip">
+                                <button id="filterButton" class="link">
+                                    필터링
+                                </button>
+                                <span class="tooltiptext"
+                                    >필터링 후 한번 더 누르면 필터링 해제</span
+                                >
+                            </div>
+                            <div class="tooltip">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        id="autoFilter"
+                                        style="width: auto"
+                                    /><span id="autoFilterText"
+                                        >자동 필터링</span
+                                    >
+                                </label>
+                                <span class="tooltiptext"
+                                    >체크했을 때 검색 후 자동으로
+                                    필터링됩니다</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width: 100%" />
+                </div>
+                <div style="display: flex; justify-content: center">
+                    <button id="toggleFilterButton">필터링 접기</button>
+                </div>
+            </div>
+            <div id="content">
+                <div style="align-items: center">
+                    <p>
+                        Data based on NEXON Open API / 색상값 by
+                        주머니디코@jumeonidik3038 님(감사합니다!)
+                    </p>
+                    <br />
+                    <div style="display: flex; width: 100%">
+                        <div class="tooltip">
+                            <a
+                                class="link"
+                                href="https://x.com/maitipoppop"
+                                target="_blank"
+                                >트위터</a
+                            >
+                            <span class="tooltiptext"
+                                >트위터로 이동합니다.</span
+                            >
+                        </div>
+                        <div class="tooltip">
+                            <a
+                                class="link"
+                                href="https://openapi.nexon.com/ko/my-application/"
+                                target="_blank"
+                                >API 키 생성</a
+                            >
+                            <span class="tooltiptext"
+                                >넥슨api사이트로 이동합니다.</span
+                            >
+                        </div>
+                        <button class="question-button">?키 생성방법?</button>
+                    </div>
+                    <br />
+                    <p id="jyujul">
+                        리셋 후 주머니 데이터가 준비가 되지 않았을 때는 1분 후
+                        자동으로 다시 시도합니다.<br />
+                    </p>
+
+                    <p style="color: red">
+                        채널링 시 api 호출을 많이 하므로 호출 한계 200만인
+                        [서비스 단계]로 키를 발급받으시는 게 좋습니다. 키
+                        생성방법을 참조하세요.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 모달창 -->
+
+            <div id="modal">
+                <div id="modal-content">
+                    <span id="modal-close">&times;</span>
+                    <div id="modal-pouch"></div>
+                    <div id="modal-body"></div>
+                </div>
+            </div>
+            <button id="floatingButton" class="floating-button">↑</button>
+        </div>
+        <div
+            id="channeling-tooltip"
             style="
-              padding: 0;
-              margin: 0;
-              padding-left: 10px;
-              font-size: 30px;
-              font-family: 'Pretendard-Regular';
-              font-weight: 800;
-              color: black;
+                position: absolute;
+                display: none;
+                background-color: #333;
+                color: white;
+                padding: 5px;
+                border-radius: 5px;
+                pointer-events: none;
             "
-          ></p>
-          <div style="padding: 3px; display: flex">
-            <label for="apiKeyInput" style="width: 20%">API키</label>
-            <input
-              type="text"
-              id="apiKeyInput"
-              placeholder="API 키를 입력하세요"
-              value=""
-            />
-          </div>
+        ></div>
+        <div id="notification"></div>
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
         </div>
-        <hr />
-        <div class="search" style="display: flex">
-          <!-- 서버 선택 및 채널 입력 -->
+        <!-- <script src="variables.js" type="module"></script> -->
+        <!-- <script src="channeling.js" type="module"></script> -->
+        <script src="script.js"></script>
+        <script src="channeling.js"></script>
+        <script src="button.js"></script>
+        <script src="pouch.js"></script>
+        <script src="filtering.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> -->
 
-          <div style="display: flex; padding: 3px">
-            <label for="serverSelect">서버</label>
-            <select id="serverSelect">
-              <option value="류트" selected>류트</option>
-              <option value="만돌린">만돌린</option>
-              <option value="하프">하프</option>
-              <option value="울프">울프</option>
-            </select>
+        <script>
+            document
+                .getElementById('floatingButton')
+                .addEventListener('click', function () {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
 
-            <label for="channelInput">채널 </label>
-            <select id="channelInput" style="width: 60px"></select>
-          </div>
-          <!-- <div style="padding-left: 30px;"></div> -->
-          <div style="display: flex; padding: 3px">
-            <div class="tooltip">
-              <label for="locationSelect">교역소</label>
-              <button id="prevBtn">&lt;</button>
-              <select id="locationSelect">
-                <option value="전체" selected>전체</option>
-              </select>
-              <button id="nextBtn">&gt;</button>
-              <span class="tooltiptext gyo"
-                >특정 교역소만 선택해서 볼 수 있습니다</span
-              >
-            </div>
-            <div class="tooltip">
-              <label>
-                <input
-                  type="checkbox"
-                  id="channelingServer"
-                  style="width: auto"
-                /><span>특정서버 채널링</span>
-              </label>
-              <span class="tooltiptext" id="channelingTooltipText"
-                >체크시 선택한 서버만 채널링합니다</span
-              >
-            </div>
-            <div class="tooltip">
-              <button id="fetchButton" class="link">검색</button>
-              <span class="tooltiptext"
-                >API 키 입력 안하시면 검색이 안됩니다</span
-              >
-            </div>
-            <div class="tooltip">
-              <label>
-                <input type="checkbox" id="autoFetchCheckbox" /> 자동 실행
-              </label>
-              <span class="tooltiptext"
-                >체크해놓으면 초기화 8분 후 자동실행됩니다</span
-              >
-            </div>
-          </div>
-        </div>
-        <!-- 초기값 설정 -->
-
-        <hr />
-        <div class="filterColor">
-          <div class="tooltip">
-            <label for="anywhereColor">전체 RGB</label>
-            <input type="text" id="anywhereColor" placeholder="예: 0, 255, 0" />
-            <span class="tooltiptext"
-              >필터링 RGB값 예시 - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
-            </span>
-          </div>
-
-          <div class="tooltip">
-            <label for="outerColor">겉감 RGB</label>
-            <input type="text" id="outerColor" placeholder="예: 255. 0. 0" />
-            <span class="tooltiptext"
-              >필터링 RGB값 예시 - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
-            </span>
-          </div>
-          <div class="tooltip">
-            <label for="romanColor">로마자 RGB</label>
-            <input type="text" id="romanColor" placeholder="예: 0/255/0" />
-            <span class="tooltiptext"
-              >필터링 RGB값 예시 - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
-            </span>
-          </div>
-          <div class="tooltip">
-            <label for="innerColor">안감 RGB</label>
-            <input type="text" id="innerColor" placeholder="예: 0/0//255" />
-            <span class="tooltiptext"
-              >필터링 RGB값 예시 - (0,0,0) | 0/0/0 | 0.0.0 | 0 0 0
-            </span>
-          </div>
-          <div class="tooltip">
-            <label for="toleranceInput">오차 범위</label>
-            <input
-              type="text"
-              id="toleranceInput"
-              placeholder="오차 범위"
-              value="10"
-              style="width: 50px"
-            />
-          </div>
-          <div class="tooltip">
-            <button id="filterButton" class="link">필터링</button>
-            <span class="tooltiptext"
-              >필터링 후 한번 더 누르면 필터링 해제</span
-            >
-          </div>
-          <div class="tooltip">
-            <label>
-              <input type="checkbox" id="autoFilter" style="width: auto" /><span
-                id="autoFilterText"
-                >자동 필터링</span
-              >
-            </label>
-            <span class="tooltiptext"
-              >체크했을 때 검색 후 자동으로 필터링됩니다</span
-            >
-          </div>
-        </div>
-
-        <hr />
-      </div>
-      <div id="content">
-        <div style="align-items: center">
-          <p>
-            Data based on NEXON Open API / 색상값 by 주머니디코@jumeonidik3038
-            님(감사합니다!)
-          </p>
-          <div style="display: flex; width: 100%">
-            <div class="tooltip">
-              <a
-                class="link"
-                href="https://openapi.nexon.com/ko/my-application/"
-                target="_blank"
-                >API 키 생성</a
-              >
-              <span class="tooltiptext">넥슨api사이트로 이동합니다.</span>
-            </div>
-            <button class="question-button">?키 생성방법?</button>
-          </div>
-          <p id="jyujul">
-            리셋됐을 때 바로 검색하면 오류나니까 좀 여유를 두고 검색하세요.
-            넥슨이 보통 10분 후에 데이터 준다고 했음. (Please wait until the
-            data is ready 같은 오류 발생함)<br />
-            OPENAPI00007, Please try again later 오류는 하루에 쓸수있는 api
-            사용량을 다썼다는 뜻입니다.<br />
-            안감 이미지의 경우 비공식 팬페이지 api 를 불러와서 안감이 안보이고
-            이미지 못불러옴이 뜰 수 있습니다. 수정예정입니다.<br />
-          </p>
-          <p style="color: red">
-            채널링 기능이 추가됐습니다! 채널링을 하고싶은 주머니를 클릭하시면
-            됩니다. 특정서버 채널링 체크하시면 그 채널만 돕니다.<br />
-            채널링 시 api 호출을 많이 하므로 호출 한계 200만인 [서비스 단계]로
-            키를 발급받으시는 게 좋습니다. 키 생성방법을 참조하세요.
-          </p>
-        </div>
-      </div>
-
-      <!-- 모달창 -->
-      <div id="modal">
-        <div id="modal-content">
-          <span id="modal-close">&times;</span>
-          <div id="modal-pouch"></div>
-          <div id="modal-body"></div>
-        </div>
-      </div>
-      <button id="floatingButton" class="floating-button">↑</button>
-    </div>
-    <div
-      id="channeling-tooltip"
-      style="
-        position: absolute;
-        display: none;
-        background-color: #333;
-        color: white;
-        padding: 5px;
-        border-radius: 5px;
-        pointer-events: none;
-      "
-    ></div>
-    <div id="notification"></div>
-    <!-- <script src="variables.js" type="module"></script> -->
-    <!-- <script src="channeling.js" type="module"></script> -->
-    <script src="script.js"></script>
-    <script src="channeling.js"></script>
-    <script src="button.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <script>
-      document
-        .getElementById("floatingButton")
-        .addEventListener("click", function () {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-
-      //document
-      //  .getElementById("modal-content")
-       // .addEventListener("click", function () {
-       //   const modalContent = document.getElementById("modal-content");
-     //   });
-    </script>
-    <!-- JavaScript 파일 연결 -->
-  </body>
+            //document
+            //  .getElementById("modal-content")
+            // .addEventListener("click", function () {
+            //   const modalContent = document.getElementById("modal-content");
+            //   });
+        </script>
+        <!-- JavaScript 파일 연결 -->
+    </body>
 </html>
