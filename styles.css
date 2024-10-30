@@ -523,7 +523,7 @@ input[type='checkbox'] {
 }
 
 input[type='checkbox']:checked {
-    accent-color: purple; /* 체크됐을 때 표시할 색상 */
+    accent-color: purple;
 }
 
 #loadingOverlay {
