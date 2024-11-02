@@ -88,6 +88,10 @@ hr {
     /*animation: blink 2s infinite;*/
 }
 
+#apiKeyInput {
+    max-height: 26px;
+}
+
 /* 애니메이션 정의 
 @keyframes blink {
 0%,100% {
@@ -107,7 +111,14 @@ button {
     color: #ffffff !important;
     background-color: #5e4c77 !important;
     font-size: 16px;
+    border-radius: 5px;
 }
+
+#toggleFilterButton,
+.filterDeleteButton {
+    padding: 5px 10px;
+}
+
 .cell:hover {
     background-color: rgba(152, 200, 255, 0.2);
 }
@@ -118,8 +129,11 @@ button {
     color: black; /* 호버 시 글자 색상 변경 */
 }
 .set-check {
-    font-size: 20;
-    color: red;
+    font-size: large;
+    color: rgb(142, 81, 216);
+    padding: 2px 0px 2px 0px;
+    display: flex;
+    flex-wrap: wrap;
 }
 .modal-color {
     display: flex;
@@ -144,23 +158,24 @@ button {
 #modal-content {
     position: relative;
     background-color: white;
-    padding: 20px 20px 60px 20px;
+    padding: 20px 20px 20px 20px;
     border-radius: 10px;
     /* width: 100%; */
     min-width: 300px;
-    max-width: 1000px;
+    max-width: 800px;
 
     box-sizing: border-box; /* 패딩이 크기에 영향을 주지 않도록 */
-    max-height: 80vh;
+    max-height: 100vh;
     overflow-y: auto;
 }
 #modal-pouch {
-    height: 100px;
+    height: 46px;
+    width: auto;
     display: flex;
 }
-#modal-pouch img {
+/* #modal-pouch img {
     height: 64px;
-}
+} */
 #modal-body {
     width: 100%;
     display: flex;
@@ -182,6 +197,7 @@ button {
     font-weight: bold;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.5);
+    z-index: 9999;
 }
 
 #modal-close:hover,
@@ -223,11 +239,11 @@ button {
     font-family: 'HakgyoansimAllimjangTTF-B', 'sans-serif';
     font-size: 30px;
     font-weight: bold;
-    margin: 40px 0px 20px 0px;
-    text-align: center;
+    margin: 10px 0px 10px 0px;
+    text-align: left;
 }
 #content {
-    padding: 20px 20px;
+    padding: 10px 10px;
     display: flex;
     flex-direction: column; /* 세로 방향으로 배치 */
 }
@@ -273,6 +289,8 @@ button {
     flex-direction: column;
 }
 #filterAbove {
+    display: flex;
+    flex-direction: column;
     justify-items: end;
 }
 #filterBelow {
@@ -281,23 +299,25 @@ button {
     align-items: center;
 }
 
+.filterPassColor {
+    background-color: rgba(81, 0, 255, 0.102);
+}
+
 #addInputButton {
-    margin-top: 10px;
+    padding: 5px 10px;
 }
 .filterInput {
-    min-width: 360px;
+    margin: 0 0 2px 0;
 }
 
-.rounded-button {
+/* .rounded-button {
     padding: 0px 10px 5px 10px;
-    /* padding-bottom: 5px; */
-
     color: white;
     border: none;
-    border-radius: 30px; /* 모서리를 둥글게 설정 */
+    border-radius: 30px; 
     cursor: pointer;
     font-size: 30px;
-}
+} */
 
 /* @media (max-width: 1200px) {
     .cell {
@@ -321,6 +341,7 @@ button {
 }
 
 #next-time {
+    padding-bottom: 10px;
     font-size: 24px;
     font-weight: bold;
     color: #555 !important;
@@ -356,10 +377,10 @@ label {
     /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2); */
 }
 .link {
-    padding: 5px 20px;
+    padding: 5px 10px;
 
     margin-left: 10px;
-    font-size: 14px; /* 물음표 아이콘 크기 */
+    font-size: 16px; /* 물음표 아이콘 크기 */
     background-color: #ebe3ff; /* 버튼 배경색 */
     color: white; /* 글자 색 (물음표 색) */
     border: none; /* 테두리 없애기 */
@@ -374,13 +395,23 @@ label {
     background-color: #ffffa8;
     color: #1a1b23;
 }
+
+#fetchButton {
+    padding: 5px 20px;
+}
+
 p {
-    color: gray;
+    color: rgb(77, 77, 77);
     margin: 0;
 }
 .hidden {
     display: none;
 }
+
+#channeling-tooltip {
+    z-index: 9999;
+}
+
 .tooltip {
     display: flex;
     position: relative;
@@ -448,15 +479,20 @@ input {
 .itemName {
     padding-bottom: 5px;
     font-weight: 800;
+    font-size: medium;
 }
 .chanItemName {
-    width: 230px;
+    width: 200px;
     text-align: left;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .modal-header {
     display: flex;
+    flex-direction: column;
+}
+#modal-time {
+    padding-bottom: 20px;
 }
 .modal-left {
     padding-right: 20px;
@@ -470,7 +506,12 @@ input {
     align-items: start;
 }
 .modal-right h2 {
-    margin: 0 0 10px 0;
+    font-size: x-large;
+    margin: 5px 0 5px 0;
+}
+
+#modal-set {
+    display: block;
 }
 
 #notification {
@@ -497,12 +538,13 @@ label {
 
 .serverName {
     background-color: #f3eaff;
-    margin-top: 20px !important;
+    margin-top: 0px !important;
     margin-bottom: 0px !important;
 }
 
 .serverName h2 {
-    margin: 0;
+    font-size: large;
+    margin: 5px 0;
 }
 .chanitems {
     margin: 0 !important;
@@ -510,9 +552,11 @@ label {
 }
 .chanItemName p {
     margin: 2px;
+    font-size: medium;
 }
 .chanitems p {
     margin: 2px;
+    font-size: medium;
 }
 .category h3 {
     margin: 3px;
