@@ -11,6 +11,7 @@
     width: 100%;
     font-family: 'Pretendard-Regular', 'sans-serif';
     font-size: 20px;
+
     max-width: 1600px; /* 최대 가로 길이 */
     margin: 0 auto; /* 좌우 중앙 정렬 */
     padding: 0; /* 여백 추가 */
@@ -120,7 +121,7 @@ button {
 }
 
 .cell:hover {
-    background-color: rgba(152, 200, 255, 0.2);
+    background-color: rgba(224, 209, 255, 0.2);
 }
 
 .question-button:hover {
@@ -301,7 +302,26 @@ button {
 }
 
 .filterPassColor {
-    box-shadow: inset 0 0 0 1.5px #6a00ff;
+    /* background-color: #ebe3ff; */
+    color: #6f22ff;
+
+    font-weight: 900;
+    position: relative;
+    background-color: rgba(89, 0, 255, 0.083);
+    /* text-decoration: underline;
+    text-decoration-color: rgb(0, 0, 0);
+    text-decoration-thickness: auto; */
+}
+.filterPassColor::after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #6f22ff;
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    bottom: 1px;
+    z-index: -1;
 }
 
 #addInputButton {
@@ -315,10 +335,12 @@ button {
 }
 
 .colorInputColor {
-    height: 90%;
-    width: 28px;
-    margin-right: 1px;
-    border: 1px solid #cdcdcd;
+    height: 94%;
+    width: 31px;
+
+    margin-right: 5px;
+    border: 1px solid #6b6b6b;
+    border-radius: 7%;
 }
 
 /* .rounded-button {
